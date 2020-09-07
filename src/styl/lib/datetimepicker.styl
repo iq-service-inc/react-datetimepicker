@@ -18,7 +18,7 @@
     position relative
     padding 5px
     width 200px
-    height 220px
+    height 250px
     background-color #ffffff
     overflow-x auto
     overflow-y hidden
@@ -26,6 +26,7 @@
 .year-month
     padding 5px 0
     margin 3px 0
+    font-weight bold
 
 .yearselect
     display flex
@@ -53,15 +54,16 @@
     align-items center
     border 2px solid white
 
-.month:hover
+.month:hover,
+.date:hover
     background-color #a1c9da
 
-.date
+.week
     display flex
     flex-wrap wrap
     justify-content space-around
 
-.date > *
+.week > *
     width 20px
     height 20px
     padding 3px
@@ -71,3 +73,10 @@
 
 .greydate
     color grey
+
+.today
+    color #2e5bff
+    font-weight bold
+    position absolute
+    bottom 10px
+    right 10px

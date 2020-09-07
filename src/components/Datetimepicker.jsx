@@ -8,17 +8,20 @@ export default class Datetimepicker extends Component {
             select: {
                 year: new Date().getFullYear(),
                 month: new Date().getMonth()+1,
-                date: new Date().getDate()
+                date: new Date().getDate(),
+                hour: new Date().getHours(),
+                min: new Date().getMinutes(),
             },
             openYearMonth: false,
             openMonth: new Date().getFullYear(),
-            month: this.createmonth(),
+            month: this.createarr(1, 12),
+            years: this.createarr(2000, 2020)
         }
     }
 
-    createmonth() {
+    createarr(start, end) {
         var arr = []
-        for(var i=1; i<13; i++){
+        for(var i=start; i<=end; i++){
             arr.push(i)
         }
         return arr
@@ -73,11 +76,11 @@ export default class Datetimepicker extends Component {
             for(i; i<7-new Date(y,m,days).getDay(); i++){
                 arr.push({date: i, month: month+1})
             }
+        }
 
-            if(arr.length/7 < 6){
-                for(i; i<i+(6-arr.length/7)*7; i++){
-                    arr.push({date: i, month: month+1})
-                }
+        if(arr.length/7 < 6){
+            for(i; i<i+(6-arr.length/7)*7; i++){
+                arr.push({date: i, month: month+1})
             }
         }
 
@@ -85,26 +88,25 @@ export default class Datetimepicker extends Component {
         for(var i=0; i<arr.length; i+=7){
             week.push(arr.slice(i, i+7))
         }
-        console.log(week)
         return week
     }
 
 
     render() {
-        const { datetitle, openYearMonth, openMonth, month, select } = this.state
+        const { datetitle, openYearMonth, openMonth, years, month, select } = this.state
         const { options } = this.props
         return (
             <div>
                 <input className="datetimeinput"></input>
                 <div className="datetimebox">
                     <div className="year-month onclick" onClick={()=>this.toggle("openYearMonth")}>
-                        {select.year + "/" + (select.month>=10? select.month: "0"+String(select.month))}
+                        {select.year + "年" + (select.month>=10? select.month: "0"+String(select.month)) +"月"}
                     </div>
                     {
                         openYearMonth?
                             <div className="yearselect">
                                 {
-                                    options.years.map(y => 
+                                    years.map(y => 
                                         <div className="year onclick" key={y} onClick={()=>this.openMonth(y)}>{y}
                                             <div className="monthselect">
                                                 {
@@ -122,18 +124,17 @@ export default class Datetimepicker extends Component {
                             </div>
                     
                             :<div className="days">
-                                <div className="date">
+                                <div className="week">
                                     {
                                         datetitle.map((w, index) => 
                                         <div className="datetitle" key={index}><span>{w}</span></div> 
-                                        // (new Date(2020,10,1) - new Date(2020,9,1))/(86400*1000)-1
                                         )
                                     }
                                 </div>
                                 
                                 {
                                     this.renderDate(select.year, select.month).map((week, index) => 
-                                        <div className="date" key={index}>
+                                        <div className="week" key={index}>
                                             {
                                                 week.map((d,index) =>
                                                     <div key={index} className={(select.date==d.date && select.month==d.month?"select ":"")+"date onclick"+(d.month==select.month?"":" greydate")} onClick={() => this.selectDay(null,d.month,d.date,null,null)}>
@@ -144,6 +145,7 @@ export default class Datetimepicker extends Component {
                                         </div>
                                     )
                                 }
+                                <div className="today onclick" onClick={() => this.selectDay(new Date().getFullYear(), new Date().getMonth()+1, new Date().getDate(), new Date().getHours(), new Date().getMinutes())}>今天</div>
                             </div>
                     }
                 </div>
