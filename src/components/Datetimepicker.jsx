@@ -60,23 +60,32 @@ export default class Datetimepicker extends Component {
         if(new Date(y,m,1).getDay() != 0){
             var lastdays = (new Date(y,m,1) - new Date(y,m-1,1))/(86400*1000)
             for(var i=new Date(y,m,1).getDay()-1; i>=0; i--){
-                arr.push(lastdays-i)
+                arr.push({date: lastdays-i, month: month-1})
             }
         }
 
         for(var i=1; i<=days;i++){
-            arr.push(i)
+            arr.push({date: i, month})
         }
 
         if(new Date(y,m,days).getDay() != 6){
-            for(var i=1; i<7-new Date(y,m,days).getDay(); i++){
-                arr.push(i)
+            var i =1
+            for(i; i<7-new Date(y,m,days).getDay(); i++){
+                arr.push({date: i, month: month+1})
+            }
+
+            if(arr.length/7 < 6){
+                for(i; i<i+(6-arr.length/7)*7; i++){
+                    arr.push({date: i, month: month+1})
+                }
             }
         }
+
         var week = []
         for(var i=0; i<arr.length; i+=7){
             week.push(arr.slice(i, i+7))
         }
+        console.log(week)
         return week
     }
 
@@ -126,9 +135,9 @@ export default class Datetimepicker extends Component {
                                     this.renderDate(select.year, select.month).map((week, index) => 
                                         <div className="date" key={index}>
                                             {
-                                                week.map((date,index) => 
-                                                    <div key={index} className={select.date==date?"date onclick select":"date onclick"} onClick={() => this.selectDay(null,null,date,null,null)}>
-                                                        <span>{date}</span>
+                                                week.map((d,index) =>
+                                                    <div key={index} className={(select.date==d.date && select.month==d.month?"select ":"")+"date onclick"+(d.month==select.month?"":" greydate")} onClick={() => this.selectDay(null,d.month,d.date,null,null)}>
+                                                        <span>{d.date}</span>
                                                     </div>
                                                 )
                                             }
