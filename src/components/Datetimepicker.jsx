@@ -63,24 +63,24 @@ export default class Datetimepicker extends Component {
         if(new Date(y,m,1).getDay() != 0){
             var lastdays = (new Date(y,m,1) - new Date(y,m-1,1))/(86400*1000)
             for(var i=new Date(y,m,1).getDay()-1; i>=0; i--){
-                arr.push({date: lastdays-i, month: month-1})
+                arr.push({date: lastdays-i, month: new Date(y,m-1,1).getMonth()+1, year: new Date(y,m-1,1).getFullYear()})
             }
         }
 
         for(var i=1; i<=days;i++){
-            arr.push({date: i, month})
+            arr.push({date: i, month, year: new Date(y,m-1,1).getFullYear()})
         }
 
         if(new Date(y,m,days).getDay() != 6){
             var i =1
             for(i; i<7-new Date(y,m,days).getDay(); i++){
-                arr.push({date: i, month: month+1})
+                arr.push({date: i, month: new Date(y,m+1,1).getMonth()+1, year: new Date(y,m-1,1).getFullYear()})
             }
         }
 
         if(arr.length/7 < 6){
             for(i; i<i+(6-arr.length/7)*7; i++){
-                arr.push({date: i, month: month+1})
+                arr.push({date: i, month: new Date(y,m+1,1).getMonth()+1, year: new Date(y,m-1,1).getFullYear()})
             }
         }
 
@@ -104,8 +104,8 @@ export default class Datetimepicker extends Component {
                             {select.year + "年" + (select.month>=10? select.month: "0"+String(select.month)) +"月"}
                         </div>
                         <div className="month-btns">
-                            <div className="previousmonth onclick" onClick={() => this.selectDay(null,select.month-1,null,null,null)}>-</div>
-                            <div className="nextmonth onclick" onClick={() => this.selectDay(null,select.month-1,null,null,null)}>+</div>
+                            <div className="previousmonth onclick" onClick={() => this.selectDay(new Date(select.year, select.month-2).getFullYear(),new Date(select.year, select.month-2).getMonth()+1,null,null,null)}>-</div>
+                            <div className="nextmonth onclick" onClick={() => this.selectDay(new Date(select.year, select.month).getFullYear(),new Date(select.year, select.month).getMonth()+1,null,null,null)}>+</div>
                         </div>
                     </div>
                     {
@@ -143,7 +143,7 @@ export default class Datetimepicker extends Component {
                                         <div className="week" key={index}>
                                             {
                                                 week.map((d,index) =>
-                                                    <div key={index} className={(select.date==d.date && select.month==d.month?"select ":"")+"date onclick"+(d.month==select.month?"":" greydate")} onClick={() => this.selectDay(null,d.month,d.date,null,null)}>
+                                                    <div key={index} className={(select.date==d.date && select.month==d.month?"select ":"")+"date onclick"+(d.month==select.month?"":" greydate")} onClick={() => this.selectDay(d.year,d.month,d.date,null,null)}>
                                                         <span>{d.date}</span>
                                                     </div>
                                                 )
