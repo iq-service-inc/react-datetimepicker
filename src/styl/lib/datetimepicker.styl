@@ -23,17 +23,45 @@
     overflow-x auto
     overflow-y hidden
 
+.box-title
+    display flex
+    align-items center
+
 .year-month
     padding 5px 0
     margin 3px 0
     font-weight bold
+    width fit-content
+
+.year-month:active
+    border 1px solid
+
+.month-btns
+    display inline-flex
+    position absolute
+    right 5px
+
+.month-btns > *
+    width 25px
+    height 25px
+    display flex
+    justify-content center
+    align-items center
 
 .yearselect
     display flex
     flex-flow column
     overflow-x hidden
     overflow-y auto
-    height inherit
+    height 90%
+    scrollbar-color #888
+    scrollbar-width thin
+
+::-webkit-scrollbar
+    width 8px
+
+::-webkit-scrollbar-thumb
+  background #888
 
 .year
     background-color #b9b9b9
@@ -55,7 +83,9 @@
     border 2px solid white
 
 .month:hover,
-.date:hover
+.date:hover,
+.previousmonth:hover,
+.nextmonth:hover
     background-color #a1c9da
 
 .week

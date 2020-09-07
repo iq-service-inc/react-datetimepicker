@@ -99,8 +99,14 @@ export default class Datetimepicker extends Component {
             <div>
                 <input className="datetimeinput"></input>
                 <div className="datetimebox">
-                    <div className="year-month onclick" onClick={()=>this.toggle("openYearMonth")}>
-                        {select.year + "年" + (select.month>=10? select.month: "0"+String(select.month)) +"月"}
+                    <div className="box-title">
+                        <div className="year-month onclick" onClick={()=>this.toggle("openYearMonth")}>
+                            {select.year + "年" + (select.month>=10? select.month: "0"+String(select.month)) +"月"}
+                        </div>
+                        <div className="month-btns">
+                            <div className="previousmonth onclick" onClick={() => this.selectDay(null,select.month-1,null,null,null)}>-</div>
+                            <div className="nextmonth onclick" onClick={() => this.selectDay(null,select.month-1,null,null,null)}>+</div>
+                        </div>
                     </div>
                     {
                         openYearMonth?
