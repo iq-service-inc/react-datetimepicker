@@ -4,7 +4,7 @@ import '../styl/index.styl'
 import React, { Component } from 'react'
 import { IntlProvider } from 'react-intl'
 import propTypes from 'prop-types'
-import Main from './Main'
+import Datetimepicker from './Datetimepicker'
 
 class App extends Component {
 
@@ -16,14 +16,17 @@ class App extends Component {
         const { intl: { language }, history } = this.props
         return (
             <IntlProvider defaultLocale='zh' {...language}>
-                <Main history={history} />
+                <Datetimepicker
+                    options = {{
+                        years: [2010, 2011, 2012, 2019, 2020, 2021]
+                    }}
+                ></Datetimepicker>
             </IntlProvider>
         )
     }
 
     static propTypes = {
         intl: propTypes.object.isRequired,
-        history: propTypes.object.isRequired,
     }
 }
 
