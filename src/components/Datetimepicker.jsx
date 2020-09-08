@@ -1,10 +1,12 @@
 import React, { Component } from 'react'
+import propTypes from 'prop-types'
+import YearSelect from './YearSelect'
+import Days from './Days'
 
 export default class Datetimepicker extends Component {
     constructor(props){
         super(props)
         this.state = {
-            datetitle: ['日','一','二','三','四','五','六'],
             select: {
                 year: new Date().getFullYear(),
                 month: new Date().getMonth()+1,
@@ -14,7 +16,7 @@ export default class Datetimepicker extends Component {
             },
             openYearMonth: false,
             openMonth: new Date().getFullYear(),
-            month: this.createarr(1, 12),
+            months: this.createarr(1, 12),
             years: this.createarr(2000, 2020)
         }
     }
@@ -55,108 +57,66 @@ export default class Datetimepicker extends Component {
         })
     }
 
-    renderDate = (y,month) => {
-        var m = month-1
-        var days = (new Date(y,m+1,1) - new Date(y,m,1))/(86400*1000)
-        var arr = []
-
-        if(new Date(y,m,1).getDay() != 0){
-            var lastdays = (new Date(y,m,1) - new Date(y,m-1,1))/(86400*1000)
-            for(var i=new Date(y,m,1).getDay()-1; i>=0; i--){
-                arr.push({date: lastdays-i, month: new Date(y,m-1,1).getMonth()+1, year: new Date(y,m-1,1).getFullYear()})
-            }
-        }
-
-        for(var i=1; i<=days;i++){
-            arr.push({date: i, month, year: new Date(y,m-1,1).getFullYear()})
-        }
-
-        if(new Date(y,m,days).getDay() != 6){
-            var i =1
-            for(i; i<7-new Date(y,m,days).getDay(); i++){
-                arr.push({date: i, month: new Date(y,m+1,1).getMonth()+1, year: new Date(y,m-1,1).getFullYear()})
-            }
-        }
-
-        if(arr.length/7 < 6){
-            for(i; i<i+(6-arr.length/7)*7; i++){
-                arr.push({date: i, month: new Date(y,m+1,1).getMonth()+1, year: new Date(y,m-1,1).getFullYear()})
-            }
-        }
-
-        var week = []
-        for(var i=0; i<arr.length; i+=7){
-            week.push(arr.slice(i, i+7))
-        }
-        return week
-    }
-
-
     render() {
-        const { datetitle, openYearMonth, openMonth, years, month, select } = this.state
+        const { datetitle, openYearMonth, openMonth, years, months, select } = this.state
         const { options } = this.props
         return (
             <div>
                 <input className="datetimeinput"></input>
-                <div className="datetimebox">
-                    <div className="box-title">
-                        <div className="year-month onclick" onClick={()=>this.toggle("openYearMonth")}>
-                            {select.year + "年" + (select.month>=10? select.month: "0"+String(select.month)) +"月"}
+                <div className="datetime">
+                    <div className="datebox">
+                        <div className="box-title">
+                            <div className="year-month onclick hover" onClick={()=>this.toggle("openYearMonth")}>
+                                {select.year + "年" + (select.month>=10? select.month: "0"+String(select.month)) +"月"}
+                            </div>
+                            {
+                                !openYearMonth&&
+                                <div className="month-btns">
+                                    <div className="previousmonth onclick hover" onClick={() => this.selectDay(new Date(select.year, select.month-2).getFullYear(),new Date(select.year, select.month-2).getMonth()+1,null,null,null)}>-</div>
+                                    <div className="nextmonth onclick hover" onClick={() => this.selectDay(new Date(select.year, select.month).getFullYear(),new Date(select.year, select.month).getMonth()+1,null,null,null)}>+</div>
+                                </div>
+                            }
                         </div>
-                        <div className="month-btns">
-                            <div className="previousmonth onclick" onClick={() => this.selectDay(new Date(select.year, select.month-2).getFullYear(),new Date(select.year, select.month-2).getMonth()+1,null,null,null)}>-</div>
-                            <div className="nextmonth onclick" onClick={() => this.selectDay(new Date(select.year, select.month).getFullYear(),new Date(select.year, select.month).getMonth()+1,null,null,null)}>+</div>
+                        {
+                            openYearMonth?
+                                <YearSelect
+                                    select={select}
+                                    years={years}
+                                    months={months}
+                                    open={openMonth}
+                                    openMonth={(y)=>this.openMonth(y)}
+                                    selectDay={(year,month,date,hour,min)=>this.selectDay(year,month,date,hour,min)}
+                                ></YearSelect>
+                        
+                                :<Days
+                                    select={select}
+                                    selectDay={(year,month,date,hour,min)=>this.selectDay(year,month,date,hour,min)}
+                                ></Days>
+                        }
+                    </div>
+
+                    <div className="timebox">
+                        <div className="hour scroll">
+                            {this.createarr(1,12).map(hr => 
+                                <div className="timeitem onclick hover" key={hr}>{hr}</div>
+                            )}
+                        </div>
+                        <div className="minute scroll">
+                            {this.createarr(0,59).map(min => 
+                                <div className="timeitem onclick hover" key={min}>{min}</div>
+                            )}
+                        </div>
+                        <div className="ampm scroll">
+                            <div className="timeitem onclick hover" key="am">am</div>
+                            <div className="timeitem onclick hover" key="pm">pm</div>
                         </div>
                     </div>
-                    {
-                        openYearMonth?
-                            <div className="yearselect">
-                                {
-                                    years.map(y => 
-                                        <div className="year onclick" key={y} onClick={()=>this.openMonth(y)}>{y}
-                                            <div className="monthselect">
-                                                {
-                                                    openMonth == y &&
-                                                    month.map(m=>
-                                                        <div className={select.month==m && select.year==y? "month onclick select" : "month onclick"} key={m} onClick={() => this.selectDay(y,m,null,null,null)}>
-                                                            <span>{m}月</span>
-                                                        </div>
-                                                    )
-                                                }
-                                            </div>
-                                        </div>
-                                    )
-                                }
-                            </div>
-                    
-                            :<div className="days">
-                                <div className="week">
-                                    {
-                                        datetitle.map((w, index) => 
-                                        <div className="datetitle" key={index}><span>{w}</span></div> 
-                                        )
-                                    }
-                                </div>
-                                
-                                {
-                                    this.renderDate(select.year, select.month).map((week, index) => 
-                                        <div className="week" key={index}>
-                                            {
-                                                week.map((d,index) =>
-                                                    <div key={index} className={(select.date==d.date && select.month==d.month?"select ":"")+"date onclick"+(d.month==select.month?"":" greydate")} onClick={() => this.selectDay(d.year,d.month,d.date,null,null)}>
-                                                        <span>{d.date}</span>
-                                                    </div>
-                                                )
-                                            }
-                                        </div>
-                                    )
-                                }
-                                <div className="today onclick" onClick={() => this.selectDay(new Date().getFullYear(), new Date().getMonth()+1, new Date().getDate(), new Date().getHours(), new Date().getMinutes())}>今天</div>
-                            </div>
-                    }
                 </div>
-
             </div>
         )
+    }
+
+    static propTypes = {
+        options: propTypes.object,
     }
 }
