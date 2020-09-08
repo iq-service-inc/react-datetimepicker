@@ -12,7 +12,7 @@ export default class Datetimepicker extends Component {
                 year: new Date().getFullYear(),
                 month: new Date().getMonth()+1,
                 date: new Date().getDate(),
-                hour: new Date().getHours(),
+                hour: new Date().getHours()%12,
                 min: new Date().getMinutes(),
                 ampm: new Date().getHours()/12>=1? 1: 0,
             },
@@ -26,7 +26,7 @@ export default class Datetimepicker extends Component {
                 year: new Date().getFullYear(),
                 month: new Date().getMonth()+1,
                 date: new Date().getDate(),
-                hour: new Date().getHours(),
+                hour: new Date().getHours()%12,
                 min: new Date().getMinutes(),
                 ampm: new Date().getHours()/12>=1? 1: 0,
             },
@@ -79,6 +79,7 @@ export default class Datetimepicker extends Component {
     }
 
     input = (e) => {
+        console.log(e.target.value)
         switch (e.target.id) {
             case 'year':
                 this.setState({
@@ -104,10 +105,59 @@ export default class Datetimepicker extends Component {
                     }
                 })
                 break;
-        
+            case 'date':
+                this.setState({
+                    input:{
+                        ...this.state.input,
+                        date: e.target.value
+                    },
+                    select:{
+                        ...this.state.select,
+                        date: e.target.value
+                    }
+                })
+                break;
+            case 'ampm':
+                this.setState({
+                    input:{
+                        ...this.state.input,
+                        ampm: e.target.value
+                    },
+                    select:{
+                        ...this.state.select,
+                        ampm: e.target.value
+                    }
+                })
+                break;
+            case 'hour':
+                this.setState({
+                    input:{
+                        ...this.state.input,
+                        hour: e.target.value
+                    },
+                    select:{
+                        ...this.state.select,
+                        hour: e.target.value
+                    }
+                })
+                break;
+            case 'min':
+                this.setState({
+                    input:{
+                        ...this.state.input,
+                        min: e.target.value
+                    },
+                    select:{
+                        ...this.state.select,
+                        min: e.target.value
+                    }
+                })
+                break;
             default:
                 break;
         }
+        console.log(this.state.select)
+        console.log(this.state.input)
     }
 
     format = (num, max, char) => {
@@ -125,13 +175,15 @@ export default class Datetimepicker extends Component {
             <div>
                 <div className="datetimeinput">
                     <input className="yearinput" id="year" value={input.year} onChange={(e)=>this.input(e)} onClick={(e)=>this.selectall(e)} type="number" step="1"></input>/
-                    <input id="month" value={this.format(input.month,10,'0')} onChange={(e)=>this.input(e)} onClick={(e)=>this.selectall(e)} type="number" step="1"></input>/
-                    <input id="date" value={this.format(input.date,10,'0')} onChange={(e)=>this.input(e)} onClick={(e)=>this.selectall(e)} type="number"></input> 
-                    <input id="ampm" value={input.ampm? "pm":"am"} onChange={(e)=>this.input(e)} onClick={(e)=>this.selectall(e)} type="text"></input> 
-                    <input id="hour" value={this.format(input.hour,10,'0')} onChange={(e)=>this.input(e)} onClick={(e)=>this.selectall(e)} type="number" step="1"></input>:
-                    <input id="min" value={this.format(input.min,10,'0')} onChange={(e)=>this.input(e)} onClick={(e)=>this.selectall(e)} type="number" step="1"></input>
+                    <input id="month" value={this.format(input.month,10,'0')} onChange={(e)=>this.input(e)} onClick={(e)=>this.selectall(e)} type="number" step="1" min="1" max="12"></input>/
+                    <input id="date" value={this.format(input.date,10,'0')} onChange={(e)=>this.input(e)} onClick={(e)=>this.selectall(e)} type="number" min="1" max={(new Date(select.year,select.month,1) - new Date(select.year,select.month-1,1))/(86400*1000)}></input> 
+                    <select id="ampm" onChange={(e)=>this.input(e)} value={input.ampm}>
+                        <option value="0">am</option>
+                        <option value="1">pm</option>
+                    </select>
+                    <input id="hour" value={this.format(input.hour,10,'0')} onChange={(e)=>this.input(e)} onClick={(e)=>this.selectall(e)} type="number" step="1" min="1" max="12"></input>:
+                    <input id="min" value={this.format(input.min,10,'0')} onChange={(e)=>this.input(e)} onClick={(e)=>this.selectall(e)} type="number" step="1" min="0" max="59"></input>
                 </div>
-                {/* <input className="datetimeinput" defaultValue={this.DatetimetoStr(select)} onChange={(e)=>this.input(e)} value={input} ></input> */}
                 <div className="datetime">
                     <div className="datebox">
                         <div className="box-title">
