@@ -62,7 +62,7 @@ export default class Days extends Component {
                         <div className="week" key={index}>
                             {
                                 week.map((d, index) =>
-                                    <div key={index} className={(select.date == d.date && select.month == d.month ? "select " : "") + "date onclick hover" + (d.month == select.month ? "" : " greydate")} onClick={() => selectDay(d.year, d.month, d.date, null, null)}>
+                                    <div key={index} className={(select.date == d.date && select.month == d.month ? "select " : "") + "date onclick hover" + (d.month == select.month ? "" : " greydate")} onClick={() => selectDay(d.year, d.month, d.date)}>
                                         <span>{d.date}</span>
                                     </div>
                                 )
@@ -70,7 +70,7 @@ export default class Days extends Component {
                         </div>
                     )
                 }
-                <div className="today onclick" onClick={() => selectDay(new Date().getFullYear(), new Date().getMonth() + 1, new Date().getDate(), new Date().getHours(), new Date().getMinutes())}>今天</div>
+                <div className="today onclick" onClick={() => selectDay(new Date().getFullYear(), new Date().getMonth() + 1, new Date().getDate())}>今天</div>
             </div>
         )
     }

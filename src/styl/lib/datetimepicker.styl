@@ -14,6 +14,31 @@
     background-color #2e5bff
     color white
 
+.datetimeinput
+    background-color white
+    border 1px solid
+    width fit-content
+    padding 2px
+
+.datetimeinput > input 
+    background none
+    border none
+    width 25px
+    text-align center
+
+.datetimeinput > input::-webkit-outer-spin-button,
+.datetimeinput > input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.datetimeinput > input[type=number] {
+  -moz-appearance: textfield;
+}
+
+.yearinput
+    width 35px !important
+
 .datetime
     display flex
     flex-wrap nowrap

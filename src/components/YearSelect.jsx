@@ -13,7 +13,7 @@ export default class YearSelect extends Component {
                                 {
                                     open == y &&
                                     months.map(m =>
-                                        <div className={(select.month == m && select.year == y ? "select " : "") + "month onclick hover"} key={m} onClick={() => selectDay(y, m, null, null, null)}>
+                                        <div className={(select.month == m && select.year == y ? "select " : "") + "month onclick hover"} key={m} onClick={() => selectDay(y, m)}>
                                             <span>{m}月</span>
                                         </div>
                                     )
