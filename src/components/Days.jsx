@@ -17,24 +17,24 @@ export default class Days extends Component {
         if(new Date(y,m,1).getDay() != 0){
             var lastdays = (new Date(y,m,1) - new Date(y,m-1,1))/(86400*1000)
             for(var i=new Date(y,m,1).getDay()-1; i>=0; i--){
-                arr.push({date: lastdays-i, month: new Date(y,m-1,1).getMonth()+1, year: new Date(y,m-1,1).getFullYear()})
+                arr.push({date: lastdays-i, month: new Date(y,m-1,1).getMonth()+1, year: new Date(y,m-1,1).getFullYear(), disabled: false})
             }
         }
 
         for(var i=1; i<=days;i++){
-            arr.push({date: i, month, year: new Date(y,m-1,1).getFullYear()})
+            arr.push({date: i, month, year: new Date(y,m-1,1).getFullYear(), disabled: false})
         }
 
         var i =1
         if(new Date(y,m,days).getDay() != 6){
             for(i; i<7-new Date(y,m,days).getDay(); i++){
-                arr.push({date: i, month: new Date(y,m+1,1).getMonth()+1, year: new Date(y,m-1,1).getFullYear()})
+                arr.push({date: i, month: new Date(y,m+1,1).getMonth()+1, year: new Date(y,m-1,1).getFullYear(), disabled: false})
             }
         }
 
         if(arr.length/7 < 6){
             for(i; i<i+(6-arr.length/7)*7; i++){
-                arr.push({date: i, month: new Date(y,m+1,1).getMonth()+1, year: new Date(y,m-1,1).getFullYear()})
+                arr.push({date: i, month: new Date(y,m+1,1).getMonth()+1, year: new Date(y,m-1,1).getFullYear(), disabled: false})
             }
         }
 
@@ -62,9 +62,18 @@ export default class Days extends Component {
                         <div className="week" key={index}>
                             {
                                 week.map((d, index) =>
-                                    <div key={index} className={(select.date == d.date && select.month == d.month ? "select " : "") + "date onclick hover" + (d.month == select.month ? "" : " greydate")} onClick={() => selectDay(d.year, d.month, d.date)}>
-                                        <span>{d.date}</span>
-                                    </div>
+                                    <>
+                                    {
+                                        d.disabled?
+                                        <div key={index} className="date greydate">
+                                            <span>{d.date}</span>
+                                        </div>
+                                        
+                                        :<div key={index} className={(select.date == d.date && select.month == d.month ? "select " : "") + "date onclick hover" + (d.month == select.month ? "" : " greydate")} onClick={() => selectDay(d.year, d.month, d.date)}>
+                                            <span>{d.date}</span>
+                                        </div>
+                                    }
+                                    </>
                                 )
                             }
                         </div>

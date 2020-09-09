@@ -3,17 +3,17 @@ import propTypes from 'prop-types'
 
 export default class YearSelect extends Component {
     render() {
-        const { select, years, months, open, openMonth, selectDay } = this.props
+        const { select, yearmonth, years, months, open, openMonth, selectDay } = this.props
         return (
             <div className="yearselect">
                 {
-                    years.map(y =>
-                        <div className="year onclick" key={y} onClick={() => openMonth(y)}>{y}
+                    yearmonth.map(obj=>
+                        <div className="year onclick" key={obj.year} onClick={() => openMonth(obj.year)}>{obj.year}
                             <div className="monthselect">
                                 {
-                                    open == y &&
-                                    months.map(m =>
-                                        <div className={(select.month == m && select.year == y ? "select " : "") + "month onclick hover"} key={m} onClick={() => selectDay(y, m)}>
+                                    open == obj.year &&
+                                    obj.month.map(m =>
+                                        <div className={(select.month == m && select.year == obj.year ? "select " : "") + "month onclick hover"} key={m} onClick={() => selectDay(obj.year, m)}>
                                             <span>{m}月</span>
                                         </div>
                                     )

@@ -18,7 +18,14 @@ class App extends Component {
             <IntlProvider defaultLocale='zh' {...language}>
                 <Datetimepicker
                     options = {{
-                        years: [2010, 2011, 2012, 2019, 2020, 2021]
+                        disable:{
+                            day: [0,6],
+                            date: [{ year:2020, month:9, date:16 }],
+                            time: [{ from:{ampm:1, hour:6, minute:0}, to:{ampm:0, hour:9, minute:0} }],
+                        },
+                        // { year, month, date, ampm, hour, min }
+                        max: { year:2020, month:10, date:1, ampm:0, hour:9, min:10 },
+                        min: { year:2019, month:9, date:7, ampm:0, hour:9, min:10 },
                     }}
                 ></Datetimepicker>
             </IntlProvider>

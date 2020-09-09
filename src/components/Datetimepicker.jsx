@@ -18,8 +18,7 @@ export default class Datetimepicker extends Component {
             },
             openYearMonth: false,
             openMonth: new Date().getFullYear(),
-            months: this.createarr(1, 12),
-            years: this.createarr(2000, 2020),
+            yearmonth: [{year:2019, month:this.createarr(1, 12)}, {year:2020, month:this.createarr(1, 12)}],
             hours: this.createarr(1, 12),
             minutes: this.createarr(0, 59),
             input: {
@@ -30,6 +29,29 @@ export default class Datetimepicker extends Component {
                 min: this.format(new Date().getMinutes(),10,"0"),
                 ampm: new Date().getHours()/12>=1? 1: 0,
             },
+        }
+    }
+
+    componentDidMount() {
+        const { options } = this.props
+        const { disabled, max, min } = options
+        if(!!max && !!min){
+            var ym = []
+            for(var y=min.year; y<=max.year; y++){
+                if(y==min.year) var m = min.month
+                else var m = 1
+                if(y==max.year) var limit = max.month
+                else var limit = 12
+                
+                var month = []
+                for(m; m<=limit; m++){
+                    month.push(m)
+                }
+                ym.push({year:y, month:month})
+            }
+            this.setState({
+                yearmonth: ym,
+            })
         }
     }
 
@@ -69,10 +91,10 @@ export default class Datetimepicker extends Component {
             },
             input:{
                 year: !!year? year: this.state.select.year,
-                month: !!month? month: this.state.select.month,
-                date: !!date? date: this.state.select.date,
-                hour: !!hour? hour: this.state.select.hour,
-                min: !!min? min: this.state.select.min,
+                month: !!month? this.format(month, 10, '0'): this.format(this.state.select.month, 10, '0'),
+                date: !!date? this.format(date, 10, '0'): this.format(this.state.select.date, 10, '0'),
+                hour: !!hour? this.format(hour, 10, '0'): this.format(this.state.select.hour, 10, '0'),
+                min: !!min? this.format(min, 10, '0'): this.format(this.state.select.min, 10, '0'),
                 ampm: !!ampm? ampm: this.state.select.ampm,
             }
         })
@@ -215,16 +237,17 @@ export default class Datetimepicker extends Component {
     }
 
     enter = (e) => {
-        console.log(e.target.nextElementSibling)
         if(e.keyCode == 13){
             e.target.blur()
         }
-        e.target.nextElementSibling.focus()
+        if(e.target.nextElementSibling != null){
+            e.target.nextElementSibling.focus()
+        }
         e.persist()
     }
 
     render() {
-        const { openYearMonth, openMonth, select, years, months, hours, minutes, input } = this.state
+        const { openYearMonth, openMonth, select, yearmonth, years, months, hours, minutes, input } = this.state
         const { options } = this.props
         return (
             <div>
@@ -289,6 +312,7 @@ export default class Datetimepicker extends Component {
                                     select={select}
                                     years={years}
                                     months={months}
+                                    yearmonth={yearmonth}
                                     open={openMonth}
                                     openMonth={(y)=>this.openMonth(y)}
                                     selectDay={(year,month,date,hour,min,ampm)=>this.selectDay(year,month,date,hour,min,ampm)}
@@ -313,6 +337,14 @@ export default class Datetimepicker extends Component {
     }
 
     static propTypes = {
-        options: propTypes.object,
+        options: propTypes.shape({
+            disabled: propTypes.shape({
+                day: propTypes.array,
+                date: propTypes.array,
+                time: propTypes.array,
+            }),
+            max: propTypes.object,
+            min: propTypes.object,
+        }),
     }
 }
