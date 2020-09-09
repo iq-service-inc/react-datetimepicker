@@ -19,27 +19,55 @@
     border 1px solid
     width fit-content
     padding 2px
+    > input
+        background none
+        border none
+        width 1em
+        margin 0 2px
+        +label
+            display none
+    > select
+        background none
+        border none
+        text-align center
+    > input::-webkit-outer-spin-button,
+    > input::-webkit-inner-spin-button 
+        -webkit-appearance none
+        margin 0
+    > input[type=number]
+        -moz-appearance textfield
+    > input.alert
+        box-shadow: inset 0 0 5px #ff4343
+        border 1px solid #ff4343
+        border-radius: 5px
+        + label
+            display inline-block
+            position absolute
+            z-index 1
+            > .border
+                width 200px
+                height 40px
+                text-align center
+                background #fff
+                position relative
+                margin-top 2rem
+                right 1.5rem
+                display flex
+                filter drop-shadow(0 0 0.3rem black)
+                align-items center
+                border-radius 5px
+                > span.arrowout
+                    width 0px
+                    height 0px
+                    border-width 15px
+                    border-style solid
+                    border-color transparent transparent #fff transparent
+                    position absolute
+                    top -1.7rem
+                    transform scale(0.5, 0.9)
 
-.datetimeinput > input
-    background none
-    border none
-    width 1em
-    text-align center
-
-.datetimeinput > select
-    background none
-    border none
-    text-align center
-
-.datetimeinput > input::-webkit-outer-spin-button,
-.datetimeinput > input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-
-.datetimeinput > input[type=number] {
-  -moz-appearance: textfield;
-}
+    > input.alert:focus + label
+        display none
 
 .yearinput
     width 2em !important
@@ -47,6 +75,7 @@
 .datetime
     display flex
     flex-wrap nowrap
+    filter drop-shadow(0 0 0.3rem #555)
 
 .datebox
     position relative
