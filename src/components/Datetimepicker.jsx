@@ -247,7 +247,7 @@ export default class Datetimepicker extends Component {
     }
 
     render() {
-        const { openYearMonth, openMonth, select, yearmonth, years, months, hours, minutes, input } = this.state
+        const { openYearMonth, openMonth, select, yearmonth, hours, minutes, input } = this.state
         const { options } = this.props
         return (
             <div>
@@ -310,8 +310,6 @@ export default class Datetimepicker extends Component {
                             openYearMonth?
                                 <YearSelect
                                     select={select}
-                                    years={years}
-                                    months={months}
                                     yearmonth={yearmonth}
                                     open={openMonth}
                                     openMonth={(y)=>this.openMonth(y)}
@@ -321,6 +319,8 @@ export default class Datetimepicker extends Component {
                                 :<Days
                                     select={select}
                                     selectDay={(year,month,date,hour,min,ampm)=>this.selectDay(year,month,date,hour,min,ampm)}
+                                    max={options.max}
+                                    min={options.min}
                                 ></Days>
                         }
                     </div>

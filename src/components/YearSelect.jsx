@@ -3,7 +3,7 @@ import propTypes from 'prop-types'
 
 export default class YearSelect extends Component {
     render() {
-        const { select, yearmonth, years, months, open, openMonth, selectDay } = this.props
+        const { select, yearmonth, open, openMonth, selectDay } = this.props
         return (
             <div className="yearselect">
                 {
@@ -29,9 +29,8 @@ export default class YearSelect extends Component {
     static propTypes = {
         select: propTypes.object.isRequired,
         selectDay: propTypes.func.isRequired,
-        years: propTypes.array.isRequired,
-        months: propTypes.array.isRequired,
         open: propTypes.number.isRequired,
         openMonth: propTypes.func.isRequired,
+        yearmonth: propTypes.array.isRequired,
     }
 }
