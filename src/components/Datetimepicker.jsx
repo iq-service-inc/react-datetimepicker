@@ -22,7 +22,6 @@ export default class Datetimepicker extends Component {
             openYearMonth: false,
             openMonth: new Date().getFullYear(),
             yearmonth: [{year:2019, month:this.createarr(1, 12)}, {year:2020, month:this.createarr(1, 12)}],
-            minutes: this.createarr(0, 59),
             input: {
                 year: new Date().getFullYear(),
                 month: this.format(new Date().getMonth()+1,10,"0"),
@@ -92,7 +91,7 @@ export default class Datetimepicker extends Component {
                 month: !!month? month: this.state.select.month,
                 date: !!date? date: this.state.select.date,
                 hour: !!hour? hour: this.state.select.hour,
-                min: !!min? min: this.state.select.min,
+                min: min!=undefined? min: this.state.select.min,
                 ampm: ampm!=undefined? ampm: this.state.select.ampm,
             },
             input:{
@@ -100,7 +99,7 @@ export default class Datetimepicker extends Component {
                 month: !!month? this.format(month, 10, '0'): this.format(this.state.select.month, 10, '0'),
                 date: !!date? this.format(date, 10, '0'): this.format(this.state.select.date, 10, '0'),
                 hour: !!hour? this.format(hour, 10, '0'): this.format(this.state.select.hour, 10, '0'),
-                min: !!min? this.format(min, 10, '0'): this.format(this.state.select.min, 10, '0'),
+                min: min!=undefined? this.format(min, 10, '0'): this.format(this.state.select.min, 10, '0'),
                 ampm: ampm!=undefined? ampm: this.state.select.ampm,
             }
         })
@@ -268,7 +267,7 @@ export default class Datetimepicker extends Component {
     }
 
     render() {
-        const { openCalendar, openYearMonth, openMonth, select, yearmonth, minutes, input, alert } = this.state
+        const { openCalendar, openYearMonth, openMonth, select, yearmonth, input, alert } = this.state
         const { options } = this.props
         const max = new Date(options.max.year, options.max.month-1, options.max.date)
         const min = new Date(options.min.year, options.min.month-1, options.min.date)
@@ -450,7 +449,6 @@ export default class Datetimepicker extends Component {
                         </div>
 
                         <Time
-                            minutes={minutes}
                             select={select}
                             selectDay={(year,month,date,hour,min,ampm)=>this.selectDay(year,month,date,hour,min,ampm)}
                             max={options.max}

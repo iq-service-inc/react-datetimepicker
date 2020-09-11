@@ -27,8 +27,54 @@ export default class Time extends Component {
         return hours
     }
 
+    renderMin(select,min,max) {
+        const selectHour = new Date(select.year,select.month-1,select.date,select.hour+(select.ampm*12))
+        const minHour = new Date(min.year,min.month-1,min.date,min.hour+(min.ampm)*12)
+        const maxHour = new Date(max.year,max.month-1,max.date,max.hour+(max.ampm)*12)
+        var mins = []
+        for(var minute=0;minute<60;minute++){
+            if(selectHour-minHour>0 && maxHour-selectHour>0){
+                mins.push({minute, enable:true})
+            }
+            else{
+                if(selectHour-minHour==0){
+                    mins.push({minute, enable:min.min<=minute})
+                }
+                else if(maxHour-selectHour==0){
+                    mins.push({minute, enable:max.min>=minute})
+                }
+                else{
+                    mins.push({minute, enable:false})
+                }
+            }
+        }
+        return mins
+    }
+
+    renderAMPM(select,min,max) {
+        const selectDate = new Date(select.year,select.month-1,select.date)
+        const minDate = new Date(min.year,min.month-1,min.date)
+        const maxDate = new Date(max.year,max.month-1,max.date)
+        var ampm = {am:false, pm:false}
+        if(selectDate-minDate>0 && maxDate-selectDate>0){
+            ampm = {am:true, pm:true}
+        }
+        else if(selectDate-minDate>0) ampm.am = true
+        else if(maxDate-selectDate>0) ampm.pm = true
+        else{
+            if(selectDate-minDate==0){
+                ampm.am = min.ampm==0
+            }
+            if(maxDate-selectDate==0){
+                ampm.pm = max.ampm==1
+            }
+        }
+        return ampm
+    }
+
     render() {
-        const { minutes, select, selectDay, max, min } = this.props
+        const { select, selectDay, max, min } = this.props
+        const ampm = this.renderAMPM(select,min,max)
         return (
             <div className="timebox">
                 <div className="hour scroll">
@@ -42,21 +88,25 @@ export default class Time extends Component {
                 </div>
                 
                 <div className="minute scroll">
-                    {minutes.map(min =>
-                        <div className={(select.min == min ? "select " : "") + "timeitem onclick hover"} key={min} onClick={() => selectDay(null, null, null, null, min)}>{min}</div>
-                    )}
+                    {
+                        this.renderMin(select,min,max).map(i =>
+                            i.enable?
+                            <div className={(select.min == i.minute ? "select " : "") + "timeitem onclick hover"} key={i.minute} onClick={() => selectDay(null, null, null, null, i.minute)}>{i.minute}</div>
+                            :<div className="timeitem disabled-timeitem" key={i.minute}>{i.minute}</div>
+                        )
+                    }
                 </div>
 
                 <div className="ampm scroll">
                     {
-                        select.date==min.date && select.month==min.month && select.year==min.year && min.ampm!=0?
-                            <div className="timeitem disabled-timeitem">am</div>
-                            :<div className={(select.ampm == 0 ? "select " : "") + "timeitem onclick hover"} onClick={() => selectDay(null, null, null, null, null, 0)}>am</div>
+                        ampm.am?
+                            <div className={(select.ampm == 0 ? "select " : "") + "timeitem onclick hover"} onClick={() => selectDay(null, null, null, null, null, 0)}>am</div>
+                            :<div className="timeitem disabled-timeitem">am</div>
                     }
                     {
-                        select.date==max.date && select.month==max.month && select.year==max.year && max.ampm!=1?
-                            <div className="timeitem disabled-timeitem">pm</div>
-                            :<div className={(select.ampm == 1 ? "select " : "") + "timeitem onclick hover"} onClick={() => selectDay(null, null, null, null, null, 1)}>pm</div>
+                        ampm.pm?
+                            <div className={(select.ampm == 1 ? "select " : "") + "timeitem onclick hover"} onClick={() => selectDay(null, null, null, null, null, 1)}>pm</div>
+                            :<div className="timeitem disabled-timeitem">pm</div>
                     }
                     
                 </div>
@@ -66,7 +116,5 @@ export default class Time extends Component {
     static propTypes = {
         select: propTypes.object.isRequired,
         selectDay: propTypes.func.isRequired,
-        hours: propTypes.array.isRequired,
-        minutes: propTypes.array.isRequired,
     }
 }
