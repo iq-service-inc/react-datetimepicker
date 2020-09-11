@@ -19,16 +19,19 @@
     border 1px solid
     width fit-content
     padding 2px
+    display flex
     > input
+        box-sizing border-box
         background none
         border none
-        width 1em
+        width 1.5em
         margin 0 2px
+        border 2px solid transparent
         +label
             display none
     > select
         background none
-        border none
+        border 2px solid transparent
         text-align center
     > input::-webkit-outer-spin-button,
     > input::-webkit-inner-spin-button 
@@ -37,8 +40,7 @@
     > input[type=number]
         -moz-appearance textfield
     > input.alert
-        box-shadow: inset 0 0 5px #ff4343
-        border 1px solid #ff4343
+        border 2px solid #ff4343
         border-radius: 5px
         + label
             display inline-block
@@ -65,17 +67,20 @@
                     position absolute
                     top -1.7rem
                     transform scale(0.5, 0.9)
+    > .calendar
+        margin auto 4px
 
     > input.alert:focus + label
         display none
 
 .yearinput
-    width 2em !important
+    width 2.5em !important
 
 .datetime
     display flex
     flex-wrap nowrap
     filter drop-shadow(0 0 0.3rem #555)
+    position absolute
 
 .datebox
     position relative

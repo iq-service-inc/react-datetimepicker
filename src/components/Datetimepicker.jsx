@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import propTypes, { object, objectOf } from 'prop-types'
+import { FontAwesomeIcon as Icon } from '@fortawesome/react-fontawesome'
 import YearSelect from './YearSelect'
 import Days from './Days'
 import Time from './Time'
@@ -9,6 +10,7 @@ export default class Datetimepicker extends Component {
     constructor(props){
         super(props)
         this.state = {
+            openCalendar: false,
             select: {
                 year: new Date().getFullYear(),
                 month: new Date().getMonth()+1,
@@ -71,6 +73,10 @@ export default class Datetimepicker extends Component {
                     openYearMonth: !this.state.openYearMonth
                 })
                 break;
+            case "openCalendar":
+                this.setState({
+                    openCalendar: !this.state.openCalendar
+                })
         }
     }
 
@@ -88,7 +94,7 @@ export default class Datetimepicker extends Component {
                 date: !!date? date: this.state.select.date,
                 hour: !!hour? hour: this.state.select.hour,
                 min: !!min? min: this.state.select.min,
-                ampm: !!ampm? ampm: this.state.select.ampm,
+                ampm: ampm!=undefined? ampm: this.state.select.ampm,
             },
             input:{
                 year: !!year? year: this.state.select.year,
@@ -96,7 +102,7 @@ export default class Datetimepicker extends Component {
                 date: !!date? this.format(date, 10, '0'): this.format(this.state.select.date, 10, '0'),
                 hour: !!hour? this.format(hour, 10, '0'): this.format(this.state.select.hour, 10, '0'),
                 min: !!min? this.format(min, 10, '0'): this.format(this.state.select.min, 10, '0'),
-                ampm: !!ampm? ampm: this.state.select.ampm,
+                ampm: ampm!=undefined? ampm: this.state.select.ampm,
             }
         })
     }
@@ -256,7 +262,7 @@ export default class Datetimepicker extends Component {
     }
 
     render() {
-        const { openYearMonth, openMonth, select, yearmonth, hours, minutes, input } = this.state
+        const { openCalendar, openYearMonth, openMonth, select, yearmonth, hours, minutes, input } = this.state
         const { options } = this.props
         const max = new Date(options.max.year, options.max.month-1, options.max.date)
         const min = new Date(options.min.year, options.min.month-1, options.min.date)
@@ -354,47 +360,58 @@ export default class Datetimepicker extends Component {
                             <span className="arrowout"></span>
                         </div>
                     </label>
+                    <label className="calendar onclick" onClick={()=>this.toggle("openCalendar")}>
+                        <Icon icon={["far", "calendar"]}/>
+                    </label>
+
                 </div>
-                <div className="datetime">
-                    <div className="datebox">
-                        <div className="box-title">
-                            <div className="year-month onclick hover" onClick={()=>this.toggle("openYearMonth")}>
-                                {select.year + "年" + (select.month>=10? select.month: "0"+String(select.month)) +"月"}
+                {
+                    openCalendar &&
+                    <div className="datetime">
+                        <div className="datebox">
+                            <div className="box-title">
+                                <div className="year-month onclick hover" onClick={()=>this.toggle("openYearMonth")}>
+                                    {select.year + "年" + (select.month>=10? select.month: "0"+String(select.month)) +"月"}
+                                </div>
+                                {
+                                    !openYearMonth&&
+                                    <div className="month-btns">
+                                        <div className="previousmonth onclick hover" onClick={() => this.selectDay(new Date(select.year, select.month-2).getFullYear(),new Date(select.year, select.month-2).getMonth()+1)}>
+                                            <Icon icon="arrow-up"/>
+                                        </div>
+                                        <div className="nextmonth onclick hover" onClick={() => this.selectDay(new Date(select.year, select.month).getFullYear(),new Date(select.year, select.month).getMonth()+1)}>
+                                            <Icon icon="arrow-down"/>
+                                        </div>
+                                    </div>
+                                }
                             </div>
                             {
-                                !openYearMonth&&
-                                <div className="month-btns">
-                                    <div className="previousmonth onclick hover" onClick={() => this.selectDay(new Date(select.year, select.month-2).getFullYear(),new Date(select.year, select.month-2).getMonth()+1)}>-</div>
-                                    <div className="nextmonth onclick hover" onClick={() => this.selectDay(new Date(select.year, select.month).getFullYear(),new Date(select.year, select.month).getMonth()+1)}>+</div>
-                                </div>
+                                openYearMonth?
+                                    <YearSelect
+                                        select={select}
+                                        yearmonth={yearmonth}
+                                        open={openMonth}
+                                        openMonth={(y)=>this.openMonth(y)}
+                                        selectDay={(year,month,date,hour,min,ampm)=>this.selectDay(year,month,date,hour,min,ampm)}
+                                    ></YearSelect>
+                            
+                                    :<Days
+                                        select={select}
+                                        selectDay={(year,month,date,hour,min,ampm)=>this.selectDay(year,month,date,hour,min,ampm)}
+                                        max={options.max}
+                                        min={options.min}
+                                    ></Days>
                             }
                         </div>
-                        {
-                            openYearMonth?
-                                <YearSelect
-                                    select={select}
-                                    yearmonth={yearmonth}
-                                    open={openMonth}
-                                    openMonth={(y)=>this.openMonth(y)}
-                                    selectDay={(year,month,date,hour,min,ampm)=>this.selectDay(year,month,date,hour,min,ampm)}
-                                ></YearSelect>
-                        
-                                :<Days
-                                    select={select}
-                                    selectDay={(year,month,date,hour,min,ampm)=>this.selectDay(year,month,date,hour,min,ampm)}
-                                    max={options.max}
-                                    min={options.min}
-                                ></Days>
-                        }
-                    </div>
 
-                    <Time
-                        hours={hours}
-                        minutes={minutes}
-                        select={select}
-                        selectDay={(year,month,date,hour,min,ampm)=>this.selectDay(year,month,date,hour,min,ampm)}
-                    ></Time>
-                </div>
+                        <Time
+                            hours={hours}
+                            minutes={minutes}
+                            select={select}
+                            selectDay={(year,month,date,hour,min,ampm)=>this.selectDay(year,month,date,hour,min,ampm)}
+                        ></Time>
+                    </div>
+                }
             </div>
         )
     }
