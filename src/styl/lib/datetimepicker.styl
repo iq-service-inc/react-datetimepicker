@@ -36,7 +36,7 @@
         width 1.5em
         margin 0 2px
         border 2px solid transparent
-        +label
+        +label.displaynone
             display none
     > select
         background none
@@ -137,13 +137,15 @@
     display inline-flex
     position absolute
     right 5px
-
-.month-btns > *
-    width 25px
-    height 25px
-    display flex
-    justify-content center
-    align-items center
+    .disabled-arrow
+        color grey
+    > div
+        margin 0 4px
+        width 25px
+        height 25px
+        display flex
+        justify-content center
+        align-items center
 
 .yearselect
     display flex
@@ -197,9 +199,11 @@
     display flex
     justify-content center
     align-items center
+    font-weight 600
 
 .greydate
     color grey
+    font-weight 500
 
 .today
     color #2e5bff

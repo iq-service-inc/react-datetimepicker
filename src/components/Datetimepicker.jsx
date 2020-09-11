@@ -287,7 +287,7 @@ export default class Datetimepicker extends Component {
                         min={yearmonth[0].year}></input>
                     {
                         alert=='year' &&
-                        <label htmlFor="year">
+                        <label htmlFor="year" className="displaynone">
                             <div className="border">
                                 <div>{"alert: "+options.min.year+" ~ "+options.max.year}</div>
                                 <span className="arrowout"></span>
@@ -307,7 +307,7 @@ export default class Datetimepicker extends Component {
                         ></input>
                     {
                         alert=='month' &&
-                        <label htmlFor="month">
+                        <label htmlFor="month" className="displaynone">
                             <div className="border">
                                 <div>{"alert: "+options.min.year+"/"+options.min.month+" ~ "+options.max.year+"/"+options.max.month}</div>
                                 <span className="arrowout"></span>
@@ -322,11 +322,12 @@ export default class Datetimepicker extends Component {
                         onBlur={(e)=>this.check(e)} 
                         onKeyDown={(e)=>this.enter(e)}
                         type="number" step="1"
-                        min={select.month==options.min.month && select.year==options.min.year? options.min.date: 1} max={select.month==options.max.month && select.year==options.max.year? options.max.date: (new Date(select.year,select.month,1) - new Date(select.year,select.month-1,1))/(86400*1000)}
+                        min={select.month==options.min.month && select.year==options.min.year? options.min.date: 1}
+                        max={select.month==options.max.month && select.year==options.max.year? options.max.date: (new Date(select.year,select.month,1) - new Date(select.year,select.month-1,1))/(86400*1000)}
                         ></input> 
                     {
                         alert=='date' &&
-                        <label htmlFor="date">
+                        <label htmlFor="date" className="displaynone">
                             <div className="border">
                                 <div>{"alert: "+options.min.year+"/"+options.min.month+"/"+options.min.date+" ~ "+options.max.year+"/"+options.max.month+"/"+options.max.date}</div>
                                 <span className="arrowout"></span>
@@ -347,7 +348,7 @@ export default class Datetimepicker extends Component {
                         type="number" step="1" min="1" max="12"></input>
                     {
                         alert=='hour' &&
-                        <label htmlFor="hour">
+                        <label htmlFor="hour" className="displaynone">
                             <div className="border">
                                 <div>{"alert: "+options.min.year+"/"+options.min.month+"/"+options.min.date+" "+(options.min.ampm?"pm":"am")+" "+options.min.hour+":"+options.min.min+
                                 " ~ "+options.max.year+"/"+options.max.month+"/"+options.max.date+" "+(options.max.ampm?"pm":"am")+" "+options.max.hour+":"+options.max.min
@@ -367,7 +368,7 @@ export default class Datetimepicker extends Component {
                         type="number" step="1" min="0" max="59"></input>
                     {
                         alert=='min' &&
-                        <label htmlFor="min">
+                        <label htmlFor="min" className="displaynone">
                             <div className="border">
                                 <div>{"alert: "+options.min.year+"/"+options.min.month+"/"+options.min.date+" "+(options.min.ampm?"pm":"am")+" "+options.min.hour+":"+options.min.min+
                                 " ~ "+options.max.year+"/"+options.max.month+"/"+options.max.date+" "+(options.max.ampm?"pm":"am")+" "+options.max.hour+":"+options.max.min
@@ -393,12 +394,24 @@ export default class Datetimepicker extends Component {
                                 {
                                     !openYearMonth&&
                                     <div className="month-btns">
-                                        <div className="previousmonth onclick hover" onClick={() => this.selectDay(new Date(select.year, select.month-2).getFullYear(),new Date(select.year, select.month-2).getMonth()+1)}>
-                                            <Icon icon="arrow-up"/>
-                                        </div>
-                                        <div className="nextmonth onclick hover" onClick={() => this.selectDay(new Date(select.year, select.month).getFullYear(),new Date(select.year, select.month).getMonth()+1)}>
-                                            <Icon icon="arrow-down"/>
-                                        </div>
+                                        {
+                                            new Date(select.year,select.month-2)-new Date(options.min.year, options.min.month-1)>=0?
+                                            <div className="previousmonth onclick hover" onClick={() => this.selectDay(new Date(select.year, select.month-2).getFullYear(),new Date(select.year, select.month-2).getMonth()+1)}>
+                                                <Icon icon="arrow-up"/>
+                                            </div>
+                                            :<div className="previousmonth disabled-arrow">
+                                                <Icon icon="arrow-up"/>
+                                            </div>
+                                        }
+                                        {
+                                            new Date(options.max.year, options.max.month-1)-new Date(select.year,select.month)>=0?
+                                            <div className="nextmonth onclick hover" onClick={() => this.selectDay(new Date(select.year, select.month).getFullYear(),new Date(select.year, select.month).getMonth()+1)}>
+                                                <Icon icon="arrow-down"/>
+                                            </div>
+                                            :<div className="nextmonth disabled-arrow">
+                                                <Icon icon="arrow-down"/>
+                                            </div>
+                                        }
                                     </div>
                                 }
                             </div>
