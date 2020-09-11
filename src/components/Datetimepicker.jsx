@@ -252,7 +252,7 @@ export default class Datetimepicker extends Component {
         if(e.keyCode === 13){
             e.target.blur()
             var next = e.target.nextElementSibling
-            while(next.nodeName != "INPUT"){
+            while(next.nodeName != "INPUT" && next.nodeName != "SELECT"){
                 next = next.nextElementSibling
                 if(next == null) break
                 next.focus()
@@ -286,7 +286,7 @@ export default class Datetimepicker extends Component {
                             <span className="arrowout"></span>
                         </div>
                     </label>
-                    <span>/</span>
+                    <span className="disable-selection">/</span>
 
                     <input id="month" value={input.month} 
                         onChange={(e)=>this.input(e)} 
@@ -305,7 +305,7 @@ export default class Datetimepicker extends Component {
                             <span className="arrowout"></span>
                         </div>
                     </label>
-                    <span>/</span>
+                    <span className="disable-selection">/</span>
 
                     <input id="date" value={input.date} 
                         onChange={(e)=>this.input(e)} 
@@ -344,7 +344,7 @@ export default class Datetimepicker extends Component {
                         </div>
                     </label>
 
-                    <span>:</span>
+                    <span className="disable-selection">:</span>
                         
                     <input id="min" value={input.min} 
                         onChange={(e)=>this.input(e)} 
