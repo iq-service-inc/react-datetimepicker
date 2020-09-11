@@ -17,7 +17,7 @@ class App extends Component {
 
     submit(e) {
         e.preventDefault()
-        console.log(Object.values(e.target.elements))
+        // console.log(Object.values(e.target.elements))
         var value = {}
         Object.values(e.target.elements).map(input =>
             input.type!="submit" && (value[input.id]=input.value) )

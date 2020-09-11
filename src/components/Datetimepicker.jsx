@@ -335,8 +335,16 @@ export default class Datetimepicker extends Component {
                     }
 
                     <select id="ampm" onChange={(e)=>this.input(e)} value={input.ampm}>
-                        <option value="0">am</option>
-                        <option value="1">pm</option>
+                        {
+                            select.date==options.min.date && select.month==options.min.month && select.year==options.min.year?
+                                <option value="0" disabled={options.min.ampm!=0}>am</option>
+                                : <option value="0">am</option>
+                        }
+                        {
+                            select.date==options.max.date && select.month==options.max.month && select.year==options.max.year?
+                                <option value="1" disabled={options.min.ampm!=1}>pm</option>
+                                : <option value="1">pm</option>
+                        }
                     </select>
 
                     <input className={alert=='hour'? "alert":""} id="hour" value={input.hour} 
@@ -344,7 +352,12 @@ export default class Datetimepicker extends Component {
                         onFocus={(e)=>this.selectall(e)} 
                         onBlur={(e)=>this.check(e)} 
                         onKeyDown={(e)=>this.enter(e)}
-                        type="number" step="1" min="1" max="12"></input>
+                        type="number" step="1"
+                        min={ select.date==options.min.date && select.month==options.min.month && select.year==options.min.year?
+                                (select.ampm-options.min.ampm)*12+options.min.hour%12 : 1}
+                        max={ select.date==options.max.date && select.month==options.max.month && select.year==options.max.year?
+                                (options.max.ampm-select.ampm)*12+options.max.hour%12 : 12}
+                        ></input>
                     {
                         alert=='hour' &&
                         <label htmlFor="hour" className="displaynone">
