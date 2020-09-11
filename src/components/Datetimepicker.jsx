@@ -22,7 +22,6 @@ export default class Datetimepicker extends Component {
             openYearMonth: false,
             openMonth: new Date().getFullYear(),
             yearmonth: [{year:2019, month:this.createarr(1, 12)}, {year:2020, month:this.createarr(1, 12)}],
-            hours: this.createarr(1, 12),
             minutes: this.createarr(0, 59),
             input: {
                 year: new Date().getFullYear(),
@@ -269,7 +268,7 @@ export default class Datetimepicker extends Component {
     }
 
     render() {
-        const { openCalendar, openYearMonth, openMonth, select, yearmonth, hours, minutes, input, alert } = this.state
+        const { openCalendar, openYearMonth, openMonth, select, yearmonth, minutes, input, alert } = this.state
         const { options } = this.props
         const max = new Date(options.max.year, options.max.month-1, options.max.date)
         const min = new Date(options.min.year, options.min.month-1, options.min.date)
@@ -377,7 +376,12 @@ export default class Datetimepicker extends Component {
                         onFocus={(e)=>this.selectall(e)} 
                         onBlur={(e)=>this.check(e)} 
                         onKeyDown={(e)=>this.enter(e)}
-                        type="number" step="1" min="0" max="59"></input>
+                        type="number" step="1"
+                        min={ select.hour==options.min.hour && select.ampm==options.min.ampm && select.date==options.min.date && select.month==options.min.month && select.year==options.min.year?
+                                options.min.min : 0}
+                        max={ select.hour==options.max.hour && select.ampm==options.max.ampm && select.date==options.max.date && select.month==options.max.month && select.year==options.max.year?
+                                options.max.min : 59}
+                        ></input>
                     {
                         alert=='min' &&
                         <label htmlFor="min" className="displaynone">
@@ -446,10 +450,11 @@ export default class Datetimepicker extends Component {
                         </div>
 
                         <Time
-                            hours={hours}
                             minutes={minutes}
                             select={select}
                             selectDay={(year,month,date,hour,min,ampm)=>this.selectDay(year,month,date,hour,min,ampm)}
+                            max={options.max}
+                            min={options.min}
                         ></Time>
                     </div>
                 }
