@@ -15,15 +15,8 @@ class App extends Component {
         }
     }
 
-    setValue = (value) => {
-        this.setState({
-            value: value
-        })
-    }
-
     submit(e) {
         e.preventDefault()
-        // console.log(this.state.value)
         console.log(Object.values(e.target.elements))
         var value = {}
         Object.values(e.target.elements).map(input =>
@@ -49,7 +42,6 @@ class App extends Component {
                             max: { year:2020, month:10, date:1, ampm:0, hour:9, min:10 },
                             min: { year:2019, month:9, date:7, ampm:0, hour:9, min:10 },
                         }}
-                        setValue = { (value) => this.setValue(value) }
                     ></Datetimepicker>
                     <input type="submit"></input>
                     <div>

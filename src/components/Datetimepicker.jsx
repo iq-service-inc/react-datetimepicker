@@ -36,7 +36,7 @@ export default class Datetimepicker extends Component {
     }
 
     componentDidMount() {
-        const { options, setValue } = this.props
+        const { options } = this.props
         const { disabled, max, min } = options
         if(!!max && !!min){
             var ym = []
@@ -56,8 +56,6 @@ export default class Datetimepicker extends Component {
                 yearmonth: ym,
             })
         }
-
-        // setValue(select.year+'/'+select.month+'/'+select.date+' '+(select.ampm?'pm':'am')+' '+select.hour+':'+select.min)
     }
 
     createarr(start, end) {
@@ -258,6 +256,7 @@ export default class Datetimepicker extends Component {
 
     enter = (e) => {
         if(e.keyCode === 13){
+            e.preventDefault()
             e.target.blur()
             var next = e.target.nextElementSibling
             while(next.nodeName != "INPUT" && next.nodeName != "SELECT"){
@@ -271,7 +270,7 @@ export default class Datetimepicker extends Component {
 
     render() {
         const { openCalendar, openYearMonth, openMonth, select, yearmonth, hours, minutes, input, alert } = this.state
-        const { options, setValue } = this.props
+        const { options } = this.props
         const max = new Date(options.max.year, options.max.month-1, options.max.date)
         const min = new Date(options.min.year, options.min.month-1, options.min.date)
         return (
@@ -382,7 +381,6 @@ export default class Datetimepicker extends Component {
                     </label>
 
                 </div>
-                {/* <input type="submit" onClick={() => setValue(select.year+'/'+select.month+'/'+select.date+' '+(select.ampm?'pm':'am')+' '+select.hour+':'+select.min)}></input> */}
                 {
                     openCalendar &&
                     <div className="datetime">
@@ -456,6 +454,5 @@ export default class Datetimepicker extends Component {
             max: propTypes.object,
             min: propTypes.object,
         }),
-        setValue: propTypes.func
     }
 }
