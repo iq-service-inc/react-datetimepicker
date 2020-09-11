@@ -177,7 +177,7 @@ export default class Datetimepicker extends Component {
                 alert: e.target.id
             })
         }
-        if(valid){
+        else {
             this.setState({
                 alert: undefined
             })

@@ -19,12 +19,17 @@ class App extends Component {
         this.setState({
             value: value
         })
-        console.log(this.state.value)
     }
 
     submit(e) {
         e.preventDefault()
         // console.log(this.state.value)
+        console.log(Object.values(e.target.elements))
+        var value = {}
+        Object.values(e.target.elements).map(input =>
+            input.type!="submit" && (value[input.id]=input.value) )
+        this.setState({value})
+        e.persist()
     }
 
     render() {
@@ -32,7 +37,7 @@ class App extends Component {
         const { value } = this.state
         return (
             <IntlProvider defaultLocale='zh' {...language}>
-                <form>
+                <form onSubmit={(e) => this.submit(e)}>
                     <Datetimepicker
                         options = {{
                             // disable:{
@@ -46,9 +51,9 @@ class App extends Component {
                         }}
                         setValue = { (value) => this.setValue(value) }
                     ></Datetimepicker>
-                    <input type="submit" onClick={(e) => this.submit(e)}></input>
+                    <input type="submit"></input>
                     <div>
-                        { value }
+                        { Object.keys(value).map(i => i+":"+value[i]+" ") }
                     </div>
 
                 </form>
