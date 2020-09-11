@@ -8,7 +8,7 @@ export default class Time extends Component {
         const minDate = new Date(min.year,min.month-1,min.date)
         const maxDate = new Date(max.year,max.month-1,max.date)
         var hours = []
-        for(var hr=1;hr<12;hr++){
+        for(var hr=1;hr<=12;hr++){
             if(selectDate-minDate>0 && maxDate-selectDate>0){
                 hours.push({hr, enable:true})
             }

@@ -44,11 +44,10 @@ class App extends Component {
                         }}
                     ></Datetimepicker>
                     <input type="submit"></input>
-                    <div>
-                        { Object.keys(value).map(i => i+":"+value[i]+" ") }
-                    </div>
-
                 </form>
+                <div>
+                    { Object.keys(value).map(i => i+":"+value[i]+" ") }
+                </div>
             </IntlProvider>
         )
     }

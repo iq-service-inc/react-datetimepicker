@@ -86,6 +86,7 @@ export default class Datetimepicker extends Component {
 
     selectDay = (year,month,date,hour,min,ampm) => {
         this.setState({
+            alert: undefined,
             select:{
                 year: !!year? year: this.state.select.year,
                 month: !!month? month: this.state.select.month,
