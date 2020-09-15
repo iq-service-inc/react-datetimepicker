@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 
 export default class Dateinput extends Component {
     render() {
-        const { input, select, options, yearmonth, setinput, selectall, check, enter } = this.props
+        const { input, select, options, yearmonth, setinput, selectall, check, enter, alert } = this.props
         return (
             <>
                 <input className={(alert == 'year' ? "alert" : "") + " yearinput"} id="year" value={input.year}

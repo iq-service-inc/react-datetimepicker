@@ -181,6 +181,7 @@ export default class Datetimepicker extends Component {
                             input={input}
                             select={select}
                             options={options}
+                            alert={alert}
                             yearmonth={yearmonth}
                             setinput={(e)=>this.input(e)}
                             selectall={(e)=>this.selectall(e)}
@@ -195,6 +196,7 @@ export default class Datetimepicker extends Component {
                             input={input}
                             select={select}
                             options={options}
+                            alert={alert}
                             setinput={(e)=>this.input(e)}
                             selectall={(e)=>this.selectall(e)}
                             check={(e)=>this.check(e)}

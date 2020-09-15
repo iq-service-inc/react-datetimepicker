@@ -3,7 +3,7 @@ import { FormattedMessage } from 'react-intl'
 
 export default class Timeinput extends Component {
     render() {
-        const { input, select, options, setinput, selectall, check, enter } = this.props
+        const { input, select, options, setinput, selectall, check, enter, alert } = this.props
         return (
             <>
                 <select id="ampm" onChange={(e) => setinput(e)} value={input.ampm}>
