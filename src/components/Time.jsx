@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import propTypes from 'prop-types'
+import { FormattedMessage } from 'react-intl'
 
 export default class Time extends Component {
 
@@ -100,13 +101,13 @@ export default class Time extends Component {
                 <div className="ampm scroll">
                     {
                         ampm.am?
-                            <div className={(select.ampm == 0 ? "select " : "") + "timeitem onclick hover"} onClick={() => selectDay(null, null, null, null, null, 0)}>am</div>
-                            :<div className="timeitem disabled-timeitem">am</div>
+                            <div className={(select.ampm == 0 ? "select " : "") + "timeitem onclick hover"} onClick={() => selectDay(null, null, null, null, null, 0)}><FormattedMessage id='datetime.am' defaultMessage='上午'></FormattedMessage></div>
+                            :<div className="timeitem disabled-timeitem"><FormattedMessage id='datetime.am' defaultMessage='上午'></FormattedMessage></div>
                     }
                     {
                         ampm.pm?
-                            <div className={(select.ampm == 1 ? "select " : "") + "timeitem onclick hover"} onClick={() => selectDay(null, null, null, null, null, 1)}>pm</div>
-                            :<div className="timeitem disabled-timeitem">pm</div>
+                            <div className={(select.ampm == 1 ? "select " : "") + "timeitem onclick hover"} onClick={() => selectDay(null, null, null, null, null, 1)}><FormattedMessage id='datetime.pm' defaultMessage='下午'></FormattedMessage></div>
+                            :<div className="timeitem disabled-timeitem"><FormattedMessage id='datetime.pm' defaultMessage='下午'></FormattedMessage></div>
                     }
                     
                 </div>

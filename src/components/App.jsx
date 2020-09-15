@@ -2,7 +2,7 @@ import { hot } from 'react-hot-loader/root'
 import '../styl/index.styl'
 
 import React, { Component } from 'react'
-import { IntlProvider } from 'react-intl'
+import { IntlProvider, FormattedDate, FormattedTime } from 'react-intl'
 import propTypes, { string } from 'prop-types'
 import Datetimepicker from './Datetimepicker'
 
@@ -20,7 +20,7 @@ class App extends Component {
         // console.log(Object.values(e.target.elements))
         var value = {}
         Object.values(e.target.elements).map(input =>
-            input.type!="submit" && (value[input.id]=input.value) )
+            value[input.id]=input.value)
         this.setState({value})
         e.persist()
     }
@@ -30,23 +30,24 @@ class App extends Component {
         const { value } = this.state
         return (
             <IntlProvider defaultLocale='zh' {...language}>
-                <form onSubmit={(e) => this.submit(e)}>
+                <form onSubmit={(e) => this.submit(e)} id="datetime">
                     <Datetimepicker
                         options = {{
-                            // disable:{
-                            //     day: [0,6],
-                            //     date: [{ year:2020, month:9, date:16 }],
-                            //     time: [{ from:{ampm:1, hour:6, minute:0}, to:{ampm:0, hour:9, minute:0} }],
-                            // },
-                            // { year, month, date, ampm, hour, min }
-                            max: { year:2020, month:10, date:1, ampm:0, hour:9, min:10 },
+                            max: { year:2020, month:10, date:7, ampm:0, hour:9, min:10 },
                             min: { year:2019, month:9, date:7, ampm:0, hour:9, min:10 },
                         }}
+                        date = {true}
+                        time = {true}
                     ></Datetimepicker>
-                    <input type="submit"></input>
                 </form>
+                <input type="submit" form="datetime"></input>
                 <div>
-                    { Object.keys(value).map(i => i+":"+value[i]+" ") }
+                    {/* { Object.keys(value).map(i => i+":"+value[i]+" ") } */}
+                    { !!value && <FormattedDate
+                        value={new Date(value.year,(value.month-1),value.date)}
+                    />}
+                    <br/>
+                    { !!value && <FormattedTime value={new Date(0,0,0,value.ampm*12+Number(value.hour),value.min)} />}
                 </div>
             </IntlProvider>
         )

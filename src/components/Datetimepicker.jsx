@@ -4,7 +4,9 @@ import { FontAwesomeIcon as Icon } from '@fortawesome/react-fontawesome'
 import YearSelect from './YearSelect'
 import Days from './Days'
 import Time from './Time'
-import { arrayOf } from 'prop-types'
+import Dateinput from './Dateinput'
+import { FormattedDate } from 'react-intl'
+import Timeinput from './Timeinput'
 
 export default class Datetimepicker extends Component {
     constructor(props){
@@ -169,129 +171,35 @@ export default class Datetimepicker extends Component {
 
     render() {
         const { openCalendar, openYearMonth, openMonth, select, yearmonth, input, alert } = this.state
-        const { options } = this.props
-        const max = new Date(options.max.year, options.max.month-1, options.max.date)
-        const min = new Date(options.min.year, options.min.month-1, options.min.date)
+        const { options, date, time } = this.props
         return (
             <div>
                 <div className="datetimeinput">
-                    <input className={(alert=='year'? "alert":"")+" yearinput"} id="year" value={input.year}
-                        onChange={(e)=>this.input(e)}
-                        onFocus={(e)=>this.selectall(e)}
-                        onBlur={(e)=>this.check(e)} 
-                        onKeyDown={(e)=>this.enter(e)}
-                        type="number" step="1"
-                        max={yearmonth[yearmonth.length-1].year}
-                        min={yearmonth[0].year}></input>
                     {
-                        alert=='year' &&
-                        <label htmlFor="year" className="displaynone">
-                            <div className="border">
-                                <div>{"alert: "+options.min.year+" ~ "+options.max.year}</div>
-                                <span className="arrowout"></span>
-                            </div>
-                        </label>
-                    }
-                    <span className="disable-selection">/</span>
-
-                    <input className={alert=='month'? "alert":""} id="month" value={input.month} 
-                        onChange={(e)=>this.input(e)} 
-                        onFocus={(e)=>this.selectall(e)} 
-                        onBlur={(e)=>this.check(e)} 
-                        onKeyDown={(e)=>this.enter(e)}
-                        type="number" step="1"
-                        max={yearmonth.filter(y=>y.year==select.year).length? yearmonth.filter(y=>y.year==select.year)[0].month[yearmonth.filter(y=>y.year==select.year)[0].month.length-1] : 12}
-                        min={yearmonth.filter(y=>y.year==select.year).length? yearmonth.filter(y=>y.year==select.year)[0].month[0] : 1}
-                        ></input>
-                    {
-                        alert=='month' &&
-                        <label htmlFor="month" className="displaynone">
-                            <div className="border">
-                                <div>{"alert: "+options.min.year+"/"+options.min.month+" ~ "+options.max.year+"/"+options.max.month}</div>
-                                <span className="arrowout"></span>
-                            </div>
-                        </label>
-                    }
-                    <span className="disable-selection">/</span>
-
-                    <input className={alert=='date'? "alert":""} id="date" value={input.date} 
-                        onChange={(e)=>this.input(e)} 
-                        onFocus={(e)=>this.selectall(e)} 
-                        onBlur={(e)=>this.check(e)} 
-                        onKeyDown={(e)=>this.enter(e)}
-                        type="number" step="1"
-                        min={new Date(select.year,select.month)-new Date(options.year,options.month)>0? options.min.date: 1}
-                        max={select.month==options.max.month && select.year==options.max.year? options.max.date: (new Date(select.year,select.month,1) - new Date(select.year,select.month-1,1))/(86400*1000)}
-                        ></input> 
-                    {
-                        alert=='date' &&
-                        <label htmlFor="date" className="displaynone">
-                            <div className="border">
-                                <div>{"alert: "+options.min.year+"/"+options.min.month+"/"+options.min.date+" ~ "+options.max.year+"/"+options.max.month+"/"+options.max.date}</div>
-                                <span className="arrowout"></span>
-                            </div>
-                        </label>
+                        date!=false &&
+                        <Dateinput
+                            input={input}
+                            select={select}
+                            options={options}
+                            yearmonth={yearmonth}
+                            setinput={(e)=>this.input(e)}
+                            selectall={(e)=>this.selectall(e)}
+                            check={(e)=>this.check(e)}
+                            enter={(e)=>this.enter(e)}
+                        ></Dateinput>
                     }
 
-                    <select id="ampm" onChange={(e)=>this.input(e)} value={input.ampm}>
-                        {
-                            select.date==options.min.date && select.month==options.min.month && select.year==options.min.year?
-                                <option value="0" disabled={options.min.ampm!=0}>am</option>
-                                : <option value="0">am</option>
-                        }
-                        {
-                            select.date==options.max.date && select.month==options.max.month && select.year==options.max.year?
-                                <option value="1" disabled={options.min.ampm!=1}>pm</option>
-                                : <option value="1">pm</option>
-                        }
-                    </select>
-
-                    <input className={alert=='hour'? "alert":""} id="hour" value={input.hour} 
-                        onChange={(e)=>this.input(e)} 
-                        onFocus={(e)=>this.selectall(e)} 
-                        onBlur={(e)=>this.check(e)} 
-                        onKeyDown={(e)=>this.enter(e)}
-                        type="number" step="1"
-                        min={ select.date==options.min.date && select.month==options.min.month && select.year==options.min.year?
-                                (select.ampm-options.min.ampm)*12+options.min.hour%12 : 1}
-                        max={ select.date==options.max.date && select.month==options.max.month && select.year==options.max.year?
-                                (options.max.ampm-select.ampm)*12+options.max.hour%12 : 12}
-                        ></input>
                     {
-                        alert=='hour' &&
-                        <label htmlFor="hour" className="displaynone">
-                            <div className="border">
-                                <div>{"alert: "+options.min.year+"/"+options.min.month+"/"+options.min.date+" "+(options.min.ampm?"pm":"am")+" "+options.min.hour+":"+options.min.min+
-                                " ~ "+options.max.year+"/"+options.max.month+"/"+options.max.date+" "+(options.max.ampm?"pm":"am")+" "+options.max.hour+":"+options.max.min
-                                }</div>
-                                <span className="arrowout"></span>
-                            </div>
-                        </label>
-                    }
-
-                    <span className="disable-selection">:</span>
-                        
-                    <input className={alert=='min'? "alert":""} id="min" value={input.min} 
-                        onChange={(e)=>this.input(e)} 
-                        onFocus={(e)=>this.selectall(e)} 
-                        onBlur={(e)=>this.check(e)} 
-                        onKeyDown={(e)=>this.enter(e)}
-                        type="number" step="1"
-                        min={ select.hour==options.min.hour && select.ampm==options.min.ampm && select.date==options.min.date && select.month==options.min.month && select.year==options.min.year?
-                                options.min.min : 0}
-                        max={ select.hour==options.max.hour && select.ampm==options.max.ampm && select.date==options.max.date && select.month==options.max.month && select.year==options.max.year?
-                                options.max.min : 59}
-                        ></input>
-                    {
-                        alert=='min' &&
-                        <label htmlFor="min" className="displaynone">
-                            <div className="border">
-                                <div>{"alert: "+options.min.year+"/"+options.min.month+"/"+options.min.date+" "+(options.min.ampm?"pm":"am")+" "+options.min.hour+":"+options.min.min+
-                                " ~ "+options.max.year+"/"+options.max.month+"/"+options.max.date+" "+(options.max.ampm?"pm":"am")+" "+options.max.hour+":"+options.max.min
-                                }</div>
-                                <span className="arrowout"></span>
-                            </div>
-                        </label>
+                        time!=false &&
+                        <Timeinput
+                            input={input}
+                            select={select}
+                            options={options}
+                            setinput={(e)=>this.input(e)}
+                            selectall={(e)=>this.selectall(e)}
+                            check={(e)=>this.check(e)}
+                            enter={(e)=>this.enter(e)}
+                        ></Timeinput>
                     }
                     <label className="calendar onclick" onClick={()=>this.toggle("openCalendar")}>
                         <Icon icon={["far", "calendar"]}/>
@@ -301,60 +209,70 @@ export default class Datetimepicker extends Component {
                 {
                     openCalendar &&
                     <div className="datetime">
-                        <div className="datebox">
-                            <div className="box-title">
-                                <div className="year-month onclick hover" onClick={()=>this.toggle("openYearMonth")}>
-                                    {select.year + "年" + (select.month>=10? select.month: "0"+String(select.month)) +"月"}
+                        {
+                            date!=false &&
+                            <div className="datebox">
+                                <div className="box-title">
+                                    <div className="year-month onclick hover" onClick={()=>this.toggle("openYearMonth")}>
+                                        <FormattedDate
+                                            value={new Date(select.year, select.month-1)}
+                                            year="numeric"
+                                            month="short"
+                                        />
+                                    </div>
+                                    {
+                                        !openYearMonth&&
+                                        <div className="month-btns">
+                                            {
+                                                new Date(select.year,select.month-2)-new Date(options.min.year, options.min.month-1)>=0?
+                                                <div className="previousmonth onclick hover" onClick={() => this.selectDay(new Date(select.year, select.month-2).getFullYear(),new Date(select.year, select.month-2).getMonth()+1)}>
+                                                    <Icon icon="arrow-up"/>
+                                                </div>
+                                                :<div className="previousmonth disabled-arrow">
+                                                    <Icon icon="arrow-up"/>
+                                                </div>
+                                            }
+                                            {
+                                                new Date(options.max.year, options.max.month-1)-new Date(select.year,select.month)>=0?
+                                                <div className="nextmonth onclick hover" onClick={() => this.selectDay(new Date(select.year, select.month).getFullYear(),new Date(select.year, select.month).getMonth()+1)}>
+                                                    <Icon icon="arrow-down"/>
+                                                </div>
+                                                :<div className="nextmonth disabled-arrow">
+                                                    <Icon icon="arrow-down"/>
+                                                </div>
+                                            }
+                                        </div>
+                                    }
                                 </div>
                                 {
-                                    !openYearMonth&&
-                                    <div className="month-btns">
-                                        {
-                                            new Date(select.year,select.month-2)-new Date(options.min.year, options.min.month-1)>=0?
-                                            <div className="previousmonth onclick hover" onClick={() => this.selectDay(new Date(select.year, select.month-2).getFullYear(),new Date(select.year, select.month-2).getMonth()+1)}>
-                                                <Icon icon="arrow-up"/>
-                                            </div>
-                                            :<div className="previousmonth disabled-arrow">
-                                                <Icon icon="arrow-up"/>
-                                            </div>
-                                        }
-                                        {
-                                            new Date(options.max.year, options.max.month-1)-new Date(select.year,select.month)>=0?
-                                            <div className="nextmonth onclick hover" onClick={() => this.selectDay(new Date(select.year, select.month).getFullYear(),new Date(select.year, select.month).getMonth()+1)}>
-                                                <Icon icon="arrow-down"/>
-                                            </div>
-                                            :<div className="nextmonth disabled-arrow">
-                                                <Icon icon="arrow-down"/>
-                                            </div>
-                                        }
-                                    </div>
+                                    openYearMonth?
+                                        <YearSelect
+                                            select={select}
+                                            yearmonth={yearmonth}
+                                            open={openMonth}
+                                            openMonth={(y)=>this.openMonth(y)}
+                                            selectDay={(year,month,date,hour,min,ampm)=>this.selectDay(year,month,date,hour,min,ampm)}
+                                        ></YearSelect>
+                                
+                                        :<Days
+                                            select={select}
+                                            selectDay={(year,month,date,hour,min,ampm)=>this.selectDay(year,month,date,hour,min,ampm)}
+                                            max={options.max}
+                                            min={options.min}
+                                        ></Days>
                                 }
                             </div>
-                            {
-                                openYearMonth?
-                                    <YearSelect
-                                        select={select}
-                                        yearmonth={yearmonth}
-                                        open={openMonth}
-                                        openMonth={(y)=>this.openMonth(y)}
-                                        selectDay={(year,month,date,hour,min,ampm)=>this.selectDay(year,month,date,hour,min,ampm)}
-                                    ></YearSelect>
-                            
-                                    :<Days
-                                        select={select}
-                                        selectDay={(year,month,date,hour,min,ampm)=>this.selectDay(year,month,date,hour,min,ampm)}
-                                        max={options.max}
-                                        min={options.min}
-                                    ></Days>
-                            }
-                        </div>
+                        }
 
-                        <Time
-                            select={select}
-                            selectDay={(year,month,date,hour,min,ampm)=>this.selectDay(year,month,date,hour,min,ampm)}
-                            max={options.max}
-                            min={options.min}
-                        ></Time>
+                        {
+                            time!=false &&
+                                <Time
+                                select={select}
+                                selectDay={(year,month,date,hour,min,ampm)=>this.selectDay(year,month,date,hour,min,ampm)}
+                                max={options.max}
+                                min={options.min}
+                                ></Time>
+                        }
                     </div>
                 }
             </div>
@@ -363,13 +281,8 @@ export default class Datetimepicker extends Component {
 
     static propTypes = {
         options: propTypes.shape({
-            disabled: propTypes.shape({
-                day: propTypes.array,
-                date: propTypes.array,
-                time: propTypes.array,
-            }),
-            max: propTypes.object,
-            min: propTypes.object,
+            max: propTypes.object.isRequired,
+            min: propTypes.object.isRequired,
         }),
     }
 }

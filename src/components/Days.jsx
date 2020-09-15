@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
 import propTypes from 'prop-types'
+import { FormattedMessage, FormattedDate } from 'react-intl'
 
 export default class Days extends Component {
     constructor(props){
         super(props)
         this.state = {
-            daytitle : ['日','一','二','三','四','五','六'],
+            daytitle : ['sun','mon','tue','wed','thu','fri','sat'],
         }
     }
 
@@ -53,12 +54,18 @@ export default class Days extends Component {
 
     render() {
         const { select, selectDay, max, min } = this.props
+        const today = new Date(select.year,select.month-1,select.date)
         return (
             <div className="days">
                 <div className="week">
                     {
                         this.state.daytitle.map((w, index) =>
-                            <div className="daytitle" key={index}><span>{w}</span></div>
+                            <div className="daytitle" key={index}>
+                                <FormattedDate
+                                    value={new Date(select.year,select.month-1,select.date-today.getDay()+index)}
+                                    weekday="narrow"
+                                >{t=> <span>{t}</span>}</FormattedDate>
+                            </div>
                         )
                     }
                 </div>
@@ -81,7 +88,9 @@ export default class Days extends Component {
                         </div>
                     )
                 }
-                <div className="today onclick" onClick={() => selectDay(new Date().getFullYear(), new Date().getMonth() + 1, new Date().getDate())}>今天</div>
+                <div className="today onclick" onClick={() => selectDay(new Date().getFullYear(), new Date().getMonth() + 1, new Date().getDate())}>
+                    <FormattedMessage id='datetime.today' defaultMessage='今天'></FormattedMessage>
+                </div>
             </div>
         )
     }

@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import propTypes from 'prop-types'
+import { FormattedDate } from 'react-intl'
 
 export default class YearSelect extends Component {
     render() {
@@ -8,13 +9,20 @@ export default class YearSelect extends Component {
             <div className="yearselect">
                 {
                     yearmonth.map(obj=>
-                        <div className="year onclick" key={obj.year} onClick={() => openMonth(obj.year)}>{obj.year}
+                        <div className="year onclick" key={obj.year} onClick={() => openMonth(obj.year)}>
+                            <FormattedDate
+                                value={new Date(obj.year,1)}
+                                year="numeric"
+                            />
                             <div className="monthselect">
                                 {
                                     open == obj.year &&
                                     obj.month.map(m =>
                                         <div className={(select.month == m && select.year == obj.year ? "select " : "") + "month onclick hover"} key={m} onClick={() => selectDay(obj.year, m)}>
-                                            <span>{m}月</span>
+                                            <FormattedDate
+                                                value={new Date(select.year, m-1)}
+                                                month="short"
+                                            />
                                         </div>
                                     )
                                 }
