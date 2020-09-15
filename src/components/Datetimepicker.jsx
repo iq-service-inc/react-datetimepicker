@@ -107,62 +107,16 @@ export default class Datetimepicker extends Component {
     }
 
     input = (e) => {
-        switch (e.target.id) {
-            case 'year':
-                this.setState({
-                    input:{
-                        ...this.state.input,
-                        year: e.target.value
-                    },
-                })
-                break;
-            case 'month':
-                this.setState({
-                    input:{
-                        ...this.state.input,
-                        month: e.target.value
-                    },
-                })
-                break;
-            case 'date':
-                this.setState({
-                    input:{
-                        ...this.state.input,
-                        date: e.target.value
-                    },
-                })
-                break;
-            case 'ampm':
-                this.setState({
-                    input:{
-                        ...this.state.input,
-                        ampm: e.target.value
-                    },
-                    select:{
-                        ...this.state.input,
-                        ampm: e.target.value
-                    }
-                })
-                break;
-            case 'hour':
-                this.setState({
-                    input:{
-                        ...this.state.input,
-                        hour: e.target.value
-                    },
-                })
-                break;
-            case 'min':
-                this.setState({
-                    input:{
-                        ...this.state.input,
-                        min: e.target.value
-                    },
-                })
-                break;
-            default:
-                break;
-        }
+        this.setState({
+            select: {
+                ...this.state.select,
+                [e.target.id]: e.target.value
+            },
+            input: {
+                ...this.state.input,
+                [e.target.id]: e.target.value
+            }
+        })
     }
 
     check = (e) => {
@@ -178,70 +132,16 @@ export default class Datetimepicker extends Component {
             this.setState({
                 alert: undefined
             })
-            switch (e.target.id) {
-                case 'year':
-                    this.setState({
-                        select: {
-                            ...this.state.select,
-                            year: value
-                        },
-                        input: {
-                            ...this.state.input,
-                            year: value
-                        }
-                    })
-                    break;
-                case 'month':
-                    this.setState({
-                        select: {
-                            ...this.state.select,
-                            month: value
-                        },
-                        input: {
-                            ...this.state.input,
-                            month: this.format(value, 10, '0')
-                        }
-                    })
-                    break;
-                case 'date':
-                    this.setState({
-                        select: {
-                            ...this.state.select,
-                            date: value
-                        },
-                        input: {
-                            ...this.state.input,
-                            date: this.format(value, 10, '0')
-                        }
-                    })
-                    break;
-                case 'hour':
-                    this.setState({
-                        select: {
-                            ...this.state.select,
-                            hour: value
-                        },
-                        input: {
-                            ...this.state.input,
-                            hour: this.format(value, 10, '0')
-                        }
-                    })
-                    break;
-                case 'min':
-                    this.setState({
-                        select: {
-                            ...this.state.select,
-                            min: value
-                        },
-                        input: {
-                            ...this.state.input,
-                            min: this.format(value, 10, '0')
-                        }
-                    })
-                    break;
-                default:
-                    break;
-            }
+            this.setState({
+                select: {
+                    ...this.state.select,
+                    [e.target.id]: value
+                },
+                input: {
+                    ...this.state.input,
+                    [e.target.id]: this.format(value, 10, '0')
+                }
+            })
         }
     }
 
@@ -300,8 +200,8 @@ export default class Datetimepicker extends Component {
                         onBlur={(e)=>this.check(e)} 
                         onKeyDown={(e)=>this.enter(e)}
                         type="number" step="1"
-                        max={yearmonth.filter(y=>y.year==select.year)[0].month[yearmonth.filter(y=>y.year==select.year)[0].month.length-1]}
-                        min={yearmonth.filter(y=>y.year==select.year)[0].month[0]}
+                        max={yearmonth.filter(y=>y.year==select.year).length? yearmonth.filter(y=>y.year==select.year)[0].month[yearmonth.filter(y=>y.year==select.year)[0].month.length-1] : 12}
+                        min={yearmonth.filter(y=>y.year==select.year).length? yearmonth.filter(y=>y.year==select.year)[0].month[0] : 1}
                         ></input>
                     {
                         alert=='month' &&
@@ -320,7 +220,7 @@ export default class Datetimepicker extends Component {
                         onBlur={(e)=>this.check(e)} 
                         onKeyDown={(e)=>this.enter(e)}
                         type="number" step="1"
-                        min={select.month==options.min.month && select.year==options.min.year? options.min.date: 1}
+                        min={new Date(select.year,select.month)-new Date(options.year,options.month)>0? options.min.date: 1}
                         max={select.month==options.max.month && select.year==options.max.year? options.max.date: (new Date(select.year,select.month,1) - new Date(select.year,select.month-1,1))/(86400*1000)}
                         ></input> 
                     {
