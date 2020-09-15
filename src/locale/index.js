@@ -14,7 +14,7 @@ const maplang = {
 }
 
 
-export default (langs = 'en') => {
+export default (langs = navigator.languages) => {
     console.log('langs',langs)
     if (!Array.isArray(langs)) langs = [langs]
     for (let i = 0; i < langs.length; i++)
