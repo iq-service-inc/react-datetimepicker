@@ -16,19 +16,21 @@ npm install
 npm install --save git+http://10.9.173.136/SideProject/react-datetimepicker.git
 ```
 
-## 開發人員模式npm Script
+## 開發人員模式 npm Script
 
-### 開發
+### 開發 datetimepicker
+啟動 port 888 dev server
 ```
 npm run start
 ```
 
-### 打包
+### 打包 datetimepicker
 ```
 npm run umd
 ```
 
 ### 測試 umd
+啟動 port 999 dev server
 ```
 npm run umdtest
 ```
