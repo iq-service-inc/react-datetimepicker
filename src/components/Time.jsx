@@ -3,6 +3,15 @@ import propTypes from 'prop-types'
 import { FormattedMessage } from 'react-intl'
 
 export default class Time extends Component {
+    componentDidMount() {
+        var scroll = document.getElementsByClassName('scroll')
+        for (var i=0; i<scroll.length; i++){
+            var select = scroll[i].getElementsByClassName('select')
+            for (var j=0; j<select.length; j++){
+                select[j].scrollIntoView()
+            }
+        }
+    }
 
     renderHour(select,min,max) {
         const selectDate = new Date(select.year,select.month-1,select.date)

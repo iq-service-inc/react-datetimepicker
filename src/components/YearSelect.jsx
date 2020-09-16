@@ -3,6 +3,11 @@ import propTypes from 'prop-types'
 import { FormattedDate } from 'react-intl'
 
 export default class YearSelect extends Component {
+    componentDidMount() {
+        var yearselect = document.getElementsByClassName('yearselect')[0]
+        var select = yearselect.getElementsByClassName('select')[0].parentNode.parentNode
+        select.scrollIntoView()
+    }
     render() {
         const { select, yearmonth, open, openMonth, selectDay } = this.props
         return (

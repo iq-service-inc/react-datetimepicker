@@ -37,7 +37,7 @@ export default class Datetimepicker extends Component {
     }
 
     componentDidMount() {
-        const { options } = this.props
+        const { options={} } = this.props
         const { max = {
             year: 2030,
             month: 12,
