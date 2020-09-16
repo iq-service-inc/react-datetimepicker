@@ -32,12 +32,6 @@ class App extends Component {
             <IntlProvider defaultLocale='zh' {...language}>
                 <form onSubmit={(e) => this.submit(e)} id="datetime">
                     <Datetimepicker
-                        options = {{
-                            max: { year:2020, month:10, date:7, ampm:0, hour:9, min:10 },
-                            min: { year:2000, month:9, date:7, ampm:0, hour:9, min:10 },
-                        }}
-                        date = {true}
-                        time = {true}
                     ></Datetimepicker>
                 </form>
                 <input type="submit" form="datetime"></input>

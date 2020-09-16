@@ -3,18 +3,18 @@ import { FormattedMessage } from 'react-intl'
 
 export default class Timeinput extends Component {
     render() {
-        const { input, select, options, setinput, selectall, check, enter, alert } = this.props
+        const { input, select, options, max, min, setinput, selectall, check, enter, alert } = this.props
         return (
             <>
                 <select id="ampm" onChange={(e) => setinput(e)} value={input.ampm}>
                     {
-                        select.date == options.min.date && select.month == options.min.month && select.year == options.min.year ?
-                            <FormattedMessage id='datetime.am' defaultMessage='上午'>{t => <option value="0" disabled={options.min.ampm != 0}>{t}</option>}</FormattedMessage>
+                        select.date == min.date && select.month == min.month && select.year == min.year ?
+                            <FormattedMessage id='datetime.am' defaultMessage='上午'>{t => <option value="0" disabled={min.ampm != 0}>{t}</option>}</FormattedMessage>
                             : <FormattedMessage id='datetime.am' defaultMessage='上午'>{t => <option value="0">{t}</option>}</FormattedMessage>
                     }
                     {
-                        select.date == options.max.date && select.month == options.max.month && select.year == options.max.year ?
-                            <FormattedMessage id='datetime.pm' defaultMessage='下午'>{t => <option value="1" disabled={options.min.ampm != 1}>{t}</option>}</FormattedMessage>
+                        select.date == max.date && select.month == max.month && select.year == max.year ?
+                            <FormattedMessage id='datetime.pm' defaultMessage='下午'>{t => <option value="1" disabled={min.ampm != 1}>{t}</option>}</FormattedMessage>
                             : <FormattedMessage id='datetime.pm' defaultMessage='下午'>{t => <option value="1">{t}</option>}</FormattedMessage>
                     }
                 </select>
@@ -25,17 +25,17 @@ export default class Timeinput extends Component {
                     onBlur={(e) => check(e)}
                     onKeyDown={(e) => enter(e)}
                     type="number" step="1"
-                    min={select.date == options.min.date && select.month == options.min.month && select.year == options.min.year ?
-                        (select.ampm - options.min.ampm) * 12 + options.min.hour % 12 : 1}
-                    max={select.date == options.max.date && select.month == options.max.month && select.year == options.max.year ?
-                        (options.max.ampm - select.ampm) * 12 + options.max.hour % 12 : 12}
+                    min={select.date == min.date && select.month == min.month && select.year == min.year ?
+                        (select.ampm - min.ampm) * 12 + min.hour % 12 : 1}
+                    max={select.date == max.date && select.month == max.month && select.year == max.year ?
+                        (max.ampm - select.ampm) * 12 + max.hour % 12 : 12}
                 ></input>
                 {
                     alert == 'hour' &&
                     <label htmlFor="hour" className="displaynone">
                         <div className="border">
-                            <div>{"alert: " + options.min.year + "/" + options.min.month + "/" + options.min.date + " " + (options.min.ampm ? "pm" : "am") + " " + options.min.hour + ":" + options.min.min +
-                                " ~ " + options.max.year + "/" + options.max.month + "/" + options.max.date + " " + (options.max.ampm ? "pm" : "am") + " " + options.max.hour + ":" + options.max.min
+                            <div>{"alert: " + min.year + "/" + min.month + "/" + min.date + " " + (min.ampm ? "pm" : "am") + " " + min.hour + ":" + min.min +
+                                " ~ " + max.year + "/" + max.month + "/" + max.date + " " + (max.ampm ? "pm" : "am") + " " + max.hour + ":" + max.min
                             }</div>
                             <span className="arrowout"></span>
                         </div>
@@ -50,17 +50,17 @@ export default class Timeinput extends Component {
                     onBlur={(e) => check(e)}
                     onKeyDown={(e) => enter(e)}
                     type="number" step="1"
-                    min={select.hour == options.min.hour && select.ampm == options.min.ampm && select.date == options.min.date && select.month == options.min.month && select.year == options.min.year ?
-                        options.min.min : 0}
-                    max={select.hour == options.max.hour && select.ampm == options.max.ampm && select.date == options.max.date && select.month == options.max.month && select.year == options.max.year ?
-                        options.max.min : 59}
+                    min={select.hour == min.hour && select.ampm == min.ampm && select.date == min.date && select.month == min.month && select.year == min.year ?
+                        min.min : 0}
+                    max={select.hour == max.hour && select.ampm == max.ampm && select.date == max.date && select.month == max.month && select.year == max.year ?
+                        max.min : 59}
                 ></input>
                 {
                     alert == 'min' &&
                     <label htmlFor="min" className="displaynone">
                         <div className="border">
-                            <div>{"alert: " + options.min.year + "/" + options.min.month + "/" + options.min.date + " " + (options.min.ampm ? "pm" : "am") + " " + options.min.hour + ":" + options.min.min +
-                                " ~ " + options.max.year + "/" + options.max.month + "/" + options.max.date + " " + (options.max.ampm ? "pm" : "am") + " " + options.max.hour + ":" + options.max.min
+                            <div>{"alert: " + min.year + "/" + min.month + "/" + min.date + " " + (min.ampm ? "pm" : "am") + " " + min.hour + ":" + min.min +
+                                " ~ " + max.year + "/" + max.month + "/" + max.date + " " + (max.ampm ? "pm" : "am") + " " + max.hour + ":" + max.min
                             }</div>
                             <span className="arrowout"></span>
                         </div>

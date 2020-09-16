@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 
 export default class Dateinput extends Component {
     render() {
-        const { input, select, options, yearmonth, setinput, selectall, check, enter, alert } = this.props
+        const { input, select, options, max, min, yearmonth, setinput, selectall, check, enter, alert } = this.props
         return (
             <>
                 <input className={(alert == 'year' ? "alert" : "") + " yearinput"} id="year" value={input.year}
@@ -17,7 +17,7 @@ export default class Dateinput extends Component {
                     alert == 'year' &&
                     <label htmlFor="year" className="displaynone">
                         <div className="border">
-                            <div>{"alert: " + options.min.year + " ~ " + options.max.year}</div>
+                            <div>{"alert: " + min.year + " ~ " + max.year}</div>
                             <span className="arrowout"></span>
                         </div>
                     </label>
@@ -37,7 +37,7 @@ export default class Dateinput extends Component {
                     alert == 'month' &&
                     <label htmlFor="month" className="displaynone">
                         <div className="border">
-                            <div>{"alert: " + options.min.year + "/" + options.min.month + " ~ " + options.max.year + "/" + options.max.month}</div>
+                            <div>{"alert: " + min.year + "/" + min.month + " ~ " + max.year + "/" + max.month}</div>
                             <span className="arrowout"></span>
                         </div>
                     </label>
@@ -50,14 +50,14 @@ export default class Dateinput extends Component {
                     onBlur={(e) => check(e)}
                     onKeyDown={(e) => enter(e)}
                     type="number" step="1"
-                    min={new Date(select.year, select.month) - new Date(options.year, options.month) > 0 ? options.min.date : 1}
-                    max={select.month == options.max.month && select.year == options.max.year ? options.max.date : (new Date(select.year, select.month, 1) - new Date(select.year, select.month - 1, 1)) / (86400 * 1000)}
+                    min={new Date(select.year, select.month) - new Date(min.year, min.month) > 0 ? min.date : 1}
+                    max={select.month == max.month && select.year == max.year ? max.date : (new Date(select.year, select.month, 1) - new Date(select.year, select.month - 1, 1)) / (86400 * 1000)}
                 ></input>
                 {
                     alert == 'date' &&
                     <label htmlFor="date" className="displaynone">
                         <div className="border">
-                            <div>{"alert: " + options.min.year + "/" + options.min.month + "/" + options.min.date + " ~ " + options.max.year + "/" + options.max.month + "/" + options.max.date}</div>
+                            <div>{"alert: " + min.year + "/" + min.month + "/" + min.date + " ~ " + max.year + "/" + max.month + "/" + max.date}</div>
                             <span className="arrowout"></span>
                         </div>
                     </label>

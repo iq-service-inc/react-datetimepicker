@@ -38,7 +38,24 @@ export default class Datetimepicker extends Component {
 
     componentDidMount() {
         const { options } = this.props
-        const { disabled, max, min } = options
+        const { max = {
+            year: 2030,
+            month: 12,
+            date: 31,
+            ampm: 1,
+            hour: 12,
+            min: 59
+        } } = options
+        
+        const { min = {
+            year: 1970,
+            month: 1,
+            date: 3,
+            ampm: 0,
+            hour: 1,
+            min: 0
+        } } = options
+
         if(!!max && !!min){
             var ym = []
             for(var y=min.year; y<=max.year; y++){
@@ -172,16 +189,20 @@ export default class Datetimepicker extends Component {
 
     render() {
         const { openCalendar, openYearMonth, openMonth, select, yearmonth, input, alert } = this.state
-        const { options, date, time } = this.props
+        const { options={}, nodate, notime } = this.props
+        const { max={year: 2030, month: 12, date: 31, ampm: 1, hour: 12, min: 59} } = options
+        const { min={year: 1970, month: 1, date: 3, ampm: 0, hour: 1, min: 0} } = options
         return (
             <div>
                 <div className="datetimeinput">
                     {
-                        date!=false &&
+                        !nodate &&
                         <Dateinput
                             input={input}
                             select={select}
                             options={options}
+                            max={max}
+                            min={min}
                             alert={alert}
                             yearmonth={yearmonth}
                             setinput={(e)=>this.input(e)}
@@ -192,11 +213,13 @@ export default class Datetimepicker extends Component {
                     }
 
                     {
-                        time!=false &&
+                        !notime &&
                         <Timeinput
                             input={input}
                             select={select}
                             options={options}
+                            max={max}
+                            min={min}
                             alert={alert}
                             setinput={(e)=>this.input(e)}
                             selectall={(e)=>this.selectall(e)}
@@ -213,7 +236,7 @@ export default class Datetimepicker extends Component {
                     openCalendar &&
                     <div className="datetime">
                         {
-                            date!=false &&
+                            !nodate &&
                             <div className="datebox">
                                 <div className="box-title">
                                     <div className="year-month onclick hover" onClick={()=>this.toggle("openYearMonth")}>
@@ -227,7 +250,7 @@ export default class Datetimepicker extends Component {
                                         !openYearMonth&&
                                         <div className="month-btns">
                                             {
-                                                new Date(select.year,select.month-2)-new Date(options.min.year, options.min.month-1)>=0?
+                                                new Date(select.year,select.month-2)-new Date(min.year, min.month-1)>=0?
                                                 <div className="previousmonth onclick hover" onClick={() => this.selectDay(new Date(select.year, select.month-2).getFullYear(),new Date(select.year, select.month-2).getMonth()+1)}>
                                                     <Icon icon="arrow-up"/>
                                                 </div>
@@ -236,7 +259,7 @@ export default class Datetimepicker extends Component {
                                                 </div>
                                             }
                                             {
-                                                new Date(options.max.year, options.max.month-1)-new Date(select.year,select.month)>=0?
+                                                new Date(max.year, max.month-1)-new Date(select.year,select.month)>=0?
                                                 <div className="nextmonth onclick hover" onClick={() => this.selectDay(new Date(select.year, select.month).getFullYear(),new Date(select.year, select.month).getMonth()+1)}>
                                                     <Icon icon="arrow-down"/>
                                                 </div>
@@ -260,20 +283,20 @@ export default class Datetimepicker extends Component {
                                         :<Days
                                             select={select}
                                             selectDay={(year,month,date,hour,min,ampm)=>this.selectDay(year,month,date,hour,min,ampm)}
-                                            max={options.max}
-                                            min={options.min}
+                                            max={max}
+                                            min={min}
                                         ></Days>
                                 }
                             </div>
                         }
 
                         {
-                            time!=false &&
+                            !notime &&
                                 <Time
                                 select={select}
                                 selectDay={(year,month,date,hour,min,ampm)=>this.selectDay(year,month,date,hour,min,ampm)}
-                                max={options.max}
-                                min={options.min}
+                                max={max}
+                                min={min}
                                 ></Time>
                         }
                     </div>
@@ -284,8 +307,8 @@ export default class Datetimepicker extends Component {
 
     static propTypes = {
         options: propTypes.shape({
-            max: propTypes.object.isRequired,
-            min: propTypes.object.isRequired,
+            max: propTypes.object,
+            min: propTypes.object,
         }),
     }
 }
