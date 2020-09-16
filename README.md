@@ -1,29 +1,34 @@
-# IQ-React 2 (Plus+)
+# Datetimepicker
 
-Webpack 4 + Babel 7 + React 16 新版前端初始包  
-使用新版 Webpack 體驗極速的 bundle 速度!
+Datetimepicker為日期及時間的選擇器
 
 ## Install
 
+### 開發人員模式
 ```
-cd iq-react2
+git clone http://10.9.173.136/SideProject/react-datetimepicker
+cd react-datetimepicker
 npm install
 ```
 
-## Dev Mode
+### 使用 Component 模式
+```
+npm install --save git+http://10.9.173.136/SideProject/react-datetimepicker.git
+```
 
+## 開發人員模式npm Script
+
+### 開發
 ```
 npm run start
 ```
 
-## Prod Mode
-
+### 打包
 ```
-npm run build
+npm run umd
 ```
 
-## Test umd
-
+### 測試 umd
 ```
 npm run umdtest
 ```
@@ -35,18 +40,12 @@ import { Datetimepicker } from '../module/main.js'
 import '../module/main.css'
 ```
 
-* Datetimepicker需要在 `<IntlProvider>` 之下才能運作
+* `<Datetimepicker>` 需要在 `<IntlProvider>` 之下才能運作
 * 利用form可以抓input值，分別有年、月、日、上/下午、時、分
 
 ```jsx
 import React, { Component } from 'react'
-import { render } from 'react-dom'
-import { connect } from 'react-redux'
-import { Provider, ReactReduxContext } from 'react-redux'
-import configureStore, { history } from "./store"
-import InstallFontAwesome from './lib/icon'
 import { IntlProvider } from 'react-intl'
-import rootSaga from "./sagas"
 import { Datetimepicker } from '../module/main.js'
 import '../module/main.css'
 

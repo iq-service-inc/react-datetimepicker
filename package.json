@@ -1,7 +1,7 @@
 {
-  "name": "iq-react2",
-  "version": "2.0.0",
-  "description": "this is react quick start pack",
+  "name": "datetimepicker",
+  "version": "1.0.0",
+  "description": "datetimepicker",
   "main": "module/main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
