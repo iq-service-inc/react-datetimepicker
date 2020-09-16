@@ -104,8 +104,8 @@ class AppComp extends Component {
         {max: { year: 2020, month: 10, date: 7, ampm: 0, hour: 9, min: 10 },
          min: { year: 2000, month: 9, date: 7, ampm: 0, hour: 9, min: 10 }}
     ```
-* `date` : 選填，是否開啟Date(年、月、日)的部分
-* `time` : 選填，是否開啟Time(上/下午、時、分)的部分
+* `date` : 選填，預設為true，是否開啟Date(年、月、日)的部分
+* `time` : 選填，預設為true，是否開啟Time(上/下午、時、分)的部分
 
 ### FontAwesome Icon
 模組使用到的 Icon : `faArrowUP`, `faArrowDown`, `farCalendar`，需要事先被引入
@@ -126,29 +126,3 @@ export default () => library.add(
     faArrowDown,
 )
 ```
-
-## Reference
-
-本專案升級自 [IQ-react](http://10.9.173.136/SideProject/IQ-react)，如果你已經在使用它，請繼續使用，不需要進行更新
-
-
-## ENV Version
-
-* **Node.js: v9.7.1**
-* **npm: 5.6.0**
-
-
-## Package Version
-
-* **react: 16**
-* **redux: 4** 
-* **react-router-dom: 4** 
-* **connected-react-router: 6** (棄用react-router-redux)
-* **postcss-loader: 3**
-* **react-intl: 4**
-* **@fortawesome/react-fontawesome: 0.19**
-
-## Dev Package Version
-
-* **babel: 7**
-* **webpack: 4**
