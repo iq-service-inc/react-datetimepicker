@@ -7,6 +7,7 @@ import Time from './Time'
 import Dateinput from './Dateinput'
 import { FormattedDate } from 'react-intl'
 import Timeinput from './Timeinput'
+import '../styl/lib/datetimepicker.styl'
 
 export default class Datetimepicker extends Component {
     constructor(props){

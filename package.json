@@ -2,12 +2,14 @@
   "name": "iq-react2",
   "version": "2.0.0",
   "description": "this is react quick start pack",
-  "main": "index.js",
+  "main": "module/main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack --progress --config webpack.prod.js",
     "dev": "webpack --open --watch --progress --config webpack.dev.js",
-    "start": "webpack-dev-server --open --watch --progress --config webpack.dev.js"
+    "start": "webpack-dev-server --open --watch --progress --config webpack.dev.js",
+    "umd": "env NODE_ENV=production webpack --progress --config webpack.umd.js",
+    "umdtest": "webpack-dev-server --open-page \"iqservice2_chatbot?agents=iqservice_qa3\" --watch --progress --config webpack.testumd.js"
   },
   "repository": {
     "type": "git",
@@ -15,7 +17,7 @@
   },
   "author": "Zap",
   "license": "UNLICENSED",
-  "dependencies": {
+  "peerDependencies": {
     "@formatjs/intl-pluralrules": "^1.5.4",
     "@formatjs/intl-relativetimeformat": "^4.5.11",
     "@fortawesome/fontawesome-svg-core": "^1.2.28",

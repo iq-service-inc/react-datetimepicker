@@ -34,7 +34,7 @@ class App extends Component {
                     <Datetimepicker
                         options = {{
                             max: { year:2020, month:10, date:7, ampm:0, hour:9, min:10 },
-                            min: { year:2019, month:9, date:7, ampm:0, hour:9, min:10 },
+                            min: { year:2000, month:9, date:7, ampm:0, hour:9, min:10 },
                         }}
                         date = {true}
                         time = {true}
