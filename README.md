@@ -36,8 +36,8 @@ npm run umdtest
 ## Datetimepicker Component
 
 ```jsx
-import { Datetimepicker } from '../module/main.js'
-import '../module/main.css'
+import { Datetimepicker } from 'datetimepicker'
+import 'datetimepicker/index.styl'
 ```
 
 * `<Datetimepicker>` 需要在 `<IntlProvider>` 之下才能運作
@@ -46,8 +46,8 @@ import '../module/main.css'
 ```jsx
 import React, { Component } from 'react'
 import { IntlProvider } from 'react-intl'
-import { Datetimepicker } from '../module/main.js'
-import '../module/main.css'
+import { Datetimepicker } from 'datetimepicker'
+import 'datetimepicker/index.styl'
 
 class AppComp extends Component {
     constructor(props) {
