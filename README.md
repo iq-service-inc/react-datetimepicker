@@ -99,7 +99,7 @@ class AppComp extends Component {
 
 * `options` : 設定時間範圍
   * `max`、`min` : 必填，包含年、月、日、上/下午、時、分
-    ```json
+    ```
         {max: { year: 2020, month: 10, date: 7, ampm: 0, hour: 9, min: 10 },
          min: { year: 2000, month: 9, date: 7, ampm: 0, hour: 9, min: 10 }}
     ```
