@@ -115,7 +115,6 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 
 import {
-    faEye as farEye,
     faCalendar as farCalendar
 } from '@fortawesome/free-regular-svg-icons'
 
