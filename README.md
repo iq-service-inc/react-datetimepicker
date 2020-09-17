@@ -103,9 +103,9 @@ class AppComp extends Component {
 
 ### `Datetimepicker` props
 
-* `max`、`min` : 選填，預設1970/1/1 am 00:00 ~ 275759/12/31 pm 11:59，包含年、月、日、上/下午、時、分，可傳String或Object
+* `max`、`min` : 選填，預設1970/1/1 am 00:00 ~ 275759/12/31 pm 11:59，包含年、月、日、上/下午、時、分
   ```
-    max= {'2030-6-30T03:24'}
+    max= {{ year: 2030, month: 9, date: 7, ampm: 0, hour: 9, min: 10 }}
     min= {{ year: 2000, month: 9, date: 7, ampm: 0, hour: 9, min: 10 }}
   ```
 * `value` : 選填，預設為`min`，可傳String或Object
@@ -119,7 +119,7 @@ class AppComp extends Component {
 * `nodate` : 選填，是否開啟Date(年、月、日)的部分
 * `notime` : 選填，是否開啟Time(上/下午、時、分)的部分
 * `autofocus` : 選填，focus可填的第一格input
-* `disabled` : 選填，禁用特定欄位
+* `disabled` : 選填，bool時禁用全部欄位，array時可禁用特定欄位
   ```
     disabled={['year,'month','date','ampm','hour','min']}
   ```
