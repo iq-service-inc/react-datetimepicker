@@ -23,8 +23,6 @@ export default class Datetimepicker extends Component {
                 ampm: new Date().getHours()/12>=1? 1: 0,
             },
             openYearMonth: false,
-            openMonth: new Date().getFullYear(),
-            yearmonth: [{year:2019, month:this.createarr(1, 12)}, {year:2020, month:this.createarr(1, 12)}],
             input: {
                 year: new Date().getFullYear(),
                 month: this.format(new Date().getMonth()+1,10,"0"),
@@ -39,7 +37,7 @@ export default class Datetimepicker extends Component {
     componentDidMount() {
         const { options={} } = this.props
         const { max = {
-            year: 2030,
+            year: 275759,
             month: 12,
             date: 31,
             ampm: 1,
@@ -56,24 +54,6 @@ export default class Datetimepicker extends Component {
             min: 0
         } } = options
 
-        if(!!max && !!min){
-            var ym = []
-            for(var y=min.year; y<=max.year; y++){
-                if(y==min.year) var m = min.month
-                else var m = 1
-                if(y==max.year) var limit = max.month
-                else var limit = 12
-                
-                var month = []
-                for(m; m<=limit; m++){
-                    month.push(m)
-                }
-                ym.push({year:y, month:month})
-            }
-            this.setState({
-                yearmonth: ym,
-            })
-        }
     }
 
     createarr(start, end) {
@@ -96,12 +76,6 @@ export default class Datetimepicker extends Component {
                     openCalendar: !this.state.openCalendar
                 })
         }
-    }
-
-    openMonth(y) {
-        this.setState({
-            openMonth: y
-        })
     }
 
     selectDay = (year,month,date,hour,min,ampm) => {
@@ -188,9 +162,9 @@ export default class Datetimepicker extends Component {
     }
 
     render() {
-        const { openCalendar, openYearMonth, openMonth, select, yearmonth, input, alert } = this.state
+        const { openCalendar, openYearMonth, select, input, alert } = this.state
         const { options={}, nodate, notime } = this.props
-        const { max={year: 2030, month: 12, date: 31, ampm: 1, hour: 12, min: 59} } = options
+        const { max={year: 275759, month: 12, date: 31, ampm: 1, hour: 12, min: 59} } = options
         const { min={year: 1970, month: 1, date: 3, ampm: 0, hour: 1, min: 0} } = options
         return (
             <div>
@@ -204,7 +178,6 @@ export default class Datetimepicker extends Component {
                             max={max}
                             min={min}
                             alert={alert}
-                            yearmonth={yearmonth}
                             setinput={(e)=>this.input(e)}
                             selectall={(e)=>this.selectall(e)}
                             check={(e)=>this.check(e)}
@@ -274,9 +247,8 @@ export default class Datetimepicker extends Component {
                                     openYearMonth?
                                         <YearSelect
                                             select={select}
-                                            yearmonth={yearmonth}
-                                            open={openMonth}
-                                            openMonth={(y)=>this.openMonth(y)}
+                                            max={max}
+                                            min={min}
                                             selectDay={(year,month,date,hour,min,ampm)=>this.selectDay(year,month,date,hour,min,ampm)}
                                         ></YearSelect>
                                 

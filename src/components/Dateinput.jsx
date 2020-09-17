@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 
 export default class Dateinput extends Component {
     render() {
-        const { input, select, options, max, min, yearmonth, setinput, selectall, check, enter, alert } = this.props
+        const { input, select, max, min, setinput, selectall, check, enter, alert } = this.props
         return (
             <>
                 <input className={(alert == 'year' ? "alert" : "") + " yearinput"} id="year" value={input.year}
@@ -11,8 +11,8 @@ export default class Dateinput extends Component {
                     onBlur={(e) => check(e)}
                     onKeyDown={(e) => enter(e)}
                     type="number" step="1"
-                    max={yearmonth[yearmonth.length - 1].year}
-                    min={yearmonth[0].year}></input>
+                    max={max.year}
+                    min={min.year}></input>
                 {
                     alert == 'year' &&
                     <label htmlFor="year" className="displaynone">
@@ -30,8 +30,8 @@ export default class Dateinput extends Component {
                     onBlur={(e) => check(e)}
                     onKeyDown={(e) => enter(e)}
                     type="number" step="1"
-                    max={yearmonth.filter(y => y.year == select.year).length ? yearmonth.filter(y => y.year == select.year)[0].month[yearmonth.filter(y => y.year == select.year)[0].month.length - 1] : 12}
-                    min={yearmonth.filter(y => y.year == select.year).length ? yearmonth.filter(y => y.year == select.year)[0].month[0] : 1}
+                    max={select.year<=max.year&&select.year>=min.year? select.year==max.year?max.month:12 : -1}
+                    min={select.year<=max.year&&select.year>=min.year? select.year==min.year?min.month:1 : -1}
                 ></input>
                 {
                     alert == 'month' &&

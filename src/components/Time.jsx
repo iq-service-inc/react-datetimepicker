@@ -123,8 +123,4 @@ export default class Time extends Component {
             </div>
         )
     }
-    static propTypes = {
-        select: propTypes.object.isRequired,
-        selectDay: propTypes.func.isRequired,
-    }
 }
