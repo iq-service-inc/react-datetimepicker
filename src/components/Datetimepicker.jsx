@@ -57,7 +57,9 @@ export default class Datetimepicker extends Component {
     }
 
     setselectinput() {
-        const { value, max, min } = this.props
+        const { value } = this.props
+        const { max={year: 275759, month: 12, date: 31, ampm: 1, hour: 12, min: 59} } = this.props
+        const { min={year: 1970, month: 1, date: 1, ampm: 0, hour: 1, min: 0} } = this.props
         new Date(max.year,max.month-1,max.date,max.ampm*12+max.hour,max.min)-new Date(min.year,min.month-1,min.date,min.ampm*12+min.hour,min.min) < 0 && console.error('min 必須小於 max')
         if(typeof value == "string"){
             var datetime = value.split('T')
@@ -96,15 +98,6 @@ export default class Datetimepicker extends Component {
             })
         }
         if(value == undefined){
-            const { min = {
-                year: 1970,
-                month: 1,
-                date: 3,
-                ampm: 0,
-                hour: 1,
-                min: 0
-            } } = this.props
-
             this.setState({
                 select: min,
                 input: {
@@ -228,7 +221,7 @@ export default class Datetimepicker extends Component {
         const { openCalendar, openYearMonth, select, input, alert } = this.state
         const { nodate, notime, autofocus, value, disabled } = this.props
         const { max={year: 275759, month: 12, date: 31, ampm: 1, hour: 12, min: 59} } = this.props
-        const { min={year: 1970, month: 1, date: 3, ampm: 0, hour: 1, min: 0} } = this.props
+        const { min={year: 1970, month: 1, date: 1, ampm: 0, hour: 1, min: 0} } = this.props
         return (
             <div>
                 <div className="datetimeinput">

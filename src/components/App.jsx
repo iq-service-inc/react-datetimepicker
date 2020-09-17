@@ -76,8 +76,8 @@ class App extends Component {
                     <Datetimepicker
                         // min={{ year:2030, month:7, date:20, ampm:0, hour:9, min:0}}
                         // max={{ year:2040, month:7, date:20, ampm:0, hour:9, min:0}}
-                        min={options.mintime}
-                        max={options.maxtime}
+                        // min={options.mintime}
+                        // max={options.maxtime}
                         value={options.value}
                         nodate={options.nodate}
                         notime={options.notime}
