@@ -74,12 +74,14 @@ class AppComp extends Component {
             <IntlProvider defaultLocale='zh' {...language}>
                 <form onSubmit={(e) => this.submit(e)} id="datetime">
                     <Datetimepicker
-                        options={{
-                            max: { year: 2020, month: 10, date: 7, ampm: 0, hour: 9, min: 10 },
-                            min: { year: 2000, month: 9, date: 7, ampm: 0, hour: 9, min: 10 },
-                        }}
-                        date={true}
-                        time={false}
+                        max={ year: 2020, month: 10, date: 7, ampm: 0, hour: 9, min: 10 }
+                        min={ year: 2000, month: 9, date: 7, ampm: 0, hour: 9, min: 10 }
+                        value={'2030-6-27T03:24'}
+                        // value={{ year:2030, month:6, date:20, ampm:0, hour:9, min:0}}
+                        // nodate
+                        notime
+                        autofocus
+                        disabled={['month','date']}
                     ></Datetimepicker>
                 </form>
                 <input type="submit" form="datetime"></input>
@@ -98,14 +100,23 @@ class AppComp extends Component {
 
 ### `Datetimepicker` props
 
-* `options` : 設定時間範圍
-  * `max`、`min` : 必填，包含年、月、日、上/下午、時、分
-    ```
-        {max: { year: 2020, month: 10, date: 7, ampm: 0, hour: 9, min: 10 },
-         min: { year: 2000, month: 9, date: 7, ampm: 0, hour: 9, min: 10 }}
-    ```
-* `date` : 選填，預設為true，是否開啟Date(年、月、日)的部分
-* `time` : 選填，預設為true，是否開啟Time(上/下午、時、分)的部分
+* `max`、`min` : 選填，預設1970/1/1 am 00:00~ 275760/12/31 pm 11:59，包含年、月、日、上/下午、時、分
+  ```
+    max= {{ year: 2020, month: 10, date: 7, ampm: 0, hour: 9, min: 10 }}
+    min= {{ year: 2000, month: 9, date: 7, ampm: 0, hour: 9, min: 10 }}
+  ```
+* `value` : 選填，預設為min，可傳String或Object
+  ```
+    value={'2030-6-27T03:24'}
+    value={{ year:2030, month:6, date:20, ampm:0, hour:9, min:0}}
+  ```
+* `nodate` : 選填，是否開啟Date(年、月、日)的部分
+* `notime` : 選填，是否開啟Time(上/下午、時、分)的部分
+* `autofocus` : 選填，focus可填的第一格input
+* `disabled` : 選填，禁用特定欄位
+  ```
+    disabled={['year,'month','date','ampm','hour','min']}
+  ```
 
 ### FontAwesome Icon
 模組使用到的 Icon : `faArrowUP`, `faArrowDown`, `farCalendar`，需要事先被引入
