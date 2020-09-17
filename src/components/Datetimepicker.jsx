@@ -7,7 +7,7 @@ import Time from './Time'
 import Dateinput from './Dateinput'
 import { FormattedDate } from 'react-intl'
 import Timeinput from './Timeinput'
-// import '../styl/lib/datetimepicker.styl'
+import '../styl/lib/datetimepicker.styl'
 
 export default class Datetimepicker extends Component {
     constructor(props){
@@ -34,10 +34,31 @@ export default class Datetimepicker extends Component {
         }
     }
 
+    componentDidUpdate() {
+        const { value, max, min } = this.props
+        if(value!==this.state.value || max!==this.state.max || min!==this.state.min){
+            this.setselectinput()
+            this.setState({
+                value,
+                max,
+                min
+            })
+        }
+    }
+
     componentDidMount() {
+        this.setselectinput()
+        const { value, max, min } = this.props
+        this.setState({
+            value,
+            max,
+            min
+        })
+    }
+
+    setselectinput() {
         const { value, max, min } = this.props
         new Date(max.year,max.month-1,max.date,max.ampm*12+max.hour,max.min)-new Date(min.year,min.month-1,min.date,min.ampm*12+min.hour,min.min) < 0 && console.error('min 必須小於 max')
-
         if(typeof value == "string"){
             var datetime = value.split('T')
             var date = datetime[0].split('-')
@@ -277,7 +298,7 @@ export default class Datetimepicker extends Component {
                                         !openYearMonth&&
                                         <div className="month-btns">
                                             {
-                                                new Date(select.year,select.month-2)-new Date(min.year, min.month-1)>=0?
+                                                new Date(select.year,select.month-2)-new Date(min.year, min.month-1)>=0 && disabled.indexOf('month')==-1?
                                                 <div className="previousmonth onclick hover" onClick={() => this.selectDay(new Date(select.year, select.month-2).getFullYear(),new Date(select.year, select.month-2).getMonth()+1)}>
                                                     <Icon icon="arrow-up"/>
                                                 </div>
@@ -286,7 +307,7 @@ export default class Datetimepicker extends Component {
                                                 </div>
                                             }
                                             {
-                                                new Date(max.year, max.month-1)-new Date(select.year,select.month)>=0?
+                                                new Date(max.year, max.month-1)-new Date(select.year,select.month)>=0 && disabled.indexOf('month')==-1?
                                                 <div className="nextmonth onclick hover" onClick={() => this.selectDay(new Date(select.year, select.month).getFullYear(),new Date(select.year, select.month).getMonth()+1)}>
                                                     <Icon icon="arrow-down"/>
                                                 </div>
