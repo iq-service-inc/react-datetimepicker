@@ -9,7 +9,7 @@
     "dev": "webpack --open --watch --progress --config webpack.dev.js",
     "start": "webpack-dev-server --open --watch --progress --config webpack.dev.js",
     "umd": "env NODE_ENV=production webpack --progress --config webpack.umd.js",
-    "umdtest": "webpack-dev-server --open-page \"iqservice2_chatbot?agents=iqservice_qa3\" --watch --progress --config webpack.testumd.js"
+    "umdtest": "webpack-dev-server --open --watch --progress --config webpack.testumd.js"
   },
   "repository": {
     "type": "git",
