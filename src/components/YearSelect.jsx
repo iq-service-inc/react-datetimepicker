@@ -6,7 +6,7 @@ export default class YearSelect extends Component {
     constructor(props){
         super(props)
         this.state = {
-            year: this.createarr(2000,2020),
+            year: [],
             open: undefined
         }
     }
@@ -77,12 +77,13 @@ export default class YearSelect extends Component {
     }
 
     render() {
-        const { select, max, min, selectDay } = this.props
-        const { year, open } = this.state
+        const { select, max, min, selectDay, disabled } = this.props
+        const { open } = this.state
         return (
             <div className="yearselect" onScroll={(e) => this.onScroll(e)}>
                 {
-                    year.map(year=>
+                    this.state.year.map(year=>
+                        disabled.indexOf('month')==-1?
                         <div className="year onclick" key={year} onClick={() => this.openMonth(year)}>
                             <FormattedDate
                                 value={new Date(year,1)}
@@ -100,6 +101,12 @@ export default class YearSelect extends Component {
                                     )
                                 }
                             </div>
+                        </div>
+                        :<div className="year onclick" key={year} onClick={() => selectDay(year)}>
+                            <FormattedDate
+                                value={new Date(year,1)}
+                                year="numeric"
+                            />
                         </div>
                     )
                 }

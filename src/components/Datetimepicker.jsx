@@ -35,25 +35,66 @@ export default class Datetimepicker extends Component {
     }
 
     componentDidMount() {
-        const { options={} } = this.props
-        const { max = {
-            year: 275759,
-            month: 12,
-            date: 31,
-            ampm: 1,
-            hour: 12,
-            min: 59
-        } } = options
-        
-        const { min = {
-            year: 1970,
-            month: 1,
-            date: 3,
-            ampm: 0,
-            hour: 1,
-            min: 0
-        } } = options
+        const { value } = this.props
 
+        if(typeof value == "string"){
+            var datetime = value.split('T')
+            var date = datetime[0].split('-')
+            var time = datetime[1].split(':')
+            this.setState({
+                select: {
+                    year: date[0],
+                    month: date[1],
+                    date: date[2],
+                    hour: time[0]%12,
+                    min: time[1],
+                    ampm: time[0]/12>=1? 1: 0,
+                },
+                input: {
+                    year: date[0],
+                    month: this.format(date[1],10,"0"),
+                    date: this.format(date[2],10,"0"),
+                    hour: this.format(time[0]%12,10,"0"),
+                    min: this.format(time[1],10,"0"),
+                    ampm: time[0]/12>=1? 1: 0,
+                }
+            })
+        }
+        if(typeof value == "object"){
+            this.setState({
+                select: value,
+                input: {
+                    year: value.year,
+                    month: this.format(value.month,10,"0"),
+                    date: this.format(value.date,10,"0"),
+                    hour: this.format(value.hour,10,"0"),
+                    min: this.format(value.min,10,"0"),
+                    ampm: value.ampm,
+                }
+            })
+        }
+        if(value == undefined){
+            const { min = {
+                year: 1970,
+                month: 1,
+                date: 3,
+                ampm: 0,
+                hour: 1,
+                min: 0
+            } } = this.props
+
+            this.setState({
+                select: min,
+                input: {
+                    year: min.year,
+                    month: this.format(min.month,10,"0"),
+                    date: this.format(min.date,10,"0"),
+                    hour: this.format(min.hour,10,"0"),
+                    min: this.format(min.min,10,"0"),
+                    ampm: min.ampm,
+                }
+            })
+        }
     }
 
     createarr(start, end) {
@@ -163,9 +204,9 @@ export default class Datetimepicker extends Component {
 
     render() {
         const { openCalendar, openYearMonth, select, input, alert } = this.state
-        const { options={}, nodate, notime } = this.props
-        const { max={year: 275759, month: 12, date: 31, ampm: 1, hour: 12, min: 59} } = options
-        const { min={year: 1970, month: 1, date: 3, ampm: 0, hour: 1, min: 0} } = options
+        const { nodate, notime, autofocus, value, disabled } = this.props
+        const { max={year: 275759, month: 12, date: 31, ampm: 1, hour: 12, min: 59} } = this.props
+        const { min={year: 1970, month: 1, date: 3, ampm: 0, hour: 1, min: 0} } = this.props
         return (
             <div>
                 <div className="datetimeinput">
@@ -174,7 +215,6 @@ export default class Datetimepicker extends Component {
                         <Dateinput
                             input={input}
                             select={select}
-                            options={options}
                             max={max}
                             min={min}
                             alert={alert}
@@ -182,6 +222,8 @@ export default class Datetimepicker extends Component {
                             selectall={(e)=>this.selectall(e)}
                             check={(e)=>this.check(e)}
                             enter={(e)=>this.enter(e)}
+                            autofocus={autofocus}
+                            disabled={disabled}
                         ></Dateinput>
                     }
 
@@ -190,7 +232,6 @@ export default class Datetimepicker extends Component {
                         <Timeinput
                             input={input}
                             select={select}
-                            options={options}
                             max={max}
                             min={min}
                             alert={alert}
@@ -198,6 +239,8 @@ export default class Datetimepicker extends Component {
                             selectall={(e)=>this.selectall(e)}
                             check={(e)=>this.check(e)}
                             enter={(e)=>this.enter(e)}
+                            autofocus={nodate&&autofocus}
+                            disabled={disabled}
                         ></Timeinput>
                     }
                     <label className="calendar onclick" onClick={()=>this.toggle("openCalendar")}>
@@ -212,13 +255,23 @@ export default class Datetimepicker extends Component {
                             !nodate &&
                             <div className="datebox">
                                 <div className="box-title">
-                                    <div className="year-month onclick hover" onClick={()=>this.toggle("openYearMonth")}>
-                                        <FormattedDate
-                                            value={new Date(select.year, select.month-1)}
-                                            year="numeric"
-                                            month="short"
-                                        />
-                                    </div>
+                                    {
+                                        disabled.indexOf('year')==-1?
+                                        <div className="year-month onclick hover" onClick={()=>this.toggle("openYearMonth")}>
+                                            <FormattedDate
+                                                value={new Date(select.year, select.month-1)}
+                                                year="numeric"
+                                                month="short"
+                                            />
+                                        </div>
+                                        :<div className="year-month">
+                                            <FormattedDate
+                                                value={new Date(select.year, select.month-1)}
+                                                year="numeric"
+                                                month="short"
+                                            />
+                                        </div>
+                                    }
                                     {
                                         !openYearMonth&&
                                         <div className="month-btns">
@@ -250,6 +303,7 @@ export default class Datetimepicker extends Component {
                                             max={max}
                                             min={min}
                                             selectDay={(year,month,date,hour,min,ampm)=>this.selectDay(year,month,date,hour,min,ampm)}
+                                            disabled={disabled}
                                         ></YearSelect>
                                 
                                         :<Days
@@ -257,6 +311,7 @@ export default class Datetimepicker extends Component {
                                             selectDay={(year,month,date,hour,min,ampm)=>this.selectDay(year,month,date,hour,min,ampm)}
                                             max={max}
                                             min={min}
+                                            disabled={disabled}
                                         ></Days>
                                 }
                             </div>
@@ -265,10 +320,11 @@ export default class Datetimepicker extends Component {
                         {
                             !notime &&
                                 <Time
-                                select={select}
-                                selectDay={(year,month,date,hour,min,ampm)=>this.selectDay(year,month,date,hour,min,ampm)}
-                                max={max}
-                                min={min}
+                                    select={select}
+                                    selectDay={(year,month,date,hour,min,ampm)=>this.selectDay(year,month,date,hour,min,ampm)}
+                                    max={max}
+                                    min={min}
+                                    disabled={disabled}
                                 ></Time>
                         }
                     </div>
@@ -278,9 +334,11 @@ export default class Datetimepicker extends Component {
     }
 
     static propTypes = {
-        options: propTypes.shape({
-            max: propTypes.object,
-            min: propTypes.object,
-        }),
+        max: propTypes.object,
+        min: propTypes.object,
+        value: propTypes.oneOfType([propTypes.object, propTypes.string]),
+        nodate: propTypes.bool,
+        notime: propTypes.bool,
+        disabled: propTypes.arrayOf(propTypes.string)
     }
 }

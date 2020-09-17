@@ -2,11 +2,25 @@ import React, { Component } from 'react'
 import { FormattedMessage } from 'react-intl'
 
 export default class Timeinput extends Component {
+    componentDidMount() {
+        var next = document.getElementById('ampm')
+        if(this.props.autofocus){
+            if(next.disabled) next = next.nextSibling
+            while(next.nodeName != "INPUT" && next.nodeName != "SELECT"){                
+                next = next.nextSibling
+                if(next.disabled) continue
+                if(next == null) break
+            }
+            next.focus()
+        }
+    }
+
     render() {
-        const { input, select, options, max, min, setinput, selectall, check, enter, alert } = this.props
+        const { input, select, max, min, setinput, selectall, check, enter, alert, disabled } = this.props
         return (
             <>
-                <select id="ampm" onChange={(e) => setinput(e)} value={input.ampm}>
+                <select id="ampm" onChange={(e) => setinput(e)} value={input.ampm}
+                    disabled={disabled.indexOf('ampm')!=-1}>
                     {
                         select.date == min.date && select.month == min.month && select.year == min.year ?
                             <FormattedMessage id='datetime.am' defaultMessage='上午'>{t => <option value="0" disabled={min.ampm != 0}>{t}</option>}</FormattedMessage>
@@ -29,6 +43,7 @@ export default class Timeinput extends Component {
                         (select.ampm - min.ampm) * 12 + min.hour % 12 : 1}
                     max={select.date == max.date && select.month == max.month && select.year == max.year ?
                         (max.ampm - select.ampm) * 12 + max.hour % 12 : 12}
+                    disabled={disabled.indexOf('hour')!=-1}
                 ></input>
                 {
                     alert == 'hour' &&
@@ -54,6 +69,7 @@ export default class Timeinput extends Component {
                         min.min : 0}
                     max={select.hour == max.hour && select.ampm == max.ampm && select.date == max.date && select.month == max.month && select.year == max.year ?
                         max.min : 59}
+                    disabled={disabled.indexOf('min')!=-1}
                 ></input>
                 {
                     alert == 'min' &&

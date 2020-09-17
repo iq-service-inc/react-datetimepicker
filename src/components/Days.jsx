@@ -11,6 +11,8 @@ export default class Days extends Component {
     }
 
     renderDate = (y, month, max, min) => {
+        const { disabled } = this.props
+        var d = disabled.indexOf('date')!=-1
         var m = month-1
         var days = (new Date(y,m+1,1) - new Date(y,m,1))/(86400*1000)
         var arr = []
@@ -21,27 +23,27 @@ export default class Days extends Component {
             var lastdays = (new Date(y,m,1) - new Date(y,m-1,1))/(86400*1000)
             for(var i=new Date(y,m,1).getDay()-1; i>=0; i--){
                 var t = new Date(new Date(y,m-1,1).getFullYear(),new Date(y,m-1,1).getMonth(),lastdays-i)
-                arr.push({date: lastdays-i, month: new Date(y,m-1,1).getMonth()+1, year: new Date(y,m-1,1).getFullYear(), enable: (t-mindate)>=0 && (maxdate-t)>=0})
+                arr.push({date: lastdays-i, month: new Date(y,m-1,1).getMonth()+1, year: new Date(y,m-1,1).getFullYear(), enable: d? false: (t-mindate)>=0 && (maxdate-t)>=0})
             }
         }
 
         for(var i=1; i<=days;i++){
             var t = new Date(y,m,i)
-            arr.push({date: i, month, year: y, enable: (t-mindate)>=0 && (maxdate-t)>=0})
+            arr.push({date: i, month, year: y, enable: d? false: (t-mindate)>=0 && (maxdate-t)>=0})
         }
 
         var i =1
         if(new Date(y,m,days).getDay() != 6){
             for(i; i<7-new Date(y,m,days).getDay(); i++){
                 var t = new Date(new Date(y,m+1,1).getFullYear(),new Date(y,m+1,1).getMonth(),i)
-                arr.push({date: i, month: new Date(y,m+1,1).getMonth()+1, year: new Date(y,m+1,1).getFullYear(), enable: (t-mindate)>=0 && (maxdate-t)>=0})
+                arr.push({date: i, month: new Date(y,m+1,1).getMonth()+1, year: new Date(y,m+1,1).getFullYear(), enable: d? false: (t-mindate)>=0 && (maxdate-t)>=0})
             }
         }
 
         if(arr.length/7 < 6){
             for(i; i<i+(6-arr.length/7)*7; i++){
                 var t = new Date(new Date(y,m+1,1).getFullYear(),new Date(y,m+1,1).getMonth(),i)
-                arr.push({date: i, month: new Date(y,m+1,1).getMonth()+1, year: new Date(y,m+1,1).getFullYear(), enable: (t-mindate)>=0 && (maxdate-t)>=0})
+                arr.push({date: i, month: new Date(y,m+1,1).getMonth()+1, year: new Date(y,m+1,1).getFullYear(), enable: d? false: (t-mindate)>=0 && (maxdate-t)>=0})
             }
         }
 
@@ -53,7 +55,7 @@ export default class Days extends Component {
     }
 
     render() {
-        const { select, selectDay, max, min } = this.props
+        const { select, selectDay, max, min, disabled } = this.props
         const today = new Date(select.year,select.month-1,select.date)
         return (
             <div className="days">
@@ -79,7 +81,7 @@ export default class Days extends Component {
                                     <div key={index} className={(select.date == d.date && select.month == d.month ? "select " : "") + "date onclick hover" + (d.month == select.month ? "" : " greydate")} onClick={() => selectDay(d.year, d.month, d.date)}>
                                         <span>{d.date}</span>
                                     </div>
-                                    :<div key={index} className="date greydate">
+                                    :<div key={index} className={(select.date == d.date && select.month == d.month ? "select " : "") + "date greydate"}>
                                         <span>{d.date}</span>
                                     </div>
                                     
@@ -88,9 +90,12 @@ export default class Days extends Component {
                         </div>
                     )
                 }
-                <div className="today onclick" onClick={() => selectDay(new Date().getFullYear(), new Date().getMonth() + 1, new Date().getDate())}>
-                    <FormattedMessage id='datetime.today' defaultMessage='今天'></FormattedMessage>
-                </div>
+                {
+                    disabled.length==0 && 
+                    <div className="today onclick" onClick={() => selectDay(new Date().getFullYear(), new Date().getMonth() + 1, new Date().getDate())}>
+                        <FormattedMessage id='datetime.today' defaultMessage='今天'></FormattedMessage>
+                    </div>
+                }
             </div>
         )
     }
