@@ -100,7 +100,7 @@ class AppComp extends Component {
 
 ### `Datetimepicker` props
 
-* `max`、`min` : 選填，預設1970/1/1 am 00:00~ 275760/12/31 pm 11:59，包含年、月、日、上/下午、時、分
+* `max`、`min` : 選填，預設1970/1/1 am 00:00~ 275759/12/31 pm 11:59，包含年、月、日、上/下午、時、分
   ```
     max= {{ year: 2020, month: 10, date: 7, ampm: 0, hour: 9, min: 10 }}
     min= {{ year: 2000, month: 9, date: 7, ampm: 0, hour: 9, min: 10 }}
