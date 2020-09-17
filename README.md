@@ -43,7 +43,7 @@ import 'datetimepicker/index.styl'
 ```
 
 * `<Datetimepicker>` 需要在 `<IntlProvider>` 之下才能運作
-* 利用form可以抓input值，分別有年、月、日、上/下午、時、分
+* `Datetimepicker`的time為am 00:00~ pm 11:59，原生`datetime-loacle`中的的time為am 01:00~ pm 12:59
 
 ```jsx
 import React, { Component } from 'react'
@@ -74,13 +74,16 @@ class AppComp extends Component {
             <IntlProvider defaultLocale='zh' {...language}>
                 <form onSubmit={(e) => this.submit(e)} id="datetime">
                     <Datetimepicker
-                        max={ year: 2020, month: 10, date: 7, ampm: 0, hour: 9, min: 10 }
-                        min={ year: 2000, month: 9, date: 7, ampm: 0, hour: 9, min: 10 }
+                        // min={{ year:2030, month:7, date:20, ampm:0, hour:9, min:0}}
+                        max={{ year:2040, month:7, date:20, ampm:0, hour:9, min:0}}
                         value={'2030-6-27T03:24'}
                         // value={{ year:2030, month:6, date:20, ampm:0, hour:9, min:0}}
+                        onChange={()=>console.log('input changed!')}
+                        id="birth"
+                        name="birth"
                         // nodate
-                        notime
-                        autofocus
+                        // notime
+                        // autofocus
                         disabled={['month','date']}
                     ></Datetimepicker>
                 </form>
@@ -100,16 +103,19 @@ class AppComp extends Component {
 
 ### `Datetimepicker` props
 
-* `max`、`min` : 選填，預設1970/1/1 am 00:00~ 275759/12/31 pm 11:59，包含年、月、日、上/下午、時、分
+* `max`、`min` : 選填，預設1970/1/1 am 00:00 ~ 275759/12/31 pm 11:59，包含年、月、日、上/下午、時、分，可傳String或Object
   ```
-    max= {{ year: 2020, month: 10, date: 7, ampm: 0, hour: 9, min: 10 }}
+    max= {'2030-6-30T03:24'}
     min= {{ year: 2000, month: 9, date: 7, ampm: 0, hour: 9, min: 10 }}
   ```
-* `value` : 選填，預設為min，可傳String或Object
+* `value` : 選填，預設為`min`，可傳String或Object
   ```
     value={'2030-6-27T03:24'}
     value={{ year:2030, month:6, date:20, ampm:0, hour:9, min:0}}
   ```
+* `id` : 選填，預設為`datetime`datetime field的id
+* `name` : 選填，預設為`datetime`，datetime field的name
+* `onChange` : 選填，datetime field的值變動時會執行該function
 * `nodate` : 選填，是否開啟Date(年、月、日)的部分
 * `notime` : 選填，是否開啟Time(上/下午、時、分)的部分
 * `autofocus` : 選填，focus可填的第一格input
