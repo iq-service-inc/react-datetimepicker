@@ -40,9 +40,9 @@ export default class Timeinput extends Component {
                     onKeyDown={(e) => enter(e)}
                     type="number" step="1"
                     min={select.date == min.date && select.month == min.month && select.year == min.year ?
-                        (select.ampm - min.ampm) * 12 + min.hour % 12 : 1}
+                        ((select.ampm - min.ampm) * 12 + min.hour) % 12 : 1}
                     max={select.date == max.date && select.month == max.month && select.year == max.year ?
-                        (max.ampm - select.ampm) * 12 + max.hour % 12 : 12}
+                        ((max.ampm - select.ampm) * 12 + max.hour) % 12 : 12}
                     disabled={disabled.indexOf('hour')!=-1}
                 ></input>
                 {

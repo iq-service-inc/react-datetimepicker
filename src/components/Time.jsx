@@ -25,11 +25,11 @@ export default class Time extends Component {
                 hours.push({hr, enable:d? false: true})
             }
             else{
-                if(selectDate-minDate==0){
-                    hours.push({hr, enable:d? false: ((select.ampm-min.ampm)*12+min.hour%12)<=hr})
+                if(selectDate-minDate==0 && maxDate-selectDate>0){
+                    hours.push({hr, enable:d? false: (((select.ampm-min.ampm)*12+min.hour)%12)<=hr})
                 }
-                else if(maxDate-selectDate==0){
-                    hours.push({hr, enable:d? false: ((max.ampm-select.ampm)*12+max.hour%12)>=hr})
+                else if(selectDate-minDate>0 && maxDate-selectDate==0){
+                    hours.push({hr, enable:d? false: (((max.ampm-select.ampm)*12+max.hour)%12)>=hr})
                 }
                 else{
                     hours.push({hr, enable:false})
@@ -76,18 +76,14 @@ export default class Time extends Component {
             const minDate = new Date(min.year,min.month-1,min.date)
             const maxDate = new Date(max.year,max.month-1,max.date)
             var ampm = {am:false, pm:false}
-            if(selectDate-minDate>0 && maxDate-selectDate>0){
+            if(selectDate-minDate>=0 && maxDate-selectDate>=0){
                 ampm = {am:true, pm:true}
             }
-            else if(selectDate-minDate>0) ampm.am = true
-            else if(maxDate-selectDate>0) ampm.pm = true
-            else{
-                if(selectDate-minDate==0){
-                    ampm.am = min.ampm==0
-                }
-                if(maxDate-selectDate==0){
-                    ampm.pm = max.ampm==1
-                }
+            if(selectDate-minDate==0){
+                ampm.am = min.ampm==0
+            }
+            if(maxDate-selectDate==0){
+                ampm.pm = max.ampm==1
             }
         }
         return ampm

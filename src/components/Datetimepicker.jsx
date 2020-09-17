@@ -7,7 +7,7 @@ import Time from './Time'
 import Dateinput from './Dateinput'
 import { FormattedDate } from 'react-intl'
 import Timeinput from './Timeinput'
-import '../styl/lib/datetimepicker.styl'
+// import '../styl/lib/datetimepicker.styl'
 
 export default class Datetimepicker extends Component {
     constructor(props){
@@ -35,7 +35,8 @@ export default class Datetimepicker extends Component {
     }
 
     componentDidMount() {
-        const { value } = this.props
+        const { value, max, min } = this.props
+        new Date(max.year,max.month-1,max.date,max.ampm*12+max.hour,max.min)-new Date(min.year,min.month-1,min.date,min.ampm*12+min.hour,min.min) < 0 && console.error('min 必須小於 max')
 
         if(typeof value == "string"){
             var datetime = value.split('T')
@@ -159,9 +160,9 @@ export default class Datetimepicker extends Component {
         var valid = true
         if(!!e.target.min && !!e.target.max) {valid = value>=Number(e.target.min) && value<=Number(e.target.max)}
         if(!valid) {
-            this.setState({
-                alert: e.target.id
-            })
+            // this.setState({
+            //     alert: e.target.id
+            // })
         }
         else {
             this.setState({
