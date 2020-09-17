@@ -252,7 +252,7 @@ export default class Datetimepicker extends Component {
 
     render() {
         const { openCalendar, openYearMonth, select, input, alert, output } = this.state
-        const { nodate, notime, autofocus, value, disabled, id, name, onChange } = this.props
+        const { nodate, notime, autofocus, value, disabled, id="datetime", name="datetime", onChange } = this.props
         const { max={year: 275759, month: 12, date: 31, ampm: 1, hour: 12, min: 59} } = this.props
         const { min={year: 1970, month: 1, date: 1, ampm: 0, hour: 1, min: 0} } = this.props
         return (

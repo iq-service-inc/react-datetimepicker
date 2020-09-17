@@ -85,10 +85,10 @@ class App extends Component {
                         autofocus={options.autofocus}
                         disabled={!!options.disabled? options.disabled.split(' '): []}
                         // value={'2030-6-27T03:24'}
+                        // value={{ year:2030, month:6, date:20, ampm:0, hour:9, min:0}}
                         onChange={()=>console.log('input changed!')}
                         id="birth"
                         name="birth"
-                        // value={{ year:2030, month:6, date:20, ampm:0, hour:9, min:0}}
                         // nodate
                         // notime
                         // autofocus
