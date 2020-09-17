@@ -22,10 +22,11 @@ class App extends Component {
     submit(e) {
         e.preventDefault()
         // console.log(Object.values(e.target.elements))
-        var value = {}
-        Object.values(e.target.elements).map(input =>
-            value[input.id]=input.value)
-        this.setState({value})
+        // var value = {}
+        // Object.values(e.target.elements).map(input =>
+        //     value[input.id]=input.value)
+        // this.setState({value})
+        this.setState({value: e.target['birth'].value})
         e.persist()
     }
 
@@ -84,6 +85,9 @@ class App extends Component {
                         autofocus={options.autofocus}
                         disabled={!!options.disabled? options.disabled.split(' '): []}
                         // value={'2030-6-27T03:24'}
+                        onChange={()=>console.log('input changed!')}
+                        id="birth"
+                        name="birth"
                         // value={{ year:2030, month:6, date:20, ampm:0, hour:9, min:0}}
                         // nodate
                         // notime
@@ -94,11 +98,12 @@ class App extends Component {
                 <input type="submit" form="datetime"></input>
                 <div>
                     {/* { Object.keys(value).map(i => i+":"+value[i]+" ") } */}
-                    { !!value && <FormattedDate
+                    {/* { !!value && <FormattedDate
                         value={new Date(value.year,(value.month-1),value.date)}
                     />}
                     <br/>
-                    { !!value && <FormattedTime value={new Date(0,0,0,value.ampm*12+Number(value.hour),value.min)} />}
+                    { !!value && <FormattedTime value={new Date(0,0,0,value.ampm*12+Number(value.hour),value.min)} />} */}
+                    {value}
                 </div>
             </IntlProvider>
         )

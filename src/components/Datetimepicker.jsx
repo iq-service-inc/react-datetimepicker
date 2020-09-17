@@ -5,9 +5,9 @@ import YearSelect from './YearSelect'
 import Days from './Days'
 import Time from './Time'
 import Dateinput from './Dateinput'
-import { FormattedDate } from 'react-intl'
 import Timeinput from './Timeinput'
 import '../styl/lib/datetimepicker.styl'
+import { FormattedDate, FormattedTime } from 'react-intl'
 
 export default class Datetimepicker extends Component {
     constructor(props){
@@ -31,6 +31,7 @@ export default class Datetimepicker extends Component {
                 min: this.format(new Date().getMinutes(),10,"0"),
                 ampm: new Date().getHours()/12>=1? 1: 0,
             },
+            output: undefined,
         }
     }
 
@@ -65,6 +66,14 @@ export default class Datetimepicker extends Component {
             var datetime = value.split('T')
             var date = datetime[0].split('-')
             var time = datetime[1].split(':')
+            this.setOutput({
+                year: date[0],
+                month: date[1],
+                date: date[2],
+                hour: time[0]%12,
+                min: time[1],
+                ampm: time[0]/12>=1? 1: 0,
+            })
             this.setState({
                 select: {
                     year: date[0],
@@ -85,6 +94,7 @@ export default class Datetimepicker extends Component {
             })
         }
         if(typeof value == "object"){
+            this.setOutput(value)
             this.setState({
                 select: value,
                 input: {
@@ -135,6 +145,14 @@ export default class Datetimepicker extends Component {
     }
 
     selectDay = (year,month,date,hour,min,ampm) => {
+        this.setOutput({
+            year: !!year? year: this.state.select.year,
+            month: !!month? month: this.state.select.month,
+            date: !!date? date: this.state.select.date,
+            hour: !!hour? hour: this.state.select.hour,
+            min: min!=undefined? min: this.state.select.min,
+            ampm: ampm!=undefined? ampm: this.state.select.ampm,
+        })
         this.setState({
             alert: undefined,
             select:{
@@ -157,6 +175,10 @@ export default class Datetimepicker extends Component {
     }
 
     input = (e) => {
+        this.setOutput({
+            ...this.state.select,
+            [e.target.id]: e.target.value
+        })
         this.setState({
             select: {
                 ...this.state.select,
@@ -181,6 +203,10 @@ export default class Datetimepicker extends Component {
         else {
             this.setState({
                 alert: undefined
+            })
+            this.setOutput({
+                ...this.state.select,
+                [e.target.id]: value
             })
             this.setState({
                 select: {
@@ -217,13 +243,33 @@ export default class Datetimepicker extends Component {
         e.persist()
     }
 
+    setOutput = (t) => {
+        this.setState({
+            output: t
+        })
+        this.props.onChange()
+    }
+
     render() {
-        const { openCalendar, openYearMonth, select, input, alert } = this.state
-        const { nodate, notime, autofocus, value, disabled } = this.props
+        const { openCalendar, openYearMonth, select, input, alert, output } = this.state
+        const { nodate, notime, autofocus, value, disabled, id, name, onChange } = this.props
         const { max={year: 275759, month: 12, date: 31, ampm: 1, hour: 12, min: 59} } = this.props
         const { min={year: 1970, month: 1, date: 1, ampm: 0, hour: 1, min: 0} } = this.props
         return (
             <div>
+                {
+                    !!output && <FormattedDate value={new Date(output.year,(output.month-1),output.date)}>
+                        {
+                            date=>
+                            <FormattedTime value={new Date(0,0,0,output.ampm*12+Number(output.hour),output.min)}>
+                                {
+                                    time=>
+                                        <input id={id} name={name} value={date+' '+time} readOnly style={{display: 'none'}}></input>
+                                }
+                            </FormattedTime>
+                        }
+                    </FormattedDate>
+                }
                 <div className="datetimeinput">
                     {
                         !nodate &&
