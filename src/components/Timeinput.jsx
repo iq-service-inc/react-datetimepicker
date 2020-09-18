@@ -20,7 +20,8 @@ export default class Timeinput extends Component {
         return (
             <>
                 <select id="ampm" onChange={(e) => setinput(e)} value={input.ampm}
-                    disabled={disabled.indexOf('ampm')!=-1}>
+                    disabled={(typeof disabled=='object' && disabled.indexOf('ampm')!=-1) || (typeof disabled=='boolean' && disabled)}
+                    >
                     {
                         select.date == min.date && select.month == min.month && select.year == min.year ?
                             <FormattedMessage id='datetime.am' defaultMessage='上午'>{t => <option value="0" disabled={min.ampm != 0}>{t}</option>}</FormattedMessage>
@@ -43,7 +44,7 @@ export default class Timeinput extends Component {
                         ((select.ampm - min.ampm) * 12 + min.hour) % 12 : 0}
                     max={select.date == max.date && select.month == max.month && select.year == max.year ?
                         ((max.ampm - select.ampm) * 12 + max.hour) % 12 : 11}
-                    disabled={disabled.indexOf('hour')!=-1}
+                    disabled={(typeof disabled=='object' && disabled.indexOf('hour')!=-1) || (typeof disabled=='boolean' && disabled)}
                 ></input>
                 {
                     alert == 'hour' &&
@@ -69,7 +70,7 @@ export default class Timeinput extends Component {
                         min.min : 0}
                     max={select.hour == max.hour && select.ampm == max.ampm && select.date == max.date && select.month == max.month && select.year == max.year ?
                         max.min : 59}
-                    disabled={disabled.indexOf('min')!=-1}
+                    disabled={(typeof disabled=='object' && disabled.indexOf('min')!=-1) || (typeof disabled=='boolean' && disabled)}
                 ></input>
                 {
                     alert == 'min' &&

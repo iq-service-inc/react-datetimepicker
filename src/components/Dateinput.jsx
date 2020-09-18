@@ -26,7 +26,7 @@ export default class Dateinput extends Component {
                     type="number" step="1"
                     max={max.year}
                     min={min.year}
-                    disabled={disabled.indexOf('year')!=-1}
+                    disabled={(typeof disabled=='object' && disabled.indexOf('year')!=-1) || (typeof disabled=='boolean' && disabled)}
                     ></input>
                 {
                     alert == 'year' &&
@@ -47,7 +47,7 @@ export default class Dateinput extends Component {
                     type="number" step="1"
                     max={select.year<=max.year&&select.year>=min.year? select.year==max.year?max.month:12 : -1}
                     min={select.year<=max.year&&select.year>=min.year? select.year==min.year?min.month:1 : -1}
-                    disabled={disabled.indexOf('month')!=-1}
+                    disabled={(typeof disabled=='object' && disabled.indexOf('month')!=-1) || (typeof disabled=='boolean' && disabled)}
                 ></input>
                 {
                     alert == 'month' &&
@@ -68,7 +68,7 @@ export default class Dateinput extends Component {
                     type="number" step="1"
                     min={new Date(select.year, select.month) - new Date(min.year, min.month) > 0 ? min.date : 1}
                     max={select.month == max.month && select.year == max.year ? max.date : (new Date(select.year, select.month, 1) - new Date(select.year, select.month - 1, 1)) / (86400 * 1000)}
-                    disabled={disabled.indexOf('date')!=-1}
+                    disabled={(typeof disabled=='object' && disabled.indexOf('date')!=-1) || (typeof disabled=='boolean' && disabled)}
                 ></input>
                 {
                     alert == 'date' &&

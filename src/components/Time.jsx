@@ -15,7 +15,7 @@ export default class Time extends Component {
 
     renderHour(select,min,max) {
         const { disabled } = this.props
-        var d = disabled.indexOf('hour')!=-1
+        var d = typeof disabled=='object' && disabled.indexOf('hour')!=-1
         const selectDate = new Date(select.year,select.month-1,select.date)
         const minDate = new Date(min.year,min.month-1,min.date)
         const maxDate = new Date(max.year,max.month-1,max.date)
@@ -41,7 +41,7 @@ export default class Time extends Component {
 
     renderMin(select,min,max) {
         const { disabled } = this.props
-        var d = disabled.indexOf('min')!=-1
+        var d = typeof disabled=='object' && disabled.indexOf('min')!=-1
         const selectHour = new Date(select.year,select.month-1,select.date,select.hour+(select.ampm*12))
         const minHour = new Date(min.year,min.month-1,min.date,min.hour+(min.ampm)*12)
         const maxHour = new Date(max.year,max.month-1,max.date,max.hour+(max.ampm)*12)
@@ -67,7 +67,7 @@ export default class Time extends Component {
 
     renderAMPM(select,min,max) {
         const { disabled } = this.props
-        var d = disabled.indexOf('ampm')!=-1
+        var d = typeof disabled=='object' && disabled.indexOf('ampm')!=-1
         if(d){
             ampm = {am:false, pm:false}
         }

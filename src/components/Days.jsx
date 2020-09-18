@@ -12,7 +12,7 @@ export default class Days extends Component {
 
     renderDate = (y, month, max, min) => {
         const { disabled } = this.props
-        var d = disabled.indexOf('date')!=-1
+        var d = typeof disabled=='object' && disabled.indexOf('date')!=-1
         var m = month-1
         var days = (new Date(y,m+1,1) - new Date(y,m,1))/(86400*1000)
         var arr = []
@@ -91,7 +91,7 @@ export default class Days extends Component {
                     )
                 }
                 {
-                    disabled.length==0 && 
+                    (typeof disabled=='object' && (disabled.indexOf('year')!=-1 && disabled.indexOf('month')!=-1 && disabled.indexOf('date')!=-1)) &&
                     <div className="today onclick" onClick={() => selectDay(new Date().getFullYear(), new Date().getMonth() + 1, new Date().getDate())}>
                         <FormattedMessage id='datetime.today' defaultMessage='今天'></FormattedMessage>
                     </div>

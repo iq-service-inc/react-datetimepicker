@@ -62,7 +62,7 @@ export default class Datetimepicker extends Component {
         const { max={year: 275759, month: 12, date: 31, ampm: 1, hour: 12, min: 59} } = this.props
         const { min={year: 1970, month: 1, date: 1, ampm: 0, hour: 1, min: 0} } = this.props
         new Date(max.year,max.month-1,max.date,max.ampm*12+max.hour,max.min)-new Date(min.year,min.month-1,min.date,min.ampm*12+min.hour,min.min) < 0 && console.error('min 必須小於 max')
-        if(typeof value == "string"){
+        if(typeof value == "string" && value.length>0){
             var datetime = value.split('T')
             var date = datetime[0].split('-')
             var time = datetime[1].split(':')
@@ -244,10 +244,13 @@ export default class Datetimepicker extends Component {
     }
 
     setOutput = (t) => {
-        this.setState({
-            output: t
-        })
-        this.props.onChange()
+        if(t!==this.state.output){
+            this.setState({
+                output: t
+            })
+            this.props.onChange()
+
+        }
     }
 
     render() {
@@ -264,7 +267,7 @@ export default class Datetimepicker extends Component {
                             <FormattedTime value={new Date(0,0,0,output.ampm*12+Number(output.hour),output.min)}>
                                 {
                                     time=>
-                                        <input id={id} name={name} value={date+' '+time} readOnly style={{display: 'none'}}></input>
+                                        <input id={id} name={name} value={date+' '+time} readOnly></input>
                                 }
                             </FormattedTime>
                         }
@@ -310,14 +313,14 @@ export default class Datetimepicker extends Component {
 
                 </div>
                 {
-                    openCalendar &&
+                    openCalendar && ((typeof disabled=='boolean' && !disabled) || (typeof disabled=='object')) &&
                     <div className="datetime">
                         {
                             !nodate &&
                             <div className="datebox">
                                 <div className="box-title">
                                     {
-                                        disabled.indexOf('year')==-1?
+                                        (typeof disabled=='object' && disabled.indexOf('year')==-1)?
                                         <div className="year-month onclick hover" onClick={()=>this.toggle("openYearMonth")}>
                                             <FormattedDate
                                                 value={new Date(select.year, select.month-1)}
@@ -401,6 +404,6 @@ export default class Datetimepicker extends Component {
         nodate: propTypes.bool,
         notime: propTypes.bool,
         autofocus: propTypes.bool,
-        disabled: propTypes.arrayOf(propTypes.string)
+        disabled: propTypes.oneOfType([propTypes.arrayOf(propTypes.string), propTypes.bool])
     }
 }

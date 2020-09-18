@@ -55,6 +55,7 @@ class App extends Component {
             }
         )
         this.setState({options})
+        console.log(options)
     }
 
     render() {
@@ -84,6 +85,7 @@ class App extends Component {
                         notime={options.notime}
                         autofocus={options.autofocus}
                         disabled={!!options.disabled? options.disabled.split(' '): []}
+                        // disabled={['month','date']}
                         // value={'2030-6-27T03:24'}
                         // value={{ year:2030, month:6, date:20, ampm:0, hour:9, min:0}}
                         onChange={()=>console.log('input changed!')}
@@ -92,7 +94,7 @@ class App extends Component {
                         // nodate
                         // notime
                         // autofocus
-                        // disabled={['month','date']}
+                        // disabled
                     ></Datetimepicker>
                 </form>
                 <input type="submit" form="datetime"></input>
