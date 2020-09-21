@@ -11,12 +11,17 @@ class App extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            value: "",
+            value: undefined,
             options: {
-                mintime:{ year:2030, month:7, date:20, ampm:0, hour:9, min:0},
-                maxtime:{ year:2040, month:7, date:20, ampm:0, hour:9, min:0}
+                mintime:undefined,
+                maxtime:undefined
             }
         }
+        this.hideInput = React.createRef()
+    }
+
+    componentDidMount() {
+        // this.hideInput.current.focus()
     }
 
     submit(e) {
@@ -40,9 +45,9 @@ class App extends Component {
                     if(!!input.value){
                         var d = input.value.split('T')[0].split('-')
                         var t = input.value.split('T')[1].split(':')
-                        options[input.id] = { year: d[0], month: d[1], date: d[2], ampm: t[0]/12>=1, hour: t[0]%12, min: t[1]}
+                        options[input.id] = { year: Number(d[0]), month: Number(d[1]), date: Number(d[2]), ampm: Number(t[0])/12>=1, hour: Number(t[0])%12, min: Number(t[1])}
                     }
-                    else options[input.id] = {}
+                    else options[input.id] = undefined
                 }
                 else{
                     if(input.type=='checkbox'){
@@ -54,13 +59,19 @@ class App extends Component {
                 }
             }
         )
-        this.setState({options})
+        this.setState({options, value: !!form['value'].value? form['value'].value:undefined})
         console.log(options)
+    }
+
+    setValue = () => {
+        // console.log(this.hideInput.current.value)
+        this.setState({value:this.hideInput.current.value})
     }
 
     render() {
         const { intl: { language }, history } = this.props
         const { value, options } = this.state
+        // console.log('this.hideInput', this.hideInput.current)
         return (
             <IntlProvider defaultLocale='zh' {...language}>
                 <form onSubmit={(e) => this.set(e)}>
@@ -78,19 +89,20 @@ class App extends Component {
                     <Datetimepicker
                         // min={{ year:2030, month:7, date:20, ampm:0, hour:9, min:0}}
                         // max={{ year:2040, month:7, date:20, ampm:0, hour:9, min:0}}
-                        // min={options.mintime}
-                        // max={options.maxtime}
-                        value={options.value}
+                        min={options.mintime}
+                        max={options.maxtime}
+                        value={value}
                         nodate={options.nodate}
                         notime={options.notime}
-                        autofocus={options.autofocus}
-                        disabled={!!options.disabled? options.disabled.split(' '): []}
+                        autoFocus={options.autofocus}
+                        disabled={!!options.disabled? options.disabled.split(' '): undefined}
                         // disabled={['month','date']}
                         // value={'2030-6-27T03:24'}
                         // value={{ year:2030, month:6, date:20, ampm:0, hour:9, min:0}}
-                        onChange={()=>console.log('input changed!')}
+                        onChange={(e) => this.setValue(e)}
                         id="birth"
                         name="birth"
+                        inputRef={this.hideInput}
                         // nodate
                         // notime
                         // autofocus
@@ -105,7 +117,7 @@ class App extends Component {
                     />}
                     <br/>
                     { !!value && <FormattedTime value={new Date(0,0,0,value.ampm*12+Number(value.hour),value.min)} />} */}
-                    {value}
+                    {/* {value} */}
                 </div>
             </IntlProvider>
         )

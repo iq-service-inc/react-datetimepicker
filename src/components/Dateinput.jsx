@@ -15,10 +15,10 @@ export default class Dateinput extends Component {
     }
     
     render() {
-        const { input, select, max, min, setinput, selectall, check, enter, alert, autofocus, disabled } = this.props
+        const { select, max, min, setinput, selectall, check, enter, alert, autofocus, disabled } = this.props
         return (
             <>
-                <input className={(alert == 'year' ? "alert" : "") + " yearinput"} id="year" value={input.year}
+                <input className={(alert == 'year' ? "alert" : "") + " yearinput"} id="year" value={select.year}
                     onChange={(e) => setinput(e)}
                     onFocus={(e) => selectall(e)}
                     onBlur={(e) => check(e)}
@@ -39,7 +39,7 @@ export default class Dateinput extends Component {
                 }
                 <span className="disable-selection">/</span>
 
-                <input className={alert == 'month' ? "alert" : ""} id="month" value={input.month}
+                <input className={alert == 'month' ? "alert" : ""} id="month" value={select.month}
                     onChange={(e) => setinput(e)}
                     onFocus={(e) => selectall(e)}
                     onBlur={(e) => check(e)}
@@ -60,7 +60,7 @@ export default class Dateinput extends Component {
                 }
                 <span className="disable-selection">/</span>
 
-                <input className={alert == 'date' ? "alert" : ""} id="date" value={input.date}
+                <input className={alert == 'date' ? "alert" : ""} id="date" value={select.date}
                     onChange={(e) => setinput(e)}
                     onFocus={(e) => selectall(e)}
                     onBlur={(e) => check(e)}

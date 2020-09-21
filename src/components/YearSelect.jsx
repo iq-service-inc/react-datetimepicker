@@ -10,8 +10,19 @@ export default class YearSelect extends Component {
             open: undefined
         }
     }
+    componentDidUpdate(prevProps, prevState) {
+        const { value, max, min } = this.props
+        
+        if(prevProps.value!==value || prevProps.max!==max || prevProps.min!==min){
+            this.createYear()
+        }
+    }
 
     componentDidMount() {
+        this.createYear()
+    }
+
+    createYear() {
         const { max, min, select } = this.props
         if(max.year-min.year > 15){
             var start = select.year-7>min.year? Number(select.year)-7: min.year
