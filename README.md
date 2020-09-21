@@ -120,9 +120,9 @@ class AppComp extends Component {
     value={'2030-6-27T03:24'}
     value={{ year:2030, month:6, date:20, ampm:0, hour:9, min:0}}
   ```
-* `id` : 選填，預設為`datetime`datetime field的id
+* `id` : 選填，預設為`datetime`，datetime field的id
 * `name` : 選填，預設為`datetime`，datetime field的name
-* `inputRef` : 選填，datetime field的ref
+* `inputRef` : 選填，當作datetime field的ref
 * `onChange` : 選填，datetime field的值變動時會執行該function
 * `nodate` : 選填，是否開啟Date(年、月、日)的部分
 * `notime` : 選填，是否開啟Time(上/下午、時、分)的部分
