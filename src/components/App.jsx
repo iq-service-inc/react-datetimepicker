@@ -111,13 +111,7 @@ class App extends Component {
                 </form>
                 <input type="submit" form="datetime"></input>
                 <div>
-                    {/* { Object.keys(value).map(i => i+":"+value[i]+" ") } */}
-                    {/* { !!value && <FormattedDate
-                        value={new Date(value.year,(value.month-1),value.date)}
-                    />}
-                    <br/>
-                    { !!value && <FormattedTime value={new Date(0,0,0,value.ampm*12+Number(value.hour),value.min)} />} */}
-                    {/* {value} */}
+                    {value}
                 </div>
             </IntlProvider>
         )
