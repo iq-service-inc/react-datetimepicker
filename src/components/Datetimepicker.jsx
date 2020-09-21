@@ -28,9 +28,9 @@ export default class Datetimepicker extends Component {
 
     componentDidUpdate(prevProps, prevState) {
         const { select } = this.state
-        const { value, max, min, onChange } = this.props
+        const { value, onChange } = this.props
         
-        if(prevProps.value!==value || prevProps.max!==max || prevProps.min!==min){
+        if(prevProps.value!==value){
             this.setselectinput()
         }
 

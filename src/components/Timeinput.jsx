@@ -13,8 +13,8 @@ export default class Timeinput extends Component {
     }
 
     componentDidUpdate(prevProps, prevState) {
-        const { max, min, select } = this.props
-        if(prevProps.select!==select || prevProps.max!==max || prevProps.min!==min){
+        const { select } = this.props
+        if(prevProps.select!==select){
             this.checkValidity()
         }
     }
