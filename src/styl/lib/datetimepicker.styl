@@ -1,3 +1,6 @@
+#hideinput
+    display none
+
 .onclick
     cursor pointer
 
@@ -39,42 +42,8 @@
         margin 0
     > input[type=number]
         -moz-appearance textfield
-    > input.alert
-        border 2px solid #ff4343
-        border-radius: 5px
-        + label
-            display inline-block
-            position absolute
-            z-index 1
-            width 0
-            > .border
-                width 200px
-                height 40px
-                text-align center
-                background #fff
-                position relative
-                bottom 3rem
-                right 2rem
-                display flex
-                filter drop-shadow(0 0 0.3rem black)
-                align-items center
-                border-radius 5px
-                >div
-                    margin auto
-                > span.arrowout
-                    width 0px
-                    height 0px
-                    border-width 15px
-                    border-style solid
-                    border-color #fff transparent transparent transparent
-                    position absolute
-                    top 2.4rem
-                    transform scale(0.5, 0.9)
     > .calendar
         margin auto 4px
-
-    > input.alert:focus + label
-        display none
 
 .yearinput
     width 2.5em !important

@@ -39,9 +39,7 @@ export default class Timeinput extends Component {
         var mindate = select.date == min.date && select.month == min.month && select.year == min.year
         var maxdate = select.date == max.date && select.month == max.month && select.year == max.year
         var minhour = ((select.ampm - min.ampm) * 12 + min.hour) % 12
-        // minhour = minhour==0? 1:minhour
         var maxhour = ((max.ampm - select.ampm) * 12 + max.hour) % 12
-        // maxhour = maxhour==0? 12:maxhour
         this.setState({maxHour: maxdate? maxhour:12, minHour: mindate? minhour:1})
 
         if(select.hour==0 && (mindate || maxdate)){
@@ -55,7 +53,7 @@ export default class Timeinput extends Component {
     }
 
     render() {
-        const { select, max, min, setinput, selectall, check, enter, alert, disabled } = this.props
+        const { select, max, min, setinput, selectall, check, enter, disabled } = this.props
         const { minHour, maxHour } = this.state
         return (
             <>
@@ -75,7 +73,7 @@ export default class Timeinput extends Component {
                 </select>
                 <FormattedTimeParts value={new Date(0,0,0,select.hour,select.min)} hour="2-digit">
                     {t=>
-                        <input className={alert == 'hour' ? "alert" : ""} id="hour" value={t[1].value}
+                        <input id="hour" value={t[1].value}
                             onChange={(e) => setinput(e)}
                             onFocus={(e) => selectall(e)}
                             onBlur={(e) => check(e)}
@@ -87,23 +85,12 @@ export default class Timeinput extends Component {
                         ></input>
                     }
                 </FormattedTimeParts>
-                {
-                    alert == 'hour' &&
-                    <label htmlFor="hour" className="displaynone">
-                        <div className="border">
-                            <div>{"alert: " + min.year + "/" + min.month + "/" + min.date + " " + (min.ampm ? "pm" : "am") + " " + min.hour + ":" + min.min +
-                                " ~ " + max.year + "/" + max.month + "/" + max.date + " " + (max.ampm ? "pm" : "am") + " " + max.hour + ":" + max.min
-                            }</div>
-                            <span className="arrowout"></span>
-                        </div>
-                    </label>
-                }
 
                 <span className="disable-selection">:</span>
 
                 <FormattedTimeParts value={new Date(0,0,0,select.hour,select.min)} min="2-digit">
                     {t=>
-                        <input className={alert == 'min' ? "alert" : ""} id="min" value={t[3].value}
+                        <input id="min" value={t[3].value}
                             onChange={(e) => setinput(e)}
                             onFocus={(e) => selectall(e)}
                             onBlur={(e) => check(e)}
@@ -117,17 +104,6 @@ export default class Timeinput extends Component {
                         ></input>
                     }
                 </FormattedTimeParts>
-                {
-                    alert == 'min' &&
-                    <label htmlFor="min" className="displaynone">
-                        <div className="border">
-                            <div>{"alert: " + min.year + "/" + min.month + "/" + min.date + " " + (min.ampm ? "pm" : "am") + " " + min.hour + ":" + min.min +
-                                " ~ " + max.year + "/" + max.month + "/" + max.date + " " + (max.ampm ? "pm" : "am") + " " + max.hour + ":" + max.min
-                            }</div>
-                            <span className="arrowout"></span>
-                        </div>
-                    </label>
-                }
             </>
         )
     }

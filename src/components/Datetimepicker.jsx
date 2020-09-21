@@ -23,9 +23,6 @@ export default class Datetimepicker extends Component {
                 ampm: new Date().getHours()/12>=1? 1: 0,
             },
             openYearMonth: false,
-            value: '',
-            max: {},
-            min: {},
         }
     }
 
@@ -109,7 +106,6 @@ export default class Datetimepicker extends Component {
 
     selectDay = (year,month,date,hour,min,ampm) => {
         this.setState({
-            alert: undefined,
             select:{
                 year: !!year? year: this.state.select.year,
                 month: !!month? month: this.state.select.month,
@@ -145,19 +141,7 @@ export default class Datetimepicker extends Component {
         const value = Number(e.target.value)
         var valid = true
         if(!!e.target.min && !!e.target.max) {valid = value>=Number(e.target.min) && value<=Number(e.target.max)}
-        if(!valid) {
-            // this.setState({
-            //     alert: e.target.id
-            // })
-        }
-        else {
-            this.setState({
-                alert: undefined
-            })
-            // this.setOutput({
-            //     ...this.state.select,
-            //     [e.target.id]: value
-            // })
+        if(valid){
             this.setState({
                 select: {
                     ...this.state.select,
@@ -165,7 +149,6 @@ export default class Datetimepicker extends Component {
                 },
             })
         }
-        // this.props.onBlur()
     }
 
     format = (num, max, char) => {
@@ -174,7 +157,6 @@ export default class Datetimepicker extends Component {
 
     selectall = (e) => {
         e.target.select()
-        // this.props.onFocus()
     }
 
     enter = (e) => {
@@ -189,11 +171,10 @@ export default class Datetimepicker extends Component {
             }
         }
         e.persist()
-        // this.props.onKeyDown()
     }
 
     render() {
-        const { openCalendar, openYearMonth, select, alert } = this.state
+        const { openCalendar, openYearMonth, select } = this.state
         const { nodate, notime, autoFocus, value, id, name, disabled, max, min, inputRef } = this.props
         return (
             <div>
@@ -208,7 +189,6 @@ export default class Datetimepicker extends Component {
                             select={select}
                             max={max}
                             min={min}
-                            alert={alert}
                             setinput={(e)=>this.input(e)}
                             selectall={(e)=>this.selectall(e)}
                             check={(e)=>this.check(e)}
@@ -224,7 +204,6 @@ export default class Datetimepicker extends Component {
                             select={select}
                             max={max}
                             min={min}
-                            alert={alert}
                             setinput={(e)=>this.input(e)}
                             selectall={(e)=>this.selectall(e)}
                             check={(e)=>this.check(e)}

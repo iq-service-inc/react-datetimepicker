@@ -15,10 +15,10 @@ export default class Dateinput extends Component {
     }
     
     render() {
-        const { select, max, min, setinput, selectall, check, enter, alert, autofocus, disabled } = this.props
+        const { select, max, min, setinput, selectall, check, enter, autofocus, disabled } = this.props
         return (
             <>
-                <input className={(alert == 'year' ? "alert" : "") + " yearinput"} id="year" value={select.year}
+                <input className="yearinput" id="year" value={select.year}
                     onChange={(e) => setinput(e)}
                     onFocus={(e) => selectall(e)}
                     onBlur={(e) => check(e)}
@@ -28,18 +28,9 @@ export default class Dateinput extends Component {
                     min={min.year}
                     disabled={(typeof disabled=='object' && disabled.indexOf('year')!=-1) || (typeof disabled=='boolean' && disabled)}
                     ></input>
-                {
-                    alert == 'year' &&
-                    <label htmlFor="year" className="displaynone">
-                        <div className="border">
-                            <div>{"alert: " + min.year + " ~ " + max.year}</div>
-                            <span className="arrowout"></span>
-                        </div>
-                    </label>
-                }
                 <span className="disable-selection">/</span>
 
-                <input className={alert == 'month' ? "alert" : ""} id="month" value={select.month}
+                <input id="month" value={select.month}
                     onChange={(e) => setinput(e)}
                     onFocus={(e) => selectall(e)}
                     onBlur={(e) => check(e)}
@@ -49,18 +40,9 @@ export default class Dateinput extends Component {
                     min={select.year<=max.year&&select.year>=min.year? select.year==min.year?min.month:1 : -1}
                     disabled={(typeof disabled=='object' && disabled.indexOf('month')!=-1) || (typeof disabled=='boolean' && disabled)}
                 ></input>
-                {
-                    alert == 'month' &&
-                    <label htmlFor="month" className="displaynone">
-                        <div className="border">
-                            <div>{"alert: " + min.year + "/" + min.month + " ~ " + max.year + "/" + max.month}</div>
-                            <span className="arrowout"></span>
-                        </div>
-                    </label>
-                }
                 <span className="disable-selection">/</span>
 
-                <input className={alert == 'date' ? "alert" : ""} id="date" value={select.date}
+                <input id="date" value={select.date}
                     onChange={(e) => setinput(e)}
                     onFocus={(e) => selectall(e)}
                     onBlur={(e) => check(e)}
@@ -70,15 +52,6 @@ export default class Dateinput extends Component {
                     max={select.month == max.month && select.year == max.year ? max.date : (new Date(select.year, select.month, 1) - new Date(select.year, select.month - 1, 1)) / (86400 * 1000)}
                     disabled={(typeof disabled=='object' && disabled.indexOf('date')!=-1) || (typeof disabled=='boolean' && disabled)}
                 ></input>
-                {
-                    alert == 'date' &&
-                    <label htmlFor="date" className="displaynone">
-                        <div className="border">
-                            <div>{"alert: " + min.year + "/" + min.month + "/" + min.date + " ~ " + max.year + "/" + max.month + "/" + max.date}</div>
-                            <span className="arrowout"></span>
-                        </div>
-                    </label>
-                }
             </>
         )
     }
