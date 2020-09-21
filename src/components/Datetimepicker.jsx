@@ -199,7 +199,7 @@ export default class Datetimepicker extends Component {
             <div>
                 <div id="hideinput">
                     <input id={id} name={name} value={this.getDateTime()}
-                        ref={inputRef}></input>
+                        ref={inputRef} readOnly></input>
                 </div>
                 <div className="datetimeinput">
                     {
