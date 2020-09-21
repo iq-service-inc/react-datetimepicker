@@ -26,11 +26,6 @@ class App extends Component {
 
     submit(e) {
         e.preventDefault()
-        // console.log(Object.values(e.target.elements))
-        // var value = {}
-        // Object.values(e.target.elements).map(input =>
-        //     value[input.id]=input.value)
-        // this.setState({value})
         this.setState({value: e.target['birth'].value})
         e.persist()
     }
@@ -64,14 +59,12 @@ class App extends Component {
     }
 
     setValue = () => {
-        // console.log(this.hideInput.current.value)
         this.setState({value:this.hideInput.current.value})
     }
 
     render() {
         const { intl: { language }, history } = this.props
         const { value, options } = this.state
-        // console.log('this.hideInput', this.hideInput.current)
         return (
             <IntlProvider defaultLocale='zh' {...language}>
                 <form onSubmit={(e) => this.set(e)}>
@@ -111,13 +104,7 @@ class App extends Component {
                 </form>
                 <input type="submit" form="datetime"></input>
                 <div>
-                    {/* { Object.keys(value).map(i => i+":"+value[i]+" ") } */}
-                    {/* { !!value && <FormattedDate
-                        value={new Date(value.year,(value.month-1),value.date)}
-                    />}
-                    <br/>
-                    { !!value && <FormattedTime value={new Date(0,0,0,value.ampm*12+Number(value.hour),value.min)} />} */}
-                    {/* {value} */}
+                    {value}
                 </div>
             </IntlProvider>
         )

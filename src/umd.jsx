@@ -7,28 +7,25 @@ import InstallFontAwesome from './lib/icon'
 import { IntlProvider } from 'react-intl'
 import rootSaga from "./sagas"
 import { Datetimepicker } from '../module/main.js'
-import '../module/main.css'
+// import '../module/main.css'
 
 
 class AppComp extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            value: "",
+            value: undefined,
             options: {
-                mintime:{ year:2030, month:7, date:20, ampm:0, hour:9, min:0},
-                maxtime:{ year:2040, month:7, date:20, ampm:0, hour:9, min:0}
+                mintime:undefined,
+                maxtime:undefined
             }
         }
+        this.hideInput = React.createRef()
     }
-    
+
     submit(e) {
         e.preventDefault()
-        // console.log(Object.values(e.target.elements))
-        var value = {}
-        Object.values(e.target.elements).map(input =>
-            value[input.id]=input.value)
-        this.setState({value})
+        this.setState({value: e.target['birth'].value})
         e.persist()
     }
 
@@ -42,9 +39,9 @@ class AppComp extends Component {
                     if(!!input.value){
                         var d = input.value.split('T')[0].split('-')
                         var t = input.value.split('T')[1].split(':')
-                        options[input.id] = { year: d[0], month: d[1], date: d[2], ampm: t[0]/12>=1, hour: t[0]%12, min: t[1]}
+                        options[input.id] = { year: Number(d[0]), month: Number(d[1]), date: Number(d[2]), ampm: Number(t[0])/12>=1, hour: Number(t[0])%12, min: Number(t[1])}
                     }
-                    else options[input.id] = {}
+                    else options[input.id] = undefined
                 }
                 else{
                     if(input.type=='checkbox'){
@@ -56,12 +53,17 @@ class AppComp extends Component {
                 }
             }
         )
-        this.setState({options})
+        this.setState({options, value: !!form['value'].value? form['value'].value:undefined})
+        console.log(options)
+    }
+
+    setValue = () => {
+        this.setState({value:this.hideInput.current.value})
     }
 
     render() {
-        const { intl: { language } } = this.props
-        const { value } = this.state
+        const { intl: { language }, history } = this.props
+        const { value, options } = this.state
         return (
             <IntlProvider defaultLocale='zh' {...language}>
                 <form onSubmit={(e) => this.set(e)}>
@@ -81,27 +83,27 @@ class AppComp extends Component {
                         // max={{ year:2040, month:7, date:20, ampm:0, hour:9, min:0}}
                         min={options.mintime}
                         max={options.maxtime}
-                        value={options.value}
+                        value={value}
                         nodate={options.nodate}
                         notime={options.notime}
-                        autofocus={options.autofocus}
-                        disabled={!!options.disabled? options.disabled.split(' '): []}
+                        autoFocus={options.autofocus}
+                        disabled={!!options.disabled? options.disabled.split(' '): undefined}
+                        // disabled={['month','date']}
                         // value={'2030-6-27T03:24'}
                         // value={{ year:2030, month:6, date:20, ampm:0, hour:9, min:0}}
+                        onChange={(e) => this.setValue(e)}
+                        id="birth"
+                        name="birth"
+                        inputRef={this.hideInput}
                         // nodate
                         // notime
                         // autofocus
-                        // disabled={['month','date']}
+                        // disabled
                     ></Datetimepicker>
                 </form>
                 <input type="submit" form="datetime"></input>
                 <div>
-                    {/* { Object.keys(value).map(i => i+":"+value[i]+" ") } */}
-                    { !!value && <FormattedDate
-                        value={new Date(value.year,(value.month-1),value.date)}
-                    />}
-                    <br/>
-                    { !!value && <FormattedTime value={new Date(0,0,0,value.ampm*12+Number(value.hour),value.min)} />}
+                    {value}
                 </div>
             </IntlProvider>
         )

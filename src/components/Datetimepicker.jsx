@@ -316,6 +316,10 @@ export default class Datetimepicker extends Component {
         nodate: propTypes.bool,
         notime: propTypes.bool,
         autoFocus: propTypes.bool,
-        disabled: propTypes.oneOfType([propTypes.arrayOf(propTypes.string), propTypes.bool])
+        disabled: propTypes.oneOfType([propTypes.arrayOf(propTypes.string), propTypes.bool]),
+        inputRef: propTypes.string,
+        onChange: propTypes.func,
+        id: propTypes.string,
+        name: propTypes.string
     }
 }
