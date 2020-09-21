@@ -84,10 +84,10 @@ class AppComp extends Component {
                         max={{ year:2040, month:7, date:20, ampm:0, hour:9, min:0}}
                         value={'2030-6-27T03:24'}
                         // value={{ year:2030, month:6, date:20, ampm:0, hour:9, min:0}}
-                        onChange={() => this.setValue()}
                         id="birth"
                         name="birth"
                         inputRef={this.hideInput}
+                        onChange={() => this.setValue()}
                         // nodate
                         // notime
                         // autofocus
@@ -96,11 +96,7 @@ class AppComp extends Component {
                 </form>
                 <input type="submit" form="datetime"></input>
                 <div>
-                    { !!value && <FormattedDate
-                        value={new Date(value.year,(value.month-1),value.date)}
-                    />}
-                    <br/>
-                    { !!value && <FormattedTime value={new Date(0,0,0,value.ampm*12+Number(value.hour),value.min)} />}
+                    {value}
                 </div>
             </IntlProvider>
         )
