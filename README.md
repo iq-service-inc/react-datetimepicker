@@ -55,17 +55,23 @@ class AppComp extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            value: ""
+            value: undefined,
+            options: {
+                mintime:undefined,
+                maxtime:undefined
+            }
         }
+        this.hideInput = React.createRef()
     }
-    
+
     submit(e) {
         e.preventDefault()
-        var value = {}
-        Object.values(e.target.elements).map(input =>
-            value[input.id]=input.value)
-        this.setState({value})
+        this.setState({value: e.target['birth'].value})
         e.persist()
+    }
+
+    setValue = () => {  //使用ref取值
+        this.setState({value:this.hideInput.current.value})
     }
 
     render() {
@@ -78,9 +84,10 @@ class AppComp extends Component {
                         max={{ year:2040, month:7, date:20, ampm:0, hour:9, min:0}}
                         value={'2030-6-27T03:24'}
                         // value={{ year:2030, month:6, date:20, ampm:0, hour:9, min:0}}
-                        onChange={()=>console.log('input changed!')}
+                        onChange={() => this.setValue()}
                         id="birth"
                         name="birth"
+                        inputRef={this.hideInput}
                         // nodate
                         // notime
                         // autofocus
@@ -115,6 +122,7 @@ class AppComp extends Component {
   ```
 * `id` : 選填，預設為`datetime`datetime field的id
 * `name` : 選填，預設為`datetime`，datetime field的name
+* `inputRef` : 選填，datetime field的ref
 * `onChange` : 選填，datetime field的值變動時會執行該function
 * `nodate` : 選填，是否開啟Date(年、月、日)的部分
 * `notime` : 選填，是否開啟Time(上/下午、時、分)的部分
