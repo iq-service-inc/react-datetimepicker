@@ -67,7 +67,7 @@ export default class Datetimepicker extends Component {
                     year: Number(date[0]),
                     month: Number(date[1]),
                     date: Number(date[2]),
-                    hour: time[0]%12? time[0]%12:12,
+                    hour: time[0]%12,
                     min: Number(time[1]),
                     ampm: time[0]/12>=1? 1: 0,
                 },
@@ -122,12 +122,23 @@ export default class Datetimepicker extends Component {
     }
 
     input = (e) => {
-        this.setState({
-            select: {
-                ...this.state.select,
-                [e.target.id]: e.target.value
-            },
-        })
+        if(e.target.id=='hour'){
+            this.setState({
+                select: {
+                    ...this.state.select,
+                    [e.target.id]: e.target.value==12? 0: e.target.value
+                },
+            })
+        }
+        else{
+            this.setState({
+                select: {
+                    ...this.state.select,
+                    [e.target.id]: e.target.value
+                },
+            })
+        }
+        
     }
 
     check = (e) => {
@@ -188,7 +199,7 @@ export default class Datetimepicker extends Component {
             <div>
                 <div id="hideinput">
                     <input id={id} name={name} value={this.getDateTime()}
-                        ref={inputRef}></input>
+                        ref={inputRef} readOnly></input>
                 </div>
                 <div className="datetimeinput">
                     {

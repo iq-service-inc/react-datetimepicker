@@ -66,7 +66,7 @@ export default class Dateinput extends Component {
                     onBlur={(e) => check(e)}
                     onKeyDown={(e) => enter(e)}
                     type="number" step="1"
-                    min={new Date(select.year, select.month) - new Date(min.year, min.month) > 0 ? min.date : 1}
+                    min={select.month == min.month && select.year == min.year ? min.date : 1}
                     max={select.month == max.month && select.year == max.year ? max.date : (new Date(select.year, select.month, 1) - new Date(select.year, select.month - 1, 1)) / (86400 * 1000)}
                     disabled={(typeof disabled=='object' && disabled.indexOf('date')!=-1) || (typeof disabled=='boolean' && disabled)}
                 ></input>

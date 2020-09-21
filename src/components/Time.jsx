@@ -17,23 +17,17 @@ export default class Time extends Component {
         const { disabled } = this.props
         var d = typeof disabled=='object' && disabled.indexOf('hour')!=-1
         const selectDate = new Date(select.year,select.month-1,select.date)
-        const minDate = new Date(min.year,min.month-1,min.date)
-        const maxDate = new Date(max.year,max.month-1,max.date)
+        const minHour = new Date(min.year,min.month-1,min.date,min.hour+min.ampm*12)
+        const maxHour = new Date(max.year,max.month-1,max.date,max.hour+max.ampm*12)
         var hours = []
         for(var hr=0;hr<=11;hr++){
-            if(selectDate-minDate>0 && maxDate-selectDate>0){
+            selectDate.setHours(select.ampm*12+hr)
+            
+            if(selectDate-minHour>=0 && maxHour-selectDate>=0){
                 hours.push({hr, enable:d? false: true})
             }
             else{
-                if(selectDate-minDate==0 && maxDate-selectDate>0){
-                    hours.push({hr, enable:d? false: (((select.ampm-min.ampm)*12+min.hour)%12)<=hr})
-                }
-                else if(selectDate-minDate>0 && maxDate-selectDate==0){
-                    hours.push({hr, enable:d? false: (((max.ampm-select.ampm)*12+max.hour)%12)>=hr})
-                }
-                else{
-                    hours.push({hr, enable:false})
-                }
+                hours.push({hr, enable: false})
             }
         }
         return hours
@@ -42,24 +36,18 @@ export default class Time extends Component {
     renderMin(select,min,max) {
         const { disabled } = this.props
         var d = typeof disabled=='object' && disabled.indexOf('min')!=-1
-        const selectHour = new Date(select.year,select.month-1,select.date,select.hour+(select.ampm*12))
-        const minHour = new Date(min.year,min.month-1,min.date,min.hour+(min.ampm)*12)
-        const maxHour = new Date(max.year,max.month-1,max.date,max.hour+(max.ampm)*12)
+        const selectHour = new Date(select.year,select.month-1,select.date,select.hour+(select.ampm)*12)
+        const minMin = new Date(min.year,min.month-1,min.date,min.hour+(min.ampm)*12,min.min)
+        const maxMin = new Date(max.year,max.month-1,max.date,max.hour+(max.ampm)*12,max.min)
         var mins = []
         for(var minute=0;minute<60;minute++){
-            if(selectHour-minHour>0 && maxHour-selectHour>0){
+            selectHour.setMinutes(minute)
+            
+            if(selectHour-minMin>=0 && maxMin-selectHour>=0){
                 mins.push({minute, enable:d? false: true})
             }
             else{
-                if(selectHour-minHour==0){
-                    mins.push({minute, enable:d? false: min.min<=minute})
-                }
-                else if(maxHour-selectHour==0){
-                    mins.push({minute, enable:d? false: max.min>=minute})
-                }
-                else{
-                    mins.push({minute, enable:false})
-                }
+                mins.push({minute, enable: false})
             }
         }
         return mins
@@ -98,8 +86,8 @@ export default class Time extends Component {
                     {
                         this.renderHour(select,min,max).map(i => 
                             i.enable?
-                            <div className={(select.hour == i.hr ? "select " : "") + "timeitem onclick hover"} key={i.hr} onClick={() => selectDay(null, null, null, i.hr)}>{i.hr}</div>
-                            :<div className={(select.hour == i.hr ? "select " : "") + "timeitem disabled-timeitem"} key={i.hr}>{i.hr}</div>
+                            <div className={(select.hour == i.hr ? "select " : "") + "timeitem onclick hover"} key={i.hr} onClick={() => selectDay(null, null, null, i.hr)}>{i.hr==0?12:i.hr}</div>
+                            :<div className={(select.hour == i.hr ? "select " : "") + "timeitem disabled-timeitem"} key={i.hr}>{i.hr==0?12:i.hr}</div>
                         )
                     }
                 </div>
