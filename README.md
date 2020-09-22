@@ -116,7 +116,7 @@ class AppComp extends Component {
     max= {{ year: 2030, month: 9, date: 7, ampm: 0, hour: 9, min: 10 }}
     min= {{ year: 2000, month: 9, date: 7, ampm: 0, hour: 9, min: 10 }}
   ```
-* `value` : 選填，預設為`min`，可傳String或Object，皆會轉成String，可利用onChange取值更新，寫成Controlled Component
+* `value` : 選填，預設為`min`，可傳String或Object，皆會轉成String，( 建議使用String，可利用onChange取值更新，寫成Controlled Component )
   ```
     value={'2030-6-27T03:24'}
     value={{ year:2030, month:6, date:20, ampm:0, hour:9, min:0}}
