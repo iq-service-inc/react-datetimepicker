@@ -1,6 +1,3 @@
-import 'url-search-params-polyfill'
-import './lib/scrollPolyfill.js'
-import './lib/formdataPolyfill.js'
 import './img/favicon.ico'
 
 import React from 'react'
