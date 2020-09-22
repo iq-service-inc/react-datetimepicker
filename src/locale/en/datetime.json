@@ -1,14 +1,5 @@
 {
     "today": "Today",
-    "am": "am",
-    "pm": "pm",
-    "day": {
-        "sun": "Sun",
-        "mon": "Mon",
-        "tue": "Tue",
-        "wed": "Wed",
-        "thu": "Thu",
-        "fri": "Fri",
-        "sat": "Sat"
-    }
+    "am": "AM",
+    "pm": "PM"
 }

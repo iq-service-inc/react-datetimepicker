@@ -34,6 +34,7 @@ class App extends Component {
         e.preventDefault()
         var form = e.target
         var options = {}
+        this.props.set_language({language:'en'})
         Object.values(form.elements).map(input=>
             {
                 if(input.id=='mintime'||input.id=='maxtime'){

@@ -73,7 +73,7 @@ export default class Timeinput extends Component {
                 </select>
                 <FormattedTimeParts value={new Date(0,0,0,select.hour,select.min)} hour="2-digit">
                     {t=>
-                        <input id="hour" value={t[1].value}
+                        <input id="hour" value={t.filter(i=>i.type=='hour')[0].value}
                             onChange={(e) => setinput(e)}
                             onFocus={(e) => selectall(e)}
                             onBlur={(e) => check(e)}
@@ -90,7 +90,7 @@ export default class Timeinput extends Component {
 
                 <FormattedTimeParts value={new Date(0,0,0,select.hour,select.min)} min="2-digit">
                     {t=>
-                        <input id="min" value={t[3].value}
+                        <input id="min" value={t.filter(i=>i.type=='minute')[0].value}
                             onChange={(e) => setinput(e)}
                             onFocus={(e) => selectall(e)}
                             onBlur={(e) => check(e)}
