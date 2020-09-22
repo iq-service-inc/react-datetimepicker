@@ -3,6 +3,10 @@
 Datetimepicker為日期及時間的選擇器
 
 ## Install
+### 依賴套件
+```
+npm install --save @fortawesome/react-fontawesome prop-types react-intl
+```
 
 ### 開發人員模式
 ```
@@ -43,7 +47,7 @@ import 'datetimepicker/index.styl'
 ```
 
 * `<Datetimepicker>` 需要在 `<IntlProvider>` 之下才能運作
-* `Datetimepicker`的time為am 00:00~ pm 11:59，原生`datetime-loacle`中的的time為am 01:00~ pm 12:59
+* `Datetimepicker`的time為am 00:00 ~ pm 11:59，0顯示為12
 
 ```jsx
 import React, { Component } from 'react'
