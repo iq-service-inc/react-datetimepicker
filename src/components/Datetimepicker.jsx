@@ -304,8 +304,7 @@ export default class Datetimepicker extends Component {
 
     static defaultProps = {
         max: {year: 275759, month: 12, date: 31, ampm: 1, hour: 11, min: 59},
-        min: {year: 1970, month: 1, date: 1, ampm: 0, hour: 1, min: 0},
-        value: {year: 1970, month: 1, date: 1, ampm: 0, hour: 1, min: 0},
+        min: {year: 1970, month: 1, date: 1, ampm: 0, hour: 0, min: 0},
         disabled: [],
         id: 'datetime',
         name: 'datetime'
