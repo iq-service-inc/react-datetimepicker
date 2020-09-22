@@ -34,7 +34,6 @@ class App extends Component {
         e.preventDefault()
         var form = e.target
         var options = {}
-        this.props.set_language({language:'en'})
         Object.values(form.elements).map(input=>
             {
                 if(input.id=='mintime'||input.id=='maxtime'){
@@ -56,6 +55,7 @@ class App extends Component {
             }
         )
         this.setState({options, value: !!form['value'].value? form['value'].value:undefined})
+        this.props.set_language({language:form['language'].checked? 'en':'zh'})
         console.log(options)
     }
 
@@ -69,6 +69,7 @@ class App extends Component {
         return (
             <IntlProvider defaultLocale='zh' {...language}>
                 <form onSubmit={(e) => this.set(e)}>
+                    <label>language: <input type="checkbox" id="language"></input> en</label><br/>
                     <label>min</label><input type="text" id="mintime"></input><br/>
                     <label>max</label><input type="text" id="maxtime"></input><br/>
                     <label>value</label><input type="text" id="value"></input><br/>

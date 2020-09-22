@@ -54,6 +54,7 @@ class AppComp extends Component {
             }
         )
         this.setState({options, value: !!form['value'].value? form['value'].value:undefined})
+        this.props.set_language({language:form['language'].checked? 'en':'zh'})
         console.log(options)
     }
 
@@ -67,6 +68,7 @@ class AppComp extends Component {
         return (
             <IntlProvider defaultLocale='zh' {...language}>
                 <form onSubmit={(e) => this.set(e)}>
+                    <label>language: en</label><input type="checkbox" id="language"></input><br/>
                     <label>min</label><input type="text" id="mintime"></input><br/>
                     <label>max</label><input type="text" id="maxtime"></input><br/>
                     <label>value</label><input type="text" id="value"></input><br/>
