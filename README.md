@@ -112,7 +112,7 @@ class AppComp extends Component {
     max= {{ year: 2030, month: 9, date: 7, ampm: 0, hour: 9, min: 10 }}
     min= {{ year: 2000, month: 9, date: 7, ampm: 0, hour: 9, min: 10 }}
   ```
-* `value` : 選填，預設為`min`，可傳String或Object
+* `value` : 選填，預設為`min`，可傳String或Object，皆會轉成String，可利用onChange取值更新，寫成Controlled Component
   ```
     value={'2030-6-27T03:24'}
     value={{ year:2030, month:6, date:20, ampm:0, hour:9, min:0}}
@@ -120,7 +120,7 @@ class AppComp extends Component {
 * `id` : 選填，預設為`datetime`，datetime field的id
 * `name` : 選填，預設為`datetime`，datetime field的name
 * `inputRef` : 選填，當作datetime field的ref，( datetime field的value為string，ex: `2020-10-22T13:20` )
-* `onChange` : 選填，datetime field的值變動時會執行該function，回傳datetime field的value
+* `onChange` : 選填，datetime field的值變動時會執行該function，回傳datetime field的value ( ex: `2020-10-22T13:20` )
 * `nodate` : 選填，是否開啟Date(年、月、日)的部分
 * `notime` : 選填，是否開啟Time(上/下午、時、分)的部分
 * `autofocus` : 選填，focus可填的第一格input
