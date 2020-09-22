@@ -118,7 +118,7 @@ export default class YearSelect extends Component {
                                 }
                             </div>
                         </div>
-                        :<div className="year onclick" key={year} onClick={() => selectDay(year)}>
+                        :<div className={(select.year == year ? "select " : "") +" bigyear onclick hover"} key={year} onClick={() => selectDay(year)}>
                             <FormattedDate
                                 value={new Date(year,1)}
                                 year="numeric"

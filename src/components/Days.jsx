@@ -91,7 +91,7 @@ export default class Days extends Component {
                     )
                 }
                 {
-                    (typeof disabled=='object' && (disabled.indexOf('year')!=-1 && disabled.indexOf('month')!=-1 && disabled.indexOf('date')!=-1)) &&
+                    (typeof disabled=='object' && !(disabled.indexOf('year')!=-1 || disabled.indexOf('month')!=-1 || disabled.indexOf('date')!=-1)) &&
                     <div className="today onclick" onClick={() => selectDay(new Date().getFullYear(), new Date().getMonth() + 1, new Date().getDate())}>
                         <FormattedMessage id='datetime.today' defaultMessage='今天'></FormattedMessage>
                     </div>

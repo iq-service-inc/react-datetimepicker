@@ -1,13 +1,6 @@
 #hideinput
     display none
 
-.onclick
-    cursor pointer
-
-.select
-    background-color #2e5bff
-    color white
-
 .disable-selection
     -webkit-touch-callout none /* iOS Safari */
     -webkit-user-select none /* Safari */
@@ -125,10 +118,14 @@
 .yearselect::-webkit-scrollbar-thumb:hover
   background #555
 
-.year
+.year,
+.bigyear
     background-color #b9b9b9
     border-bottom 1px #a5a5a5 solid
     padding 4px 4px
+
+.bigyear
+    padding 10px 4px
 
 .monthselect
     display flex
@@ -208,3 +205,10 @@
 
 .disabled-timeitem
     color grey
+
+.onclick
+    cursor pointer
+
+.select
+    background-color #2e5bff
+    color white
