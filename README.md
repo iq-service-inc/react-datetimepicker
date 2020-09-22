@@ -70,8 +70,8 @@ class AppComp extends Component {
         e.persist()
     }
 
-    setValue = () => {  //使用ref取值
-        this.setState({value:this.hideInput.current.value})
+    setValue = (value) => {
+        this.setState({value:value})
     }
 
     render() {
@@ -87,7 +87,7 @@ class AppComp extends Component {
                         id="birth"
                         name="birth"
                         inputRef={this.hideInput}
-                        onChange={() => this.setValue()}
+                        onChange={(value) => this.setValue(value)}
                         // nodate
                         // notime
                         // autofocus
@@ -96,7 +96,8 @@ class AppComp extends Component {
                 </form>
                 <input type="submit" form="datetime"></input>
                 <div>
-                    {value}
+                    {`value: ${value}`}
+                    {!!this.hideInput.current && `ref: ${this.hideInput.current.value}`}
                 </div>
             </IntlProvider>
         )
@@ -118,8 +119,8 @@ class AppComp extends Component {
   ```
 * `id` : 選填，預設為`datetime`，datetime field的id
 * `name` : 選填，預設為`datetime`，datetime field的name
-* `inputRef` : 選填，當作datetime field的ref
-* `onChange` : 選填，datetime field的值變動時會執行該function
+* `inputRef` : 選填，當作datetime field的ref，( datetime field的value為string，ex: `2020-10-22T13:20` )
+* `onChange` : 選填，datetime field的值變動時會執行該function，回傳datetime field的value
 * `nodate` : 選填，是否開啟Date(年、月、日)的部分
 * `notime` : 選填，是否開啟Time(上/下午、時、分)的部分
 * `autofocus` : 選填，focus可填的第一格input

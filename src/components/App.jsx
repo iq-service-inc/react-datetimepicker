@@ -58,8 +58,8 @@ class App extends Component {
         console.log(options)
     }
 
-    setValue = () => {
-        this.setState({value:this.hideInput.current.value})
+    setValue = (value) => {
+        this.setState({value:value})
     }
 
     render() {
@@ -92,7 +92,7 @@ class App extends Component {
                         // disabled={['month','date']}
                         // value={'2030-6-27T03:24'}
                         // value={{ year:2030, month:6, date:20, ampm:0, hour:9, min:0}}
-                        onChange={(e) => this.setValue(e)}
+                        onChange={(value) => this.setValue(value)}
                         id="birth"
                         name="birth"
                         inputRef={this.hideInput}
@@ -104,7 +104,8 @@ class App extends Component {
                 </form>
                 <input type="submit" form="datetime"></input>
                 <div>
-                    {value}
+                    {`value: ${value}`}
+                    {!!this.hideInput.current && `ref: ${this.hideInput.current.value}`}
                 </div>
             </IntlProvider>
         )
