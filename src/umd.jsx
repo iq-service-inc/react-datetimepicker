@@ -45,7 +45,7 @@ class AppComp extends Component {
                 }
                 else{
                     if(input.type=='checkbox'){
-                        options[input.id] = input.cheked
+                        options[input.id] = input.checked
                     }
                     else{
                         options[input.id] = input.value
