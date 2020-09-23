@@ -81,11 +81,10 @@ class AppComp extends Component {
             <IntlProvider defaultLocale='zh' {...language}>
                 <form onSubmit={(e) => this.submit(e)} id="datetime">
                     <Datetimepicker
-                        // min={{ year:2030, month:7, date:20, ampm:0, hour:9, min:0}}
-                        max={{ year:2040, month:7, date:20, ampm:0, hour:9, min:0}}
+                        max='+022030-05-27T03:24'
+                        min='2030-07-27T03:24'
                         value={value}
-                        // value={'2030-6-27T03:24'}
-                        // value={{ year:2030, month:6, date:20, ampm:0, hour:9, min:0}}
+                        // value='2030-06-27T03:24'
                         id="birth"
                         name="birth"
                         inputRef={this.hideInput}
@@ -109,19 +108,19 @@ class AppComp extends Component {
 
 ### `Datetimepicker` props
 
-* `max`、`min` : 選填，預設1970/1/1 am 00:00 ~ 275759/12/31 pm 11:59，包含年、月、日、上/下午、時、分
+* `max`、`min` : 選填，預設1970/1/1 am 00:00 ~ 275759/12/31 pm 11:59，使用解析字串的方式建立Date物件，格式依照瀏覽器不同可能會出錯，格式錯誤無法解析會使用預設值，建議格式`yyyy-mm-ddThh:mm`，若年大於4位數格式寫為`+yyyyyy-mm-ddThh:mm`
   ```
-    max= {{ year: 2030, month: 9, date: 7, ampm: 0, hour: 9, min: 10 }}
-    min= {{ year: 2000, month: 9, date: 7, ampm: 0, hour: 9, min: 10 }}
+    max='+022030-05-27T03:24'
+    min='2030-07-27T03:24'
   ```
-* `value` : 選填，預設為`min`，可傳String或Object，皆會轉成String，( 建議使用String，可利用onChange取值更新，寫成Controlled Component )
+* `value` : 選填，預設為`min`，格式錯誤無法解析會使用預設值，( 可利用onChange取值更新，寫成Controlled Component )
   ```
-    value={'2030-6-27T03:24'}
-    value={{ year:2030, month:6, date:20, ampm:0, hour:9, min:0}}
+    value='2030-06-27T03:24'
+    value='+022030-06-27T03:24'
   ```
 * `id` : 選填，預設為`datetime`，datetime field的id
 * `name` : 選填，預設為`datetime`，datetime field的name
-* `inputRef` : 選填，當作datetime field的ref，( datetime field的value為string，ex: `2020-10-22T13:20` )
+* `inputRef` : 選填，當作datetime field的ref，( datetime field的value為string，ex: `2020-01-22T13:20` )
 * `onChange` : 選填，datetime field的值變動時會執行該function，回傳datetime field的value ( ex: `2020-10-22T13:20` )
 * `nodate` : 選填，是否開啟Date(年、月、日)的部分
 * `notime` : 選填，是否開啟Time(上/下午、時、分)的部分

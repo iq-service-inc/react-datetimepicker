@@ -1,7 +1,6 @@
 import { element } from 'prop-types'
 import React, { Component } from 'react'
 import { FormattedMessage } from 'react-intl'
-import { FormattedTimeParts } from 'react-intl'
 
 export default class Timeinput extends Component {
     constructor(props){
@@ -53,11 +52,11 @@ export default class Timeinput extends Component {
     }
 
     render() {
-        const { select, max, min, setinput, selectall, check, enter, disabled } = this.props
+        const { select, max, min, setinput, selectall, check, enter, disabled, input, format } = this.props
         const { minHour, maxHour } = this.state
         return (
             <>
-                <select id="ampm" onChange={(e) => setinput(e)} value={select.ampm}
+                <select id="ampm" onChange={(e) => setinput(e)} value={input.ampm}
                     disabled={(typeof disabled=='object' && disabled.indexOf('ampm')!=-1) || (typeof disabled=='boolean' && disabled)}
                     >
                     {
@@ -71,39 +70,32 @@ export default class Timeinput extends Component {
                             : <FormattedMessage id='datetime.pm' defaultMessage='下午'>{t => <option value="1">{t}</option>}</FormattedMessage>
                     }
                 </select>
-                <FormattedTimeParts value={new Date(0,0,0,select.hour,select.min)} hour="2-digit">
-                    {t=>
-                        <input id="hour" value={t.filter(i=>i.type=='hour')[0].value}
-                            onChange={(e) => setinput(e)}
-                            onFocus={(e) => selectall(e)}
-                            onBlur={(e) => check(e)}
-                            onKeyDown={(e) => enter(e)}
-                            type="number" step="1"
-                            min={minHour}
-                            max={maxHour}
-                            disabled={(typeof disabled=='object' && disabled.indexOf('hour')!=-1) || (typeof disabled=='boolean' && disabled)}
-                        ></input>
-                    }
-                </FormattedTimeParts>
+
+                <input id="hour" value={input.hour==0? 12:format(input.hour,10,'0')}
+                    onChange={(e) => setinput(e)}
+                    onFocus={(e) => selectall(e)}
+                    onBlur={(e) => check(e)}
+                    onKeyDown={(e) => enter(e)}
+                    type="number" step="1"
+                    min={minHour}
+                    max={maxHour}
+                    disabled={(typeof disabled=='object' && disabled.indexOf('hour')!=-1) || (typeof disabled=='boolean' && disabled)}
+                ></input>
 
                 <span className="disable-selection">:</span>
 
-                <FormattedTimeParts value={new Date(0,0,0,select.hour,select.min)} min="2-digit">
-                    {t=>
-                        <input id="min" value={t.filter(i=>i.type=='minute')[0].value}
-                            onChange={(e) => setinput(e)}
-                            onFocus={(e) => selectall(e)}
-                            onBlur={(e) => check(e)}
-                            onKeyDown={(e) => enter(e)}
-                            type="number" step="1"
-                            min={select.hour == min.hour && select.ampm == min.ampm && select.date == min.date && select.month == min.month && select.year == min.year ?
-                                min.min : 0}
-                            max={select.hour == max.hour && select.ampm == max.ampm && select.date == max.date && select.month == max.month && select.year == max.year ?
-                                max.min : 59}
-                            disabled={(typeof disabled=='object' && disabled.indexOf('min')!=-1) || (typeof disabled=='boolean' && disabled)}
-                        ></input>
-                    }
-                </FormattedTimeParts>
+                <input id="min" value={format(input.min,10,'0')}
+                    onChange={(e) => setinput(e)}
+                    onFocus={(e) => selectall(e)}
+                    onBlur={(e) => check(e)}
+                    onKeyDown={(e) => enter(e)}
+                    type="number" step="1"
+                    min={select.hour == min.hour && select.ampm == min.ampm && select.date == min.date && select.month == min.month && select.year == min.year ?
+                        min.min : 0}
+                    max={select.hour == max.hour && select.ampm == max.ampm && select.date == max.date && select.month == max.month && select.year == max.year ?
+                        max.min : 59}
+                    disabled={(typeof disabled=='object' && disabled.indexOf('min')!=-1) || (typeof disabled=='boolean' && disabled)}
+                ></input>
             </>
         )
     }

@@ -35,21 +35,11 @@ class AppComp extends Component {
         var options = {}
         Object.values(form.elements).map(input=>
             {
-                if(input.id=='mintime'||input.id=='maxtime'){
-                    if(!!input.value){
-                        var d = input.value.split('T')[0].split('-')
-                        var t = input.value.split('T')[1].split(':')
-                        options[input.id] = { year: Number(d[0]), month: Number(d[1]), date: Number(d[2]), ampm: Number(t[0])/12>=1, hour: Number(t[0])%12, min: Number(t[1])}
-                    }
-                    else options[input.id] = undefined
+                if(input.type=='checkbox'){
+                    options[input.id] = input.checked
                 }
                 else{
-                    if(input.type=='checkbox'){
-                        options[input.id] = input.checked
-                    }
-                    else{
-                        options[input.id] = input.value
-                    }
+                    options[input.id] = input.value
                 }
             }
         )
@@ -58,8 +48,8 @@ class AppComp extends Component {
         console.log(options)
     }
 
-    setValue = () => {
-        this.setState({value:this.hideInput.current.value})
+    setValue = (value) => {
+        this.setState({value:value})
     }
 
     render() {
@@ -68,7 +58,7 @@ class AppComp extends Component {
         return (
             <IntlProvider defaultLocale='zh' {...language}>
                 <form onSubmit={(e) => this.set(e)}>
-                    <label>language: en</label><input type="checkbox" id="language"></input><br/>
+                    <label>language: <input type="checkbox" id="language"></input> en</label><br/>
                     <label>min</label><input type="text" id="mintime"></input><br/>
                     <label>max</label><input type="text" id="maxtime"></input><br/>
                     <label>value</label><input type="text" id="value"></input><br/>
@@ -81,8 +71,8 @@ class AppComp extends Component {
                 </form>
                 <form onSubmit={(e) => this.submit(e)} id="datetime">
                     <Datetimepicker
-                        // min={{ year:2030, month:7, date:20, ampm:0, hour:9, min:0}}
-                        // max={{ year:2040, month:7, date:20, ampm:0, hour:9, min:0}}
+                        // max='+022030-05-27T03:24'
+                        // min='2030-07-27T03:24'
                         min={options.mintime}
                         max={options.maxtime}
                         value={value}
@@ -91,9 +81,8 @@ class AppComp extends Component {
                         autoFocus={options.autofocus}
                         disabled={!!options.disabled? options.disabled.split(' '): undefined}
                         // disabled={['month','date']}
-                        // value={'2030-6-27T03:24'}
-                        // value={{ year:2030, month:6, date:20, ampm:0, hour:9, min:0}}
-                        onChange={(e) => this.setValue(e)}
+                        // value='2030-6-27T03:24'
+                        onChange={(value) => this.setValue(value)}
                         id="birth"
                         name="birth"
                         inputRef={this.hideInput}
@@ -105,7 +94,7 @@ class AppComp extends Component {
                 </form>
                 <input type="submit" form="datetime"></input>
                 <div>
-                    {value}
+                    {`value: ${value}`}
                 </div>
             </IntlProvider>
         )
