@@ -12,7 +12,9 @@ export default class YearSelect extends Component {
     }
     componentDidUpdate(prevProps, prevState) {
         const { select } = this.props
-        
+        if(prevState.year.length==0){
+            this.scrolltoselect()
+        }
         if(prevProps.select!==select){
             this.createYear()
         }
@@ -24,12 +26,12 @@ export default class YearSelect extends Component {
 
     createYear() {
         const { max, min, select } = this.props
-        if(max.year-min.year > 15){
+        if(max.year-min.year > 19){
             var middle = select.year
-            if(select.year<min.year) middle = Number(min.year)+7
-            if(select.year>max.year) middle = Number(max.year)-7
-            var start = Number(middle)-7>min.year? Number(middle)-7: min.year
-            var end = Number(middle)+7<max.year? Number(middle)+7: max.year
+            if(select.year<min.year) middle = Number(min.year)+9
+            if(select.year>max.year) middle = Number(max.year)-9
+            var start = Number(middle)-7>min.year? Number(middle)-9: min.year
+            var end = Number(middle)+7<max.year? Number(middle)+9: max.year
             this.setState({
                 year: this.createarr(start, end)
             })
@@ -43,11 +45,11 @@ export default class YearSelect extends Component {
         })
     }
 
-    // scrolltoselect() {
-    //     var yearselect = document.getElementsByClassName('yearselect')[0]
-    //     var select = yearselect.getElementsByClassName('select')[0].parentNode.parentNode
-    //     select.scrollIntoView()
-    // }
+    scrolltoselect() {
+        var yearselect = document.getElementsByClassName('yearselect')[0]
+        var select = yearselect.getElementsByClassName('select')[0].parentNode.parentNode
+        select.scrollIntoView()
+    }
 
     createarr(start, end) {
         var arr = []
