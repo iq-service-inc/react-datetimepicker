@@ -87,6 +87,7 @@ class AppComp extends Component {
                         // value='2030-06-27T03:24'
                         id="birth"
                         name="birth"
+                        classname="birthinput"
                         inputRef={this.hideInput}
                         onChange={(value) => this.setValue(value)}
                         // nodate
@@ -120,6 +121,7 @@ class AppComp extends Component {
   ```
 * `id` : 選填，預設為`datetime`，datetime field的id
 * `name` : 選填，預設為`datetime`，datetime field的name
+* `classname` : 選填，用於調整input欄位樣式，調整focus樣式使用`:focus-within`
 * `inputRef` : 選填，當作datetime field的ref，( datetime field的value為string，ex: `2020-01-22T13:20` )
 * `onChange` : 選填，datetime field的值變動時會執行該function，回傳datetime field的value ( ex: `2020-10-22T13:20` )
 * `nodate` : 選填，是否開啟Date(年、月、日)的部分

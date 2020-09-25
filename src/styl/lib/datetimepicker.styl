@@ -10,13 +10,26 @@
     user-select none /* Non-prefixed version, currently
                         supported by Chrome, Edge, Opera and Firefox */
 
+.bk
+    position fixed
+    height 100%
+    width 100%
+    top 0
+
+.defaultinput
+    width 300px
+    background-color white
+    border 1px solid grey
+    border-radius 4px
+    box-shadow 0 0 3px
+    padding 2px
 
 .datetimeinput
-    background-color white
-    border 1px solid
-    width fit-content
-    padding 2px
+    position relative
+    display flex
+    align-items center
     > input
+        outline none
         box-sizing border-box
         background none
         border none
@@ -27,9 +40,14 @@
         +label.displaynone
             display none
     > select
+        outline none
+        appearance none
         background none
         border 2px solid transparent
         text-align center
+        cursor pointer
+        > option
+            padding 5px
     > input::-webkit-outer-spin-button,
     > input::-webkit-inner-spin-button 
         -webkit-appearance none
@@ -37,12 +55,16 @@
     > input[type=number]
         -moz-appearance textfield
     > .calendar
-        margin auto 4px
+        position absolute
+        right 8px
+    >.yearinput
+        width 3.5em !important
 
-.yearinput
-    width 3.5em !important
+.datetimeinput:focus-within
+    border 1px solid
 
 .datetime
+    z-index 1
     display flex
     flex-wrap nowrap
     box-shadow: 0 0 4px

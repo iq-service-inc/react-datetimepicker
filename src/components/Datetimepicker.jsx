@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import ReactDOM from 'react-dom'
 import propTypes, { object, objectOf } from 'prop-types'
 import { FontAwesomeIcon as Icon } from '@fortawesome/react-fontawesome'
 import YearSelect from './YearSelect'
@@ -34,6 +35,7 @@ export default class Datetimepicker extends Component {
             min: {year: 1970, month: 1, date: 1, ampm: 0, hour: 0, min: 0},
             openYearMonth: false,
         }
+        this.calender = React.createRef()
     }
 
     componentDidUpdate(prevProps, prevState) {
@@ -130,7 +132,7 @@ export default class Datetimepicker extends Component {
         return arr
     }
 
-    toggle = (state) => {
+    toggle = (state, on) => {
         switch (state) {
             case "openYearMonth":
                 this.setState({
@@ -139,7 +141,7 @@ export default class Datetimepicker extends Component {
                 break;
             case "openCalendar":
                 this.setState({
-                    openCalendar: !this.state.openCalendar
+                    openCalendar: !!on? on: !this.state.openCalendar
                 })
         }
     }
@@ -229,14 +231,14 @@ export default class Datetimepicker extends Component {
 
     render() {
         const { openCalendar, openYearMonth, select, max, min, input } = this.state
-        const { nodate, notime, autoFocus, value, id, name, disabled, inputRef } = this.props
+        const { nodate, notime, autofocus, value, id, name, disabled, inputRef, className } = this.props
         return (
             <div>
                 <div id="hideinput">
                     <input id={id} name={name} value={this.getDateTime()}
                         ref={inputRef} readOnly></input>
                 </div>
-                <div className="datetimeinput">
+                <div className={`${!!className? className:"defaultinput"} datetimeinput`}>
                     {
                         !nodate &&
                         <Dateinput
@@ -249,7 +251,7 @@ export default class Datetimepicker extends Component {
                             selectall={(e)=>this.selectall(e)}
                             check={(e)=>this.check(e)}
                             enter={(e)=>this.enter(e)}
-                            autofocus={autoFocus}
+                            autofocus={autofocus}
                             disabled={disabled}
                         ></Dateinput>
                     }
@@ -278,6 +280,7 @@ export default class Datetimepicker extends Component {
                 {
                     openCalendar && !(typeof disabled=='boolean' && disabled) &&
                     <div className="datetime">
+                        {ReactDOM.createPortal(<div className="bk" onClick={()=>this.toggle("openCalendar", false)}/>, document.body)}
                         {
                             !nodate &&
                             <div className="datebox">

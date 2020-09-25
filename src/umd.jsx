@@ -86,6 +86,7 @@ class AppComp extends Component {
                         id="birth"
                         name="birth"
                         inputRef={this.hideInput}
+                        // classname="birthinput"
                         // nodate
                         // notime
                         // autofocus
