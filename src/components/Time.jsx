@@ -82,7 +82,7 @@ export default class Time extends Component {
         const ampm = this.renderAMPM(select,min,max)
         return (
             <div className="timebox">
-                <div className="hour scroll">
+                <div className="hour scroll time">
                     {
                         this.renderHour(select,min,max).map(i => 
                             i.enable?
@@ -92,7 +92,7 @@ export default class Time extends Component {
                     }
                 </div>
                 
-                <div className="minute scroll">
+                <div className="minute scroll time">
                     {
                         this.renderMin(select,min,max).map(i =>
                             i.enable?
@@ -102,7 +102,7 @@ export default class Time extends Component {
                     }
                 </div>
 
-                <div className="ampm scroll">
+                <div className="ampm scroll time">
                     {
                         ampm.am?
                             <div className={(select.ampm == 0 ? "select " : "") + "timeitem onclick hover"} onClick={() => selectDay(null, null, null, null, null, 0)}><FormattedMessage id='datetime.am' defaultMessage='上午'></FormattedMessage></div>

@@ -87,7 +87,7 @@ class App extends Component {
                         id="birth"
                         name="birth"
                         inputRef={this.hideInput}
-                        classname="birthinput"
+                        // classname="birthinput"
                         // nodate
                         // notime
                         autofocus

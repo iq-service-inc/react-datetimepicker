@@ -231,50 +231,52 @@ export default class Datetimepicker extends Component {
 
     render() {
         const { openCalendar, openYearMonth, select, max, min, input } = this.state
-        const { nodate, notime, autofocus, value, id, name, disabled, inputRef, className } = this.props
+        const { nodate, notime, autofocus, value, id, name, disabled, inputRef, classname } = this.props
         return (
-            <div>
-                <div id="hideinput">
-                    <input id={id} name={name} value={this.getDateTime()}
-                        ref={inputRef} readOnly></input>
-                </div>
-                <div className={`${!!className? className:"defaultinput"} datetimeinput`}>
-                    {
-                        !nodate &&
-                        <Dateinput
-                            select={select}
-                            input={input}
-                            max={max}
-                            min={min}
-                            format={(n,m,c)=>this.format(n,m,c)}
-                            setinput={(e)=>this.input(e)}
-                            selectall={(e)=>this.selectall(e)}
-                            check={(e)=>this.check(e)}
-                            enter={(e)=>this.enter(e)}
-                            autofocus={autofocus}
-                            disabled={disabled}
-                        ></Dateinput>
-                    }
+            <div className="datetime-container">
+                <div className={`${!!classname? classname:"defaultinput"} datetimeinput`}>
+                    <div id="hideinput">
+                        <input id={id} name={name} value={this.getDateTime()}
+                            ref={inputRef} readOnly></input>
+                    </div>
+                    <div>
+                        {
+                            !nodate &&
+                            <Dateinput
+                                select={select}
+                                input={input}
+                                max={max}
+                                min={min}
+                                format={(n,m,c)=>this.format(n,m,c)}
+                                setinput={(e)=>this.input(e)}
+                                selectall={(e)=>this.selectall(e)}
+                                check={(e)=>this.check(e)}
+                                enter={(e)=>this.enter(e)}
+                                autofocus={autofocus}
+                                disabled={disabled}
+                            ></Dateinput>
+                        }
 
-                    {
-                        !notime &&
-                        <Timeinput
-                            select={select}
-                            input={input}
-                            max={max}
-                            min={min}
-                            format={(n,m,c)=>this.format(n,m,c)}
-                            setinput={(e)=>this.input(e)}
-                            selectall={(e)=>this.selectall(e)}
-                            check={(e)=>this.check(e)}
-                            enter={(e)=>this.enter(e)}
-                            autofocus={nodate&&autoFocus}
-                            disabled={disabled}
-                        ></Timeinput>
-                    }
-                    <label className="calendar onclick" onClick={()=>this.toggle("openCalendar")}>
+                        {
+                            !notime &&
+                            <Timeinput
+                                select={select}
+                                input={input}
+                                max={max}
+                                min={min}
+                                format={(n,m,c)=>this.format(n,m,c)}
+                                setinput={(e)=>this.input(e)}
+                                selectall={(e)=>this.selectall(e)}
+                                check={(e)=>this.check(e)}
+                                enter={(e)=>this.enter(e)}
+                                autofocus={nodate&&autoFocus}
+                                disabled={disabled}
+                            ></Timeinput>
+                        }
+                    </div>
+                    <div className="calendar onclick" onClick={()=>this.toggle("openCalendar")}>
                         <Icon icon={["far", "calendar"]}/>
-                    </label>
+                    </div>
 
                 </div>
                 {
