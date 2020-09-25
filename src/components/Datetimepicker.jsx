@@ -286,7 +286,7 @@ export default class Datetimepicker extends Component {
                             <div className="datebox">
                                 <div className="box-title">
                                     {
-                                        (typeof disabled=='object' && disabled.indexOf('year')==-1)?
+                                        (typeof disabled=='object' && (disabled.indexOf('year')==-1 || disabled.indexOf('month')==-1))?
                                         <div className="year-month onclick hover" onClick={()=>this.toggle("openYearMonth")}>
                                             <FormattedDate
                                                 value={new Date(select.year, select.month-1)}
