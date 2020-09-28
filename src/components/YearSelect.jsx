@@ -47,8 +47,8 @@ export default class YearSelect extends Component {
 
     scrolltoselect() {
         var yearselect = document.getElementsByClassName('yearselect')[0]
-        var select = yearselect.getElementsByClassName('select')[0].parentNode.parentNode
-        select.scrollIntoView()
+        var select = yearselect.getElementsByClassName('select')[0]
+        !!select && yearselect.scrollTo(0,select.parentNode.parentNode.offsetTop - yearselect.offsetTop)
     }
 
     createarr(start, end) {
@@ -110,7 +110,7 @@ export default class YearSelect extends Component {
                             {open == year &&
                                 <div className="monthselect">
                                     {
-                                        disabled.indexOf('year')==-1?
+                                        disabled.indexOf('year')==-1 || year==select.year?
                                         open == year && this.rendermonth(year, max, min).map(m =>
                                             <div className={(select.month == m && select.year == year ? "select " : "") + "month onclick hover"} key={m} onClick={() => selectDay(year, m)}>
                                                 <FormattedDate
@@ -119,15 +119,7 @@ export default class YearSelect extends Component {
                                                 />
                                             </div>
                                         )
-                                        :open == year && this.rendermonth(year, max, min).map(m =>
-                                            year==select.year?
-                                            <div className={(select.month == m && select.year == year ? "select " : "") + "month onclick hover"} key={m} onClick={() => selectDay(year, m)}>
-                                                <FormattedDate
-                                                    value={new Date(select.year, m-1)}
-                                                    month="short"
-                                                />
-                                            </div>
-                                            :<div className={(select.month == m && select.year == year ? "select " : "") + "month greydate"} key={m}>
+                                        :open == year && this.rendermonth(year, max, min).map(m =><div className={(select.month == m && select.year == year ? "select " : "") + "month greydate"} key={m}>
                                                 <FormattedDate
                                                     value={new Date(select.year, m-1)}
                                                     month="short"

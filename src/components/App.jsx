@@ -1,5 +1,5 @@
 import { hot } from 'react-hot-loader/root'
-import '../styl/index.styl'
+// import '../styl/index.styl'
 
 import React, { Component } from 'react'
 import { IntlProvider, FormattedDate, FormattedTime } from 'react-intl'
@@ -70,30 +70,32 @@ class App extends Component {
                     <input type="text" id="disabled"></input>
                     <input type="submit"></input>
                 </form>
-                <form onSubmit={(e) => this.submit(e)} id="datetime">
-                    <Datetimepicker
-                        // max='+022030-05-27T03:24'
-                        // min='2030-07-27T03:24'
-                        min={options.mintime}
-                        max={options.maxtime}
-                        value={value}
-                        nodate={options.nodate}
-                        notime={options.notime}
-                        autoFocus={options.autofocus}
-                        disabled={!!options.disabled? options.disabled.split(' '): undefined}
-                        // disabled={['month','date']}
-                        // value='2030-6-27T03:24'
-                        onChange={(value) => this.setValue(value)}
-                        id="birth"
-                        name="birth"
-                        inputRef={this.hideInput}
-                        // classname="birthinput"
-                        // nodate
-                        // notime
-                        autofocus
-                        // disabled
-                    ></Datetimepicker>
-                </form>
+                <div style={{'width':'500px', 'height':'2000px'}}>
+                    <form onSubmit={(e) => this.submit(e)} id="datetime">
+                        <Datetimepicker
+                            // max='+022030-05-27T03:24'
+                            // min='2030-07-27T03:24'
+                            min={options.mintime}
+                            max={options.maxtime}
+                            value={value}
+                            nodate={options.nodate}
+                            notime={options.notime}
+                            autoFocus={options.autofocus}
+                            disabled={!!options.disabled? options.disabled.split(' '): undefined}
+                            // disabled={['month','date']}
+                            // value='2030-6-27T03:24'
+                            onChange={(value) => this.setValue(value)}
+                            id="birth"
+                            name="birth"
+                            inputRef={this.hideInput}
+                            // classname="birthinput"
+                            // nodate
+                            // notime
+                            autofocus
+                            // disabled
+                        ></Datetimepicker>
+                    </form>
+                </div>
                 <input type="submit" form="datetime"></input>
                 <div>
                     {`value: ${value}`}

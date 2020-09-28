@@ -30,7 +30,7 @@ export default class Dateinput extends Component {
                     ></input>
                 <span className="disable-selection">/</span>
 
-                <input id="month" value={format(input.month,10,'0')}
+                <input id="month" value={input.month}
                     onChange={(e) => setinput(e)}
                     onFocus={(e) => selectall(e)}
                     onBlur={(e) => check(e)}
@@ -42,7 +42,7 @@ export default class Dateinput extends Component {
                 ></input>
                 <span className="disable-selection">/</span>
 
-                <input id="date" value={format(input.date,10,'0')}
+                <input id="date" value={input.date}
                     onChange={(e) => setinput(e)}
                     onFocus={(e) => selectall(e)}
                     onBlur={(e) => check(e)}

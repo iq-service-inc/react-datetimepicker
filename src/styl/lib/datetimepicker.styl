@@ -18,7 +18,7 @@
 
 .datetime-container
     min-width 300px
-    font-size 15px
+    font-size 0.875rem
 
 .datetimeinput
     width 100%
@@ -29,6 +29,7 @@
     padding 2px
     > div
         > input
+            color #495057
             outline none
             box-sizing border-box
             background none
@@ -40,6 +41,7 @@
             +label.displaynone
                 display none
         > select
+            color #495057
             outline none
             appearance none
             background none
@@ -48,6 +50,12 @@
             cursor pointer
             > option
                 padding 5px
+        > select:focus
+            color white
+            background-color #3390ff
+            > option
+                color #495057
+                background-color white
         > input::-webkit-outer-spin-button,
         > input::-webkit-inner-spin-button 
             -webkit-appearance none
@@ -63,7 +71,6 @@
     background-color white
     border 1px solid #CED4DA
     border-radius 4px
-    width 300px
 
 .datetimeinput:focus-within
     border 1px solid
@@ -169,6 +176,7 @@
                 .month
                     display flex
                     width 25%
+                    max-height 35%
                     margin 0
                     justify-content center
                     align-items center
@@ -199,6 +207,9 @@
         position absolute
         bottom 10px
         right 10px
+        padding 4px
+    .grey
+        color #767676
 
 .timebox
     position relative
@@ -225,7 +236,7 @@
         scrollbar-color #d8d8d8
         scrollbar-width thin
         >.timeitem
-            height 30px
+            height 35px
             display flex
             justify-content center
             align-items center
@@ -240,7 +251,6 @@
 .scroll
     overflow-x hidden
     overflow-y auto
-    height inherit
 
 .onclick
     cursor pointer

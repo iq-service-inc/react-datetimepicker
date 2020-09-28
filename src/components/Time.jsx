@@ -4,11 +4,11 @@ import { FormattedMessage } from 'react-intl'
 
 export default class Time extends Component {
     componentDidMount() {
-        var scroll = document.getElementsByClassName('scroll')
+        var scroll = document.getElementsByClassName('timebox')[0].getElementsByClassName('scroll')
         for (var i=0; i<scroll.length; i++){
             var select = scroll[i].getElementsByClassName('select')
             for (var j=0; j<select.length; j++){
-                select[j].scrollIntoView()
+                !!select[j] && scroll[i].scrollTo(0,select[j].offsetTop-select[j].parentNode.offsetTop)
             }
         }
     }
@@ -78,7 +78,7 @@ export default class Time extends Component {
     }
 
     render() {
-        const { select, selectDay, max, min, disabled } = this.props
+        const { select, selectDay, max, min, disabled, format } = this.props
         const ampm = this.renderAMPM(select,min,max)
         return (
             <div className="timebox">
@@ -86,8 +86,8 @@ export default class Time extends Component {
                     {
                         this.renderHour(select,min,max).map(i => 
                             i.enable?
-                            <div className={(select.hour == i.hr ? "select " : "") + "timeitem onclick hover"} key={i.hr} onClick={() => selectDay(null, null, null, i.hr)}>{i.hr==0?12:i.hr}</div>
-                            :<div className={(select.hour == i.hr ? "select " : "") + "timeitem disabled-timeitem"} key={i.hr}>{i.hr==0?12:i.hr}</div>
+                            <div className={(select.hour == i.hr ? "select " : "") + "timeitem onclick hover"} key={i.hr} onClick={() => selectDay(null, null, null, i.hr)}>{format(i.hr==0?12:i.hr,10,'0')}</div>
+                            :<div className={(select.hour == i.hr ? "select " : "") + "timeitem disabled-timeitem"} key={i.hr}>{format(i.hr==0?12:i.hr,10,'0')}</div>
                         )
                     }
                 </div>
@@ -96,8 +96,8 @@ export default class Time extends Component {
                     {
                         this.renderMin(select,min,max).map(i =>
                             i.enable?
-                            <div className={(select.min == i.minute ? "select " : "") + "timeitem onclick hover"} key={i.minute} onClick={() => selectDay(null, null, null, null, i.minute)}>{i.minute}</div>
-                            :<div className={(select.min == i.minute ? "select " : "") + "timeitem disabled-timeitem"} key={i.minute}>{i.minute}</div>
+                            <div className={(select.min == i.minute ? "select " : "") + "timeitem onclick hover"} key={i.minute} onClick={() => selectDay(null, null, null, null, i.minute)}>{format(i.minute,10,'0')}</div>
+                            :<div className={(select.min == i.minute ? "select " : "") + "timeitem disabled-timeitem"} key={i.minute}>{format(i.minute,10,'0')}</div>
                         )
                     }
                 </div>

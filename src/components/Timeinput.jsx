@@ -12,8 +12,8 @@ export default class Timeinput extends Component {
     }
 
     componentDidUpdate(prevProps, prevState) {
-        const { select } = this.props
-        if(prevProps.select!==select){
+        const { input } = this.props
+        if(prevProps.input!==input){
             this.checkValidity()
         }
     }
@@ -34,25 +34,27 @@ export default class Timeinput extends Component {
 
 
     checkValidity = () => {
-        const { max, min, select } = this.props
+        const { max, min, select, input } = this.props
         var mindate = select.date == min.date && select.month == min.month && select.year == min.year
         var maxdate = select.date == max.date && select.month == max.month && select.year == max.year
         var minhour = ((select.ampm - min.ampm) * 12 + min.hour) % 12
         var maxhour = ((max.ampm - select.ampm) * 12 + max.hour) % 12
-        this.setState({maxHour: maxdate? maxhour:12, minHour: mindate? minhour:1})
 
-        if(select.hour==0 && (mindate || maxdate)){
+        if(input.hour==='00' && (mindate || maxdate)){
             var s = new Date(min.year,min.month-1,min.date,min.hour+(min.ampm)*12)
             var e = new Date(max.year,max.month-1,max.date,max.hour+(max.ampm)*12)
-            var t = new Date(select.year,select.month-1,select.date,select.hour+(select.ampm)*12)
+            var t = new Date(select.year,select.month-1,select.date,input.hour+(select.ampm)*12)
             if(t-s>=0 && e-t>=0){
                 this.setState({maxHour:12,minHour:12})
             }
         }
+        else{
+            this.setState({maxHour: maxdate? maxhour:12, minHour: mindate? minhour:1})
+        }
     }
 
     render() {
-        const { select, max, min, setinput, selectall, check, enter, disabled, input, format } = this.props
+        const { select, max, min, setinput, selectall, check, enter, disabled, input } = this.props
         const { minHour, maxHour } = this.state
         return (
             <>
@@ -66,12 +68,12 @@ export default class Timeinput extends Component {
                     }
                     {
                         select.date == max.date && select.month == max.month && select.year == max.year ?
-                            <FormattedMessage id='datetime.pm' defaultMessage='下午'>{t => <option value="1" disabled={min.ampm != 1}>{t}</option>}</FormattedMessage>
+                            <FormattedMessage id='datetime.pm' defaultMessage='下午'>{t => <option value="1" disabled={max.ampm != 1}>{t}</option>}</FormattedMessage>
                             : <FormattedMessage id='datetime.pm' defaultMessage='下午'>{t => <option value="1">{t}</option>}</FormattedMessage>
                     }
                 </select>
 
-                <input id="hour" value={input.hour==0? 12:format(input.hour,10,'0')}
+                <input id="hour" value={input.hour==='00'? 12:input.hour}
                     onChange={(e) => setinput(e)}
                     onFocus={(e) => selectall(e)}
                     onBlur={(e) => check(e)}
@@ -84,7 +86,7 @@ export default class Timeinput extends Component {
 
                 <span className="disable-selection">:</span>
 
-                <input id="min" value={format(input.min,10,'0')}
+                <input id="min" value={input.min}
                     onChange={(e) => setinput(e)}
                     onFocus={(e) => selectall(e)}
                     onBlur={(e) => check(e)}

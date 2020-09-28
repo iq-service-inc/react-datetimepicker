@@ -56,7 +56,10 @@ export default class Days extends Component {
 
     render() {
         const { select, selectDay, max, min, disabled } = this.props
-        const today = new Date(select.year,select.month-1,select.date)
+        const selectday = new Date(select.year,select.month-1,select.date)
+        const today = new Date()
+        const maxday = new Date(max.year,max.month-1,max.date)
+        const minday = new Date(min.year,min.month-1,min.date)
         return (
             <div className="days">
                 <div className="week">
@@ -64,7 +67,7 @@ export default class Days extends Component {
                         this.state.daytitle.map((w, index) =>
                             <div className="daytitle" key={index}>
                                 <FormattedDate
-                                    value={new Date(select.year,select.month-1,select.date-today.getDay()+index)}
+                                    value={new Date(select.year,select.month-1,select.date-selectday.getDay()+index)}
                                     weekday="narrow"
                                 >{t=> <span>{t}</span>}</FormattedDate>
                             </div>
@@ -91,10 +94,14 @@ export default class Days extends Component {
                     )
                 }
                 {
-                    (typeof disabled=='object' && !(disabled.indexOf('year')!=-1 || disabled.indexOf('month')!=-1 || disabled.indexOf('date')!=-1)) &&
-                    <div className="today onclick" onClick={() => selectDay(new Date().getFullYear(), new Date().getMonth() + 1, new Date().getDate())}>
-                        <FormattedMessage id='datetime.today' defaultMessage='今天'></FormattedMessage>
-                    </div>
+                    today-minday>0 && maxday-today>0?
+                        (typeof disabled=='object' && !(disabled.indexOf('year')!=-1 || disabled.indexOf('month')!=-1 || disabled.indexOf('date')!=-1)) &&
+                        <div className="today onclick hover" onClick={() => selectDay(new Date().getFullYear(), new Date().getMonth() + 1, new Date().getDate())}>
+                            <FormattedMessage id='datetime.today' defaultMessage='今天'></FormattedMessage>
+                        </div>
+                        :<div className="today grey">
+                            <FormattedMessage id='datetime.today' defaultMessage='今天'></FormattedMessage>
+                        </div>
                 }
             </div>
         )

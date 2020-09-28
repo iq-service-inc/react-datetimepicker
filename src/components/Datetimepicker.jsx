@@ -47,7 +47,16 @@ export default class Datetimepicker extends Component {
         }
 
         if (prevState.select !== select) {
-            this.setState({input:select})
+            this.setState({
+                input: {
+                    year: select.year,
+                    month: this.format(select.month,10,'0'),
+                    date: this.format(select.date,10,'0'),
+                    hour:  this.format(select.hour,10,'0'),
+                    min:  this.format(select.min,10,'0'),
+                    ampm: select.ampm
+                }
+            })
             if (typeof onChange !== 'function') return false
             onChange(this.getDateTime())
         }
@@ -170,15 +179,15 @@ export default class Datetimepicker extends Component {
                     ...this.state.input,
                     [e.target.id]: Number(e.target.value)
                 },
-            })
+            }, ()=>this.focusnext(e))
         }
         else if(e.target.id=='hour'){
             this.setState({
                 input: {
                     ...this.state.input,
-                    [e.target.id]: e.target.value==12? 0: Number(e.target.value)
+                    [e.target.id]: e.target.value==12? '00': Number(e.target.value)
                 },
-            })
+            }, ()=>this.focusnext(e))
         }
         else{
             this.setState({
@@ -186,24 +195,111 @@ export default class Datetimepicker extends Component {
                     ...this.state.input,
                     [e.target.id]: Number(e.target.value)
                 },
-            })
+            }, ()=>this.focusnext(e))
+        }
+        e.persist()
+    }
+
+    focusnext = (e) => {
+        var target = e.target
+        var max = Number(target.max)
+        var min = Number(target.min)
+        var v = Number(target.value) 
+        if(target.id!='hour'){
+            if(v*10 > max || (target.value.length>=2 && target.id!='year')){
+                target.blur()
+                var next = target.nextElementSibling
+                while(!!next){
+                    if(next.nodeName == "INPUT" || next.nodeName == "SELECT"){
+                        next.focus()
+                        break
+                    }
+                    next = next.nextElementSibling
+                }
+            }
+        }
+        if(target.id=='hour'){
+            if(target.value.length>=2 || target.value>1){
+                target.blur()
+                document.getElementById('min').focus()
+            }
+        }
+        if(target.id=='ampm'){
+            target.blur()
+            document.getElementById('hour').focus()
         }
     }
 
     check = (e) => {
         const value = Number(e.target.value)
         var valid = true
+        const { select, input, min, max } = this.state
         if(!!e.target.min && !!e.target.max) {valid = value>=Number(e.target.min) && value<=Number(e.target.max)}
-        if(valid){
+        if(e.target.id=='hour'){
+            var start = new Date(min.year,min.month-1,min.date,min.hour+(min.ampm)*12)
+            var end = new Date(max.year,max.month-1,max.date,max.hour+(max.ampm)*12)
+            var hour = value=='12'? 0:value
+            var t = new Date(select.year,select.month-1,select.date,hour+(select.ampm)*12)
+            if(t-start>=0 && end-t>=0 && hour<13){
+                this.setState({
+                    select: {
+                        year: Number(input.year),
+                        month: Number(input.month),
+                        date: Number(input.date),
+                        hour: Number(input.hour),
+                        min: Number(input.min),
+                        ampm: Number(input.ampm)
+                    },
+                })
+            }
+            else{
+                var mindate = select.date == min.date && select.month == min.month && select.year == min.year
+                var maxdate = select.date == max.date && select.month == max.month && select.year == max.year
+                if(hour+select.ampm*12<min.hour+min.ampm*12 && mindate) hour = min.hour
+                else if(hour+select.ampm*12>max.hour+max.ampm*12 && maxdate) hour = max.hour
+                else if(hour>12) hour = 11
+                else hour = 12
+                this.setState({
+                    input: {
+                        year: select.year,
+                        month: this.format(select.month,10,'0'),
+                        date: this.format(select.date,10,'0'),
+                        hour:  this.format(hour,10,'0'),
+                        min:  this.format(select.min,10,'0'),
+                        ampm: select.ampm
+                    }
+                })
+            }
+        }
+        else if(valid){
             this.setState({
-                select: this.state.input,
+                select: {
+                    year: Number(input.year),
+                    month: Number(input.month),
+                    date: Number(input.date),
+                    hour: Number(input.hour),
+                    min: Number(input.min),
+                    ampm: Number(input.ampm)
+                },
             })
         }
         else{
+            var next = Number(input[e.target.id])
+            var Max = Number(e.target.max)
+            var Min = Number(e.target.min)
+            if(next > Max) next = Max
+            else if(next < Min) next = Min
             this.setState({
-                input: this.state.select,
+                input: {
+                    year: select.year,
+                    month: this.format(select.month,10,'0'),
+                    date: this.format(select.date,10,'0'),
+                    hour:  this.format(select.hour,10,'0'),
+                    min:  this.format(select.min,10,'0'),
+                    ampm: select.ampm,
+                    [e.target.id]: this.format(next,10,'0')
+                }
             })
-
         }
     }
 
@@ -220,10 +316,12 @@ export default class Datetimepicker extends Component {
             e.preventDefault()
             e.target.blur()
             var next = e.target.nextElementSibling
-            while(next.nodeName != "INPUT" && next.nodeName != "SELECT"){
+            while(!!next){
+                if(next.nodeName == "INPUT" || next.nodeName == "SELECT"){
+                    next.focus()
+                    break
+                }
                 next = next.nextElementSibling
-                if(next == null) break
-                next.focus()
             }
         }
         e.persist()
@@ -357,6 +455,7 @@ export default class Datetimepicker extends Component {
                                     max={max}
                                     min={min}
                                     disabled={disabled}
+                                    format={(n,m,c)=>this.format(n,m,c)}
                                 ></Time>
                         }
                     </div>
