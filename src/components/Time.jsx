@@ -8,7 +8,7 @@ export default class Time extends Component {
         for (var i=0; i<scroll.length; i++){
             var select = scroll[i].getElementsByClassName('select')
             for (var j=0; j<select.length; j++){
-                !!select[j] && scroll[i].scrollTo(0,select[j].offsetTop-select[j].parentNode.offsetTop)
+                !!select[j] && (scroll[i].scrollTop = select[j].offsetTop-select[j].parentNode.offsetTop)
             }
         }
     }

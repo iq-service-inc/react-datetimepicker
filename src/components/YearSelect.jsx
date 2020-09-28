@@ -48,7 +48,7 @@ export default class YearSelect extends Component {
     scrolltoselect() {
         var yearselect = document.getElementsByClassName('yearselect')[0]
         var select = yearselect.getElementsByClassName('select')[0]
-        !!select && yearselect.scrollTo(0,select.parentNode.parentNode.offsetTop - yearselect.offsetTop)
+        !!select && (yearselect.scrollTop = select.parentNode.parentNode.offsetTop - yearselect.offsetTop)
     }
 
     createarr(start, end) {
