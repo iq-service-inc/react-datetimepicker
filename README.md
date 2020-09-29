@@ -157,14 +157,16 @@ export default () => library.add(
 * `datetime.today` : `今天`
 * `datetime.am` : `上午`
 * `datetime.pm` : `下午`
-#### 從套件匯入
+
+#### 可從套件匯入
 目前僅有中文、英文
 ```js
-import 'datetimepicker/src/locale/en'
-import 'datetimepicker/src/locale/zh'
+    import 'datetimepicker/src/locale/en'
+    import 'datetimepicker/src/locale/zh'
 ```
-#### 手動新增
+#### 或手動新增
 * zh
+
 ```json
 {
     "datetime.today": "今天",
@@ -173,6 +175,7 @@ import 'datetimepicker/src/locale/zh'
 }
 ```
 * en
+
 ```json
 {
     "datetime.today": "Today",
