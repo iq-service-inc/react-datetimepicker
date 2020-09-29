@@ -10,14 +10,14 @@ npm install --save @fortawesome/react-fontawesome prop-types react-intl
 
 ### 開發人員模式
 ```
-git clone http://10.9.173.136/SideProject/react-datetimepicker
+git clone https://github.com/wyttime04/react-datetimepicker.git
 cd react-datetimepicker
 npm install
 ```
 
 ### 使用 Component 模式
 ```
-npm install --save git+http://10.9.173.136/SideProject/react-datetimepicker.git
+npm install --save git+https://github.com/wyttime04/react-datetimepicker.git
 ```
 
 ## 開發人員模式 npm Script
