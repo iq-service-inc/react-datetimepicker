@@ -243,12 +243,22 @@ export default class Datetimepicker extends Component {
         }
         else {
             if (this.state.keyin) {
-                this.setState({
-                    input: {
-                        ...this.state.input,
-                        [e.target.id]: Number(e.target.value)
-                    },
-                }, () => this.focusnext(e))
+                if (e.target.id == 'year' && e.target.value == 0) {
+                    this.setState({
+                        input: {
+                            ...this.state.input,
+                            [e.target.id]: ''
+                        },
+                    })
+                }
+                else {
+                    this.setState({
+                        input: {
+                            ...this.state.input,
+                            [e.target.id]: Number(e.target.value)
+                        },
+                    }, () => this.focusnext(e))
+                }
             }
             else {
                 this.setState({
