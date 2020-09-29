@@ -412,13 +412,16 @@ export default class Datetimepicker extends Component {
 
     render() {
         const { openCalendar, openYearMonth, select, max, min, input } = this.state
-        const { nodate, notime, autofocus, value, id, name, disabled, inputRef, classname } = this.props
+        const { nodate, notime, autofocus, value, id, name, disabled, inputRef, classname, onChange } = this.props
+        const exception = ['autofocus', 'nodate', 'notime', 'value', 'min', 'max', 'disabled', 'inputRef', 'classname', 'onChange']
+        var props = {}
+        Object.keys(this.props).filter(key => exception.indexOf(key)==-1).map(k => props[k] = this.props[k])
         return (
             <div className="datetime-container">
                 <div className={`${!!classname ? classname : "defaultinput"} datetimeinput`}>
                     <div id="hideinput">
-                        <input id={id} name={name} value={this.getDateTime()}
-                            ref={inputRef} readOnly></input>
+                        <input {...props} value={this.getDateTime()}
+                                ref={inputRef} readOnly></input>
                     </div>
                     <div>
                         {
@@ -458,7 +461,6 @@ export default class Datetimepicker extends Component {
                     <div className="calendar onclick" onClick={() => this.toggle("openCalendar")}>
                         <Icon icon={["far", "calendar"]} />
                     </div>
-
                 </div>
                 {
                     openCalendar && !(typeof disabled == 'boolean' && disabled) &&

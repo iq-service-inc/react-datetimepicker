@@ -78,7 +78,7 @@ class AppComp extends Component {
                         value={value}
                         nodate={options.nodate}
                         notime={options.notime}
-                        autoFocus={options.autofocus}
+                        autofocus={options.autofocus}
                         disabled={!!options.disabled? options.disabled.split(' '): undefined}
                         // disabled={['month','date']}
                         // value='2030-6-27T03:24'
