@@ -183,3 +183,6 @@ export default () => library.add(
     "datetime.pm": "PM"
 }
 ```
+
+## License
+Datetimepicker is [MIT licensed](https://github.com/wyttime04/react-datetimepicker/blob/master/LICENSE.md)
