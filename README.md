@@ -122,8 +122,8 @@ class AppComp extends Component {
 * `id` : 選填，預設為`datetime`，datetime field的id
 * `name` : 選填，預設為`datetime`，datetime field的name
 * `classname` : 選填，用於調整input欄位樣式，調整focus樣式使用`:focus-within`
-* `inputRef` : 選填，當作datetime field的ref，( datetime field的value為string，ex: `2020-01-22T13:20` )
-* `onChange` : 選填，datetime field的值變動時會執行該function，回傳datetime field的value ( ex: `2020-10-22T13:20` )
+* `inputRef` : 選填，當作datetime field的ref，( datetime field的value為string，e.g. `2020-01-22T13:20` )
+* `onChange` : 選填，datetime field的值變動時會執行該function，回傳datetime field的value ( e.g. `2020-10-22T13:20` )
 * `nodate` : 選填，是否開啟Date(年、月、日)的部分，回傳值的格式`hh:mm`
 * `notime` : 選填，是否開啟Time(上/下午、時、分)的部分，回傳值的格式`yyyy-mm-dd`或`+yyyyyy-mm-dd`
 * `autofocus` : 選填，focus可填的第一格input
