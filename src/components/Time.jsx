@@ -86,7 +86,7 @@ export default class Time extends Component {
                     {
                         this.renderHour(select,min,max).map(i => 
                             i.enable?
-                            <div className={(select.hour == i.hr ? "select " : "") + "timeitem onclick hover"} key={i.hr} onClick={() => selectDay(null, null, null, i.hr)}>{format(i.hr==0?12:i.hr,10,'0')}</div>
+                            <div className={(select.hour == i.hr ? "select " : "hover ") + "timeitem onclick"} key={i.hr} onClick={() => selectDay(null, null, null, i.hr)}>{format(i.hr==0?12:i.hr,10,'0')}</div>
                             :<div className={(select.hour == i.hr ? "select " : "") + "timeitem disabled-timeitem"} key={i.hr}>{format(i.hr==0?12:i.hr,10,'0')}</div>
                         )
                     }
@@ -96,7 +96,7 @@ export default class Time extends Component {
                     {
                         this.renderMin(select,min,max).map(i =>
                             i.enable?
-                            <div className={(select.min == i.minute ? "select " : "") + "timeitem onclick hover"} key={i.minute} onClick={() => selectDay(null, null, null, null, i.minute)}>{format(i.minute,10,'0')}</div>
+                            <div className={(select.min == i.minute ? "select " : "hover ") + "timeitem onclick"} key={i.minute} onClick={() => selectDay(null, null, null, null, i.minute)}>{format(i.minute,10,'0')}</div>
                             :<div className={(select.min == i.minute ? "select " : "") + "timeitem disabled-timeitem"} key={i.minute}>{format(i.minute,10,'0')}</div>
                         )
                     }
@@ -105,12 +105,12 @@ export default class Time extends Component {
                 <div className="ampm scroll time">
                     {
                         ampm.am?
-                            <div className={(select.ampm == 0 ? "select " : "") + "timeitem onclick hover"} onClick={() => selectDay(null, null, null, null, null, 0)}><FormattedMessage id='datetime.am' defaultMessage='上午'></FormattedMessage></div>
+                            <div className={(select.ampm == 0 ? "select " : "hover ") + "timeitem onclick"} onClick={() => selectDay(null, null, null, null, null, 0)}><FormattedMessage id='datetime.am' defaultMessage='上午'></FormattedMessage></div>
                             :<div className={(select.ampm == 0 ? "select " : "") + "timeitem disabled-timeitem"}><FormattedMessage id='datetime.am' defaultMessage='上午'></FormattedMessage></div>
                     }
                     {
                         ampm.pm?
-                            <div className={(select.ampm == 1 ? "select " : "") + "timeitem onclick hover"} onClick={() => selectDay(null, null, null, null, null, 1)}><FormattedMessage id='datetime.pm' defaultMessage='下午'></FormattedMessage></div>
+                            <div className={(select.ampm == 1 ? "select " : "hover ") + "timeitem onclick"} onClick={() => selectDay(null, null, null, null, null, 1)}><FormattedMessage id='datetime.pm' defaultMessage='下午'></FormattedMessage></div>
                             :<div className={(select.ampm == 1 ? "select " : "") + "timeitem disabled-timeitem"}><FormattedMessage id='datetime.pm' defaultMessage='下午'></FormattedMessage></div>
                     }
                     

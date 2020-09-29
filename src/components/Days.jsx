@@ -81,7 +81,7 @@ export default class Days extends Component {
                             {
                                 week.map((d, index) =>
                                     d.enable?
-                                    <div key={index} className={(select.date == d.date && select.month == d.month ? "select " : "") + "date onclick hover" + (d.month == select.month ? "" : " greydate")} onClick={() => selectDay(d.year, d.month, d.date)}>
+                                    <div key={index} className={(select.date == d.date && select.month == d.month ? "select " : "hover ") + "date onclick" + (d.month == select.month ? "" : " greydate")} onClick={() => selectDay(d.year, d.month, d.date)}>
                                         <span>{d.date}</span>
                                     </div>
                                     :<div key={index} className={(select.date == d.date && select.month == d.month ? "select " : "") + "date greydate"}>

@@ -112,7 +112,7 @@ export default class YearSelect extends Component {
                                     {
                                         disabled.indexOf('year')==-1 || year==select.year?
                                         open == year && this.rendermonth(year, max, min).map(m =>
-                                            <div className={(select.month == m && select.year == year ? "select " : "") + "month onclick hover"} key={m} onClick={() => selectDay(year, m)}>
+                                            <div className={(select.month == m && select.year == year ? "select " : "hover ") + "month onclick"} key={m} onClick={() => selectDay(year, m)}>
                                                 <FormattedDate
                                                     value={new Date(select.year, m-1)}
                                                     month="short"
@@ -130,7 +130,7 @@ export default class YearSelect extends Component {
                                 </div>
                             }
                         </div>
-                        :<div className={(select.year == year ? "select " : "") +" bigyear onclick hover"} key={year} onClick={() => selectDay(year)}>
+                        :<div className={(select.year == year ? "select " : "hover ") +" bigyear onclick"} key={year} onClick={() => selectDay(year)}>
                             <FormattedDate
                                 value={new Date(year,1)}
                                 year="numeric"

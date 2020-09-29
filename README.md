@@ -124,8 +124,8 @@ class AppComp extends Component {
 * `classname` : 選填，用於調整input欄位樣式，調整focus樣式使用`:focus-within`
 * `inputRef` : 選填，當作datetime field的ref，( datetime field的value為string，ex: `2020-01-22T13:20` )
 * `onChange` : 選填，datetime field的值變動時會執行該function，回傳datetime field的value ( ex: `2020-10-22T13:20` )
-* `nodate` : 選填，是否開啟Date(年、月、日)的部分
-* `notime` : 選填，是否開啟Time(上/下午、時、分)的部分
+* `nodate` : 選填，是否開啟Date(年、月、日)的部分，回傳值的格式`hh:mm`
+* `notime` : 選填，是否開啟Time(上/下午、時、分)的部分，回傳值的格式`yyyy-mm-dd`或`+yyyyyy-mm-dd`
 * `autofocus` : 選填，focus可填的第一格input
 * `disabled` : 選填，bool時禁用全部欄位，array時可禁用特定欄位
   ```
@@ -150,4 +150,33 @@ export default () => library.add(
     faArrowUp,
     faArrowDown,
 )
+```
+
+### react-intl
+部分字詞使用`<FormattedMessage>`
+* `datetime.today` : `今天`
+* `datetime.am` : `上午`
+* `datetime.pm` : `下午`
+#### 從套件匯入
+目前僅有中文、英文
+```js
+import 'datetimepicker/src/locale/en'
+import 'datetimepicker/src/locale/zh'
+```
+#### 手動新增
+* zh
+```json
+{
+    "datetime.today": "今天",
+    "datetime.am": "上午",
+    "datetime.pm": "下午"
+}
+```
+* en
+```json
+{
+    "datetime.today": "Today",
+    "datetime.am": "AM",
+    "datetime.pm": "PM"
+}
 ```

@@ -70,7 +70,7 @@ class App extends Component {
                     <input type="text" id="disabled"></input>
                     <input type="submit"></input>
                 </form>
-                <div style={{'width':'500px', 'height':'2000px'}}>
+                <div style={{'width':'500px'}}>
                     <form onSubmit={(e) => this.submit(e)} id="datetime">
                         <Datetimepicker
                             // max='+022030-05-27T03:24'
