@@ -134,6 +134,9 @@ class AppComp extends Component {
 
 ### FontAwesome Icon
 模組使用到的 Icon : `faArrowUP`, `faArrowDown`, `farCalendar`，需要事先被引入
+```
+npm install --save @fortawesome/fontawesome-svg-core @fortawesome/free-solid-svg-icons @fortawesome/free-regular-svg-icons
+```
 ```jsx
 import { library } from '@fortawesome/fontawesome-svg-core'
 import {
