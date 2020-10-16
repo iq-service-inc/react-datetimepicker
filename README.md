@@ -2,7 +2,7 @@
 
 A simple and reusable Datepicker component for React 
 
-
+![Datetimepicker](https://github.com/iq-service-inc/react-datetimepicker/blob/master/demo.png?raw=true)
 
 
 ## Install
@@ -142,9 +142,11 @@ class AppComp extends Component {
 
 ### FontAwesome Icon
 模組使用到的 Icon : `faArrowUP`, `faArrowDown`, `farCalendar`，需要事先被引入
+
 ```
 npm install --save @fortawesome/fontawesome-svg-core @fortawesome/free-solid-svg-icons @fortawesome/free-regular-svg-icons
 ```
+
 ```jsx
 import { library } from '@fortawesome/fontawesome-svg-core'
 import {
@@ -196,4 +198,4 @@ export default () => library.add(
 ```
 
 ## License
-Datetimepicker is [MIT licensed](https://github.com/wyttime04/react-datetimepicker/blob/master/LICENSE.md)
+Datetimepicker is [MIT licensed](https://github.com/iq-service-inc/react-datetimepicker/blob/master/LICENSE.md)
