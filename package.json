@@ -13,7 +13,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "http://10.9.173.136/SideProject/react-datetimepicker"
+    "url": "https://github.com/iq-service-inc/react-datetimepicker"
   },
   "author": "Zap",
   "license": "MIT",
