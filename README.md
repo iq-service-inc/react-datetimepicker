@@ -1,32 +1,40 @@
 # Datetimepicker
 
-Datetimepicker為日期及時間的選擇器
+A simple and reusable Datepicker component for React 
+
+
+
 
 ## Install
+
 ### 依賴套件
+
 ```
 npm install --save @fortawesome/react-fontawesome prop-types react-intl
 ```
 
 ### 開發人員模式
 ```
-git clone https://github.com/wyttime04/react-datetimepicker.git
+git clone https://github.com/iq-service-inc/react-datetimepicker.git
 cd react-datetimepicker
 npm install
 ```
 
 ### 使用 Component 模式
 ```
-npm install --save git+https://github.com/wyttime04/react-datetimepicker.git
+npm i @iqs/datetimepicker --save
 ```
 
 ## 開發人員模式 npm Script
 
 ### 開發 datetimepicker
+
 啟動 port 888 dev server
+
 ```
 npm run start
 ```
+
 
 ### 打包 datetimepicker
 ```
