@@ -5,49 +5,86 @@ A simple and reusable Datepicker component for React
 ![Datetimepicker](https://github.com/iq-service-inc/react-datetimepicker/blob/master/demo.png?raw=true)
 
 
-## Install
+## Quick Start 
 
-### 依賴套件
+
+**Install**
+```
+npm i @iqs/datetimepicker --save
+```
+
+**Install devDependencies**
 
 ```
 npm install --save @fortawesome/react-fontawesome prop-types react-intl
 ```
 
-### 開發人員模式
-```
-git clone https://github.com/iq-service-inc/react-datetimepicker.git
-cd react-datetimepicker
-npm install
-```
+### 依賴圖示
 
-### 使用 Component 模式
-```
-npm i @iqs/datetimepicker --save
-```
+使用：[@fortawesome/react-fontawesome](https://www.npmjs.com/package/@fortawesome/react-fontawesome)
 
-## 開發人員模式 npm Script
-
-### 開發 datetimepicker
-
-啟動 port 888 dev server
+使用到的 Icon : `faArrowUP`, `faArrowDown`, `farCalendar`，需要事先被引入
 
 ```
-npm run start
+npm install --save @fortawesome/fontawesome-svg-core @fortawesome/free-solid-svg-icons @fortawesome/free-regular-svg-icons
+```
+
+```jsx
+import { library } from '@fortawesome/fontawesome-svg-core'
+import {
+    faArrowUp,
+    faArrowDown,
+} from '@fortawesome/free-solid-svg-icons'
+
+import {
+    faCalendar as farCalendar
+} from '@fortawesome/free-regular-svg-icons'
+
+export default () => library.add(
+    farCalendar,
+    faArrowUp,
+    faArrowDown,
+)
 ```
 
 
-### 打包 datetimepicker
+### 多國語系
+
+使用：[react-intl](https://www.npmjs.com/package/react-intl)
+
+部分字詞使用`<FormattedMessage>`
+
+* `datetime.today` : `今天`
+* `datetime.am` : `上午`
+* `datetime.pm` : `下午`
+
+#### 可從套件匯入
+目前僅有中文、英文
+```js
+    import 'datetimepicker/src/locale/en'
+    import 'datetimepicker/src/locale/zh'
 ```
-npm run umd
+#### 或手動新增
+* zh
+
+```json
+{
+    "datetime.today": "今天",
+    "datetime.am": "上午",
+    "datetime.pm": "下午"
+}
+```
+* en
+
+```json
+{
+    "datetime.today": "Today",
+    "datetime.am": "AM",
+    "datetime.pm": "PM"
+}
 ```
 
-### 測試 umd
-啟動 port 999 dev server
-```
-npm run umdtest
-```
-
-## Datetimepicker Component
+### Usage 
 
 ```jsx
 import { Datetimepicker } from 'datetimepicker'
@@ -140,62 +177,34 @@ class AppComp extends Component {
     disabled={['year,'month','date','ampm','hour','min']}
   ```
 
-### FontAwesome Icon
-模組使用到的 Icon : `faArrowUP`, `faArrowDown`, `farCalendar`，需要事先被引入
+
+## Dev Mode 
+
+**Install**
 
 ```
-npm install --save @fortawesome/fontawesome-svg-core @fortawesome/free-solid-svg-icons @fortawesome/free-regular-svg-icons
+git clone https://github.com/iq-service-inc/react-datetimepicker.git
+cd react-datetimepicker
+npm install --save @fortawesome/react-fontawesome prop-types react-intl
+npm install
+npm run start
 ```
 
-```jsx
-import { library } from '@fortawesome/fontawesome-svg-core'
-import {
-    faArrowUp,
-    faArrowDown,
-} from '@fortawesome/free-solid-svg-icons'
+**Pack Component**
 
-import {
-    faCalendar as farCalendar
-} from '@fortawesome/free-regular-svg-icons'
-
-export default () => library.add(
-    farCalendar,
-    faArrowUp,
-    faArrowDown,
-)
+### 打包 datetimepicker
+```
+npm run umd
 ```
 
-### react-intl
-部分字詞使用`<FormattedMessage>`
-* `datetime.today` : `今天`
-* `datetime.am` : `上午`
-* `datetime.pm` : `下午`
+**Test Pack Component**
 
-#### 可從套件匯入
-目前僅有中文、英文
-```js
-    import 'datetimepicker/src/locale/en'
-    import 'datetimepicker/src/locale/zh'
-```
-#### 或手動新增
-* zh
+啟動 port 999 dev server
 
-```json
-{
-    "datetime.today": "今天",
-    "datetime.am": "上午",
-    "datetime.pm": "下午"
-}
 ```
-* en
+npm run umdtest
+```
 
-```json
-{
-    "datetime.today": "Today",
-    "datetime.am": "AM",
-    "datetime.pm": "PM"
-}
-```
 
 ## License
 Datetimepicker is [MIT licensed](https://github.com/iq-service-inc/react-datetimepicker/blob/master/LICENSE.md)
