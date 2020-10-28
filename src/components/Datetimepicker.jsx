@@ -73,10 +73,10 @@ export default class Datetimepicker extends Component {
         const year = (select.year > 9999 && (select.year > 99999 ? '+' : '+0')) + select.year
         const hour = select.ampm * 12 + Number(select.hour)
         var date = new Date(year, select.month - 1, select.date, hour, select.min)
-        if(!!nodate & !notime){
+        if(!nodate & !!notime){
             return `${date.getFullYear()}-${this.format(date.getMonth() + 1, 10, '0')}-${this.format(date.getDate(), 10, '0')}`
         }
-        else if(!!notime & !nodate){
+        else if(!notime & !!nodate){
             return `${this.format(date.getHours(), 10, '0')}:${this.format(date.getMinutes(), 10, '0')}`
         }
         else if(!nodate & !notime){
