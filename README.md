@@ -13,7 +13,7 @@ A simple and reusable Datepicker component for React
 npm i @iqs/datetimepicker --save
 ```
 
-**Install devDependencies**
+**Install peerDependencies**
 
 ```
 npm install --save @fortawesome/react-fontawesome prop-types react-intl
@@ -87,8 +87,8 @@ export default () => library.add(
 ### Usage 
 
 ```jsx
-import { Datetimepicker } from 'datetimepicker'
-import 'datetimepicker/index.styl'
+import { Datetimepicker } from '@iqs/datetimepicker'
+import '@iqs/datetimepicker/index.styl'
 ```
 
 * `<Datetimepicker>` 需要在 `<IntlProvider>` 之下才能運作
@@ -97,8 +97,8 @@ import 'datetimepicker/index.styl'
 ```jsx
 import React, { Component } from 'react'
 import { IntlProvider } from 'react-intl'
-import { Datetimepicker } from 'datetimepicker'
-import 'datetimepicker/index.styl'
+import { Datetimepicker } from '@iqs/datetimepicker'
+import '@iqs/datetimepicker/index.styl'
 
 class AppComp extends Component {
     constructor(props) {
