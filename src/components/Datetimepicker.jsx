@@ -57,9 +57,10 @@ export default class Datetimepicker extends Component {
                     min: this.format(select.min, 10, '0'),
                     ampm: select.ampm
                 }
-            })
-            if (typeof onChange !== 'function') return false
-            onChange(this.getDateTime())
+            }, () => {
+                if (typeof onChange !== 'function') return false
+                onChange(this.getDateTime())
+            })           
         }
     }
 

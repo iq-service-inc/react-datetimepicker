@@ -11,7 +11,7 @@ class App extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            value: undefined,
+            value: '2030-06-27T03:20',
             options: {
                 mintime:undefined,
                 maxtime:undefined
@@ -21,6 +21,7 @@ class App extends Component {
     }
 
     componentDidMount() {
+        this.setState({ value: '2020-10-29T03:20' })
         // this.hideInput.current.focus()
     }
 
