@@ -137,7 +137,7 @@
             align-items center
 
     .yearselect::-webkit-scrollbar
-        width 8px
+        width 0
 
     .yearselect::-webkit-scrollbar-thumb
         background #d8d8d8
@@ -152,14 +152,18 @@
         overflow-y auto
         height 90%
         scrollbar-color #d8d8d8
-        scrollbar-width thin
+        scrollbar-width none
 
-        >.year,
+        >.year
+            background-color #efefef
+            border-bottom 1px #cecece solid
+            padding 5px 4pxc
+            min-height 24px
+
         >.bigyear
             background-color #efefef
             border-bottom 1px #cecece solid
             padding 5px 4px
-            height fit-content
             min-height 15px
 
         >.bigyear
@@ -228,7 +232,7 @@
     flex-wrap nowrap
     justify-content space-around
     >.time::-webkit-scrollbar
-        width 5px
+        width 0
 
     >.time::-webkit-scrollbar-thumb
         background #d8d8d8
@@ -239,7 +243,7 @@
     >.time
         width 30%
         scrollbar-color #d8d8d8
-        scrollbar-width thin
+        scrollbar-width none
         >.timeitem
             height 35px
             display flex
