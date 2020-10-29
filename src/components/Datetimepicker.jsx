@@ -411,6 +411,12 @@ export default class Datetimepicker extends Component {
         e.persist()
     }
 
+    detectHeight = () => {
+        var ele = document.getElementById('datetimeinputposition')
+        if(window.innerHeight - ele.getBoundingClientRect().top > 310) return {top: 'auto'}
+        else return {top: '-310px'}
+    }
+
     render() {
         const { openCalendar, openYearMonth, select, max, min, input } = this.state
         const { nodate, notime, autofocus, value, id, name, disabled, inputRef, classname, onChange } = this.props
@@ -419,7 +425,7 @@ export default class Datetimepicker extends Component {
         Object.keys(this.props).filter(key => exception.indexOf(key)==-1).map(k => props[k] = this.props[k])
         return (
             <div className="datetime-container">
-                <div className={`${!!classname ? classname : "defaultinput"} datetimeinput`}>
+                <div className={`${!!classname ? classname : "defaultinput"} datetimeinput`} id="datetimeinputposition">
                     <div id="hideinput">
                         <input {...props} value={this.getDateTime()}
                                 ref={inputRef} readOnly></input>
@@ -465,7 +471,7 @@ export default class Datetimepicker extends Component {
                 </div>
                 {
                     openCalendar && !(typeof disabled == 'boolean' && disabled) &&
-                    <div className="datetime">
+                    <div className="datetime" style={this.detectHeight()}>
                         {ReactDOM.createPortal(<div className="bk" onClick={() => this.toggle("openCalendar", false)} />, document.body)}
                         {
                             !nodate &&
