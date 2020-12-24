@@ -5,7 +5,7 @@ import { FormattedMessage } from 'react-intl'
 export default class Timeinput extends Component {
 
     componentDidMount() {
-        var next = document.getElementById('ampm')
+        var next = this.props.DatetimeInputRef.current.getElementsByClassName('ampminput')[0]
         if(this.props.autofocus){
             if(next.disabled) next = next.nextSibling
             while(next.nodeName != "INPUT" && next.nodeName != "SELECT"){                
@@ -21,7 +21,7 @@ export default class Timeinput extends Component {
         const { select, max, min, setinput, selectall, check, enter, disabled, input } = this.props
         return (
             <>
-                <select id="ampm"
+                <select className="ampm"
                     onChange={(e) => setinput(e)} value={input.ampm}
                     onBlur={(e) => check(e)}
                     disabled={(typeof disabled=='object' && disabled.indexOf('ampm')!=-1) || (typeof disabled=='boolean' && disabled)}
@@ -38,7 +38,7 @@ export default class Timeinput extends Component {
                     }
                 </select>
 
-                <input id="hour" value={input.hour==='00'? 12:input.hour}
+                <input className="hourinput" value={input.hour==='00'? 12:input.hour}
                     onChange={(e) => setinput(e)}
                     onFocus={(e) => selectall(e)}
                     onBlur={(e) => check(e)}
@@ -51,7 +51,7 @@ export default class Timeinput extends Component {
 
                 <span className="disable-selection">:</span>
 
-                <input id="min" value={input.min}
+                <input className="mininput" value={input.min}
                     onChange={(e) => setinput(e)}
                     onFocus={(e) => selectall(e)}
                     onBlur={(e) => check(e)}
