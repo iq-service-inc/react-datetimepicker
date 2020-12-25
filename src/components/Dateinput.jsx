@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 
 export default class Dateinput extends Component {
     componentDidMount() {
-        var next = document.getElementById('year')
+        var next = this.props.DatetimeInputRef.current.getElementsByClassName('yearinput')[0]
         if(this.props.autofocus){
             if(next.disabled) next = next.nextSibling
             while(next.nodeName != "INPUT" && next.nodeName != "SELECT"){                
@@ -18,7 +18,7 @@ export default class Dateinput extends Component {
         const { select, max, min, setinput, selectall, check, enter, autofocus, disabled, input, format } = this.props
         return (
             <>
-                <input className="yearinput" id="year" value={input.year}
+                <input className="yearinput" value={input.year}
                     onChange={(e) => setinput(e)}
                     onFocus={(e) => selectall(e)}
                     onBlur={(e) => check(e)}
@@ -30,7 +30,7 @@ export default class Dateinput extends Component {
                     ></input>
                 <span className="disable-selection">/</span>
 
-                <input id="month" value={input.month}
+                <input className="monthinput" value={input.month}
                     onChange={(e) => setinput(e)}
                     onFocus={(e) => selectall(e)}
                     onBlur={(e) => check(e)}
@@ -42,7 +42,7 @@ export default class Dateinput extends Component {
                 ></input>
                 <span className="disable-selection">/</span>
 
-                <input id="date" value={input.date}
+                <input className="dateinput" value={input.date}
                     onChange={(e) => setinput(e)}
                     onFocus={(e) => selectall(e)}
                     onBlur={(e) => check(e)}

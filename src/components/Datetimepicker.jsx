@@ -36,7 +36,8 @@ export default class Datetimepicker extends Component {
             openYearMonth: false,
             keyin: true
         }
-        this.calender = React.createRef()
+        this.DatetimeInputRef = React.createRef()
+        this.datetimepicker = React.createRef()
     }
 
     componentDidUpdate(prevProps, prevState) {
@@ -222,12 +223,12 @@ export default class Datetimepicker extends Component {
     }
 
     input = (e) => {    //輸入或按上下鍵的值
-        if (e.target.id == 'hour') {
+        if (e.target.className == 'hourinput') {
             if (this.state.keyin) {
                 this.setState({
                     input: {
                         ...this.state.input,
-                        [e.target.id]: e.target.value == 12 ? '00' : Number(e.target.value)
+                        [e.target.className.replace('input', '')]: e.target.value == 12 ? '00' : Number(e.target.value)
                     },
                 }, () => this.focusnext(e))
             }
@@ -236,7 +237,7 @@ export default class Datetimepicker extends Component {
                 this.setState({
                     input: {
                         ...this.state.input,
-                        [e.target.id]: this.format(this.checkhour(hour), 10, '0')
+                        [e.target.className.replace('input', '')]: this.format(this.checkhour(hour), 10, '0')
                     },
                     keyin: true
                 })
@@ -244,11 +245,11 @@ export default class Datetimepicker extends Component {
         }
         else {
             if (this.state.keyin) {
-                if (e.target.id == 'year' && e.target.value == 0) {
+                if (e.target.className == 'yearinput' && e.target.value == 0){
                     this.setState({
                         input: {
                             ...this.state.input,
-                            [e.target.id]: ''
+                            [e.target.className.replace('input', '')]: ''
                         },
                     })
                 }
@@ -256,7 +257,7 @@ export default class Datetimepicker extends Component {
                     this.setState({
                         input: {
                             ...this.state.input,
-                            [e.target.id]: Number(e.target.value)
+                            [e.target.className.replace('input', '')]: Number(e.target.value)
                         },
                     }, () => this.focusnext(e))
                 }
@@ -265,7 +266,7 @@ export default class Datetimepicker extends Component {
                 this.setState({
                     input: {
                         ...this.state.input,
-                        [e.target.id]: this.format(Number(e.target.value), 10, '0')
+                        [e.target.className.replace('input', '')]: this.format(Number(e.target.value), 10, '0')
                     },
                     keyin: true
                 })
@@ -279,8 +280,8 @@ export default class Datetimepicker extends Component {
         var max = Number(target.max)
         var min = Number(target.min)
         var v = Number(target.value)
-        if (target.id != 'hour') {
-            if (v * 10 > max || (target.value.length >= 2 && target.id != 'year')) {
+        if (target.className.replace('input', '') != 'hour') {
+            if (v * 10 > max || (target.value.length >= 2 && target.className.replace('input', '') != 'year')) {
                 target.blur()
                 var next = target.nextElementSibling
                 while (!!next) {
@@ -292,15 +293,15 @@ export default class Datetimepicker extends Component {
                 }
             }
         }
-        if (target.id == 'hour') {
+        if (e.target.className.replace('input', '') == 'hour') {
             if (target.value.length >= 2 || target.value > 1) {
                 target.blur()
-                document.getElementById('min').focus()
+                this.DatetimeInputRef.current.getElementsbyClassName('mininput')[0].focus()
             }
         }
-        if (target.id == 'ampm') {
+        if (e.target.className.replace('input', '') == 'ampm') {
             target.blur()
-            document.getElementById('hour').focus()
+            this.DatetimeInputRef.current.getElementsByClassName('hourinput')[0].focus()
         }
     }
 
@@ -312,7 +313,7 @@ export default class Datetimepicker extends Component {
         var hour = select.ampm * 12 + Number(select.hour)
         var date = new Date(select.year, select.month - 1, select.date, hour, select.min)
         var nextdate = date
-        switch (e.target.id) {
+        switch (e.target.className.replace('input', '')) {
             case 'year':
                 nextdate.setFullYear(value)
                 break
@@ -412,9 +413,10 @@ export default class Datetimepicker extends Component {
     }
 
     detectHeight = () => {
-        var ele = document.getElementById('datetimeinputposition')
-        if(window.innerHeight - ele.getBoundingClientRect().top > 310) return {top: 'auto'}
-        else return {top: '-310px'}
+        var input = this.DatetimeInputRef.current,
+            ele = input.closest('.datetimeinputposition').getBoundingClientRect()
+        if(window.innerHeight - ele.top > 310) return {top: ele.bottom}
+        else return {top: ele.top - 310}
     }
 
     render() {
@@ -425,15 +427,17 @@ export default class Datetimepicker extends Component {
         Object.keys(this.props).filter(key => exception.indexOf(key)==-1).map(k => props[k] = this.props[k])
         return (
             <div className="datetime-container">
-                <div className={`${!!classname ? classname : "defaultinput"} datetimeinput`} id="datetimeinputposition">
+                <div className={`${!!classname ? classname : "defaultinput"} datetimeinput datetimeinputposition`}>
                     <div id="hideinput">
                         <input {...props} value={this.getDateTime()}
                                 ref={inputRef} readOnly></input>
                     </div>
-                    <div>
+                    <div ref={this.DatetimeInputRef}>
                         {
+                            !!this.DatetimeInputRef.current &&
                             !nodate &&
                             <Dateinput
+                                DatetimeInputRef={this.DatetimeInputRef}
                                 select={select}
                                 input={input}
                                 max={max}
@@ -449,8 +453,10 @@ export default class Datetimepicker extends Component {
                         }
 
                         {
+                            !!this.DatetimeInputRef.current &&
                             !notime &&
                             <Timeinput
+                                DatetimeInputRef={this.DatetimeInputRef}
                                 select={select}
                                 input={input}
                                 max={max}
@@ -471,8 +477,9 @@ export default class Datetimepicker extends Component {
                 </div>
                 {
                     openCalendar && !(typeof disabled == 'boolean' && disabled) &&
-                    <div className="datetime" style={this.detectHeight()}>
-                        {ReactDOM.createPortal(<div className="bk" onClick={() => this.toggle("openCalendar", false)} />, document.body)}
+                    ReactDOM.createPortal(
+                    <div className="datetime" style={this.detectHeight()} ref={this.datetimepicker}>
+                        <div className="bk" onClick={() => this.toggle("openCalendar", false)} />
                         {
                             !nodate &&
                             <div className="datebox">
@@ -550,7 +557,7 @@ export default class Datetimepicker extends Component {
                                 format={(n, m, c) => this.format(n, m, c)}
                             ></Time>
                         }
-                    </div>
+                    </div>, document.body)
                 }
             </div>
         )
