@@ -296,7 +296,7 @@ export default class Datetimepicker extends Component {
         if (e.target.className.replace('input', '') == 'hour') {
             if (target.value.length >= 2 || target.value > 1) {
                 target.blur()
-                this.DatetimeInputRef.current.getElementsbyClassName('mininput')[0].focus()
+                this.DatetimeInputRef.current.getElementsByClassName('mininput')[0].focus()
             }
         }
         if (e.target.className.replace('input', '') == 'ampm') {
