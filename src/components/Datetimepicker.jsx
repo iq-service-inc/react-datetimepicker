@@ -419,6 +419,12 @@ export default class Datetimepicker extends Component {
         else return {top: ele.top - 310}
     }
 
+    testIE = () => {
+        var userAgent = navigator.userAgent,
+            isMSIE = /MSIE|Trident/i.test(userAgent)
+        return isMSIE
+    }
+
     render() {
         const { openCalendar, openYearMonth, select, max, min, input } = this.state
         const { nodate, notime, autofocus, value, id, name, disabled, inputRef, classname, onChange } = this.props
@@ -487,18 +493,26 @@ export default class Datetimepicker extends Component {
                                     {
                                         (typeof disabled == 'object' && (disabled.indexOf('year') == -1 || disabled.indexOf('month') == -1)) ?
                                             <div className="year-month onclick hover" onClick={() => this.toggle("openYearMonth")}>
-                                                <FormattedDate
-                                                    value={new Date(select.year, select.month - 1)}
-                                                    year="numeric"
-                                                    month="short"
-                                                />
+                                                {
+                                                    select.year>9999 && this.testIE()?
+                                                    <div>{new Date(select.year, select.month - 1).getFullYear()+'/'+(new Date(select.year, select.month - 1).getMonth()+1)}</div>
+                                                    :<FormattedDate
+                                                        value={new Date(select.year, select.month - 1)}
+                                                        year="numeric"
+                                                        month="short"
+                                                    />
+                                                }
                                             </div>
                                             : <div className="year-month">
-                                                <FormattedDate
-                                                    value={new Date(select.year, select.month - 1)}
-                                                    year="numeric"
-                                                    month="short"
-                                                />
+                                                {
+                                                    select.year>9999 && this.testIE()?
+                                                    <div>{new Date(select.year, select.month - 1).getFullYear()+'/'+(new Date(select.year, select.month - 1).getMonth()+1)}</div>
+                                                    :<FormattedDate
+                                                        value={new Date(select.year, select.month - 1)}
+                                                        year="numeric"
+                                                        month="short"
+                                                    />
+                                                }
                                             </div>
                                     }
                                     {

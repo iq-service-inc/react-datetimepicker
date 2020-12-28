@@ -67,7 +67,7 @@ export default class Days extends Component {
                         this.state.daytitle.map((w, index) =>
                             <div className="daytitle" key={index}>
                                 <FormattedDate
-                                    value={new Date(select.year,select.month-1,select.date-selectday.getDay()+index)}
+                                    value={new Date(1970,1,1+index)}
                                     weekday="narrow"
                                 >{t=> <span>{t}</span>}</FormattedDate>
                             </div>
