@@ -414,7 +414,7 @@ export default class Datetimepicker extends Component {
 
     detectHeight = () => {
         var input = this.DatetimeInputRef.current,
-            ele = input.closest('.datetimeinputposition').getBoundingClientRect()
+            ele = input.parentNode.getBoundingClientRect()
         if(window.innerHeight - ele.top > 310) return {top: ele.bottom}
         else return {top: ele.top - 310}
     }
