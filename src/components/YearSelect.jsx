@@ -94,6 +94,12 @@ export default class YearSelect extends Component {
         this.setState({open: year})
     }
 
+    testIE = () => {
+        var userAgent = navigator.userAgent,
+            isMSIE = /MSIE|Trident/i.test(userAgent)
+        return isMSIE
+    }
+    
     render() {
         const { select, max, min, selectDay, disabled } = this.props
         const { open } = this.state
@@ -103,27 +109,39 @@ export default class YearSelect extends Component {
                     this.state.year.map(year=>
                         disabled.indexOf('month')==-1?
                         <div className={(open == year ? "selectyear" : "") + " year onclick"} key={year} onClick={() => this.openMonth(year)}>
-                            <FormattedDate
-                                value={new Date(year,1)}
-                                year="numeric"
-                            />
+                            {
+                                year>9999 && this.testIE()?
+                                <div>{new Date(year,1).getFullYear()}</div>
+                                :<FormattedDate
+                                    value={new Date(year,1)}
+                                    year="numeric"
+                                />
+                            }
                             {open == year &&
                                 <div className="monthselect">
                                     {
                                         disabled.indexOf('year')==-1 || year==select.year?
                                         open == year && this.rendermonth(year, max, min).map(m =>
                                             <div className={(select.month == m && select.year == year ? "select " : "hover ") + "month onclick"} key={m} onClick={() => selectDay(year, m)}>
-                                                <FormattedDate
-                                                    value={new Date(select.year, m-1)}
-                                                    month="short"
-                                                />
+                                                {
+                                                    year>9999 && this.testIE()?
+                                                    <div>{new Date(year, m-1).getMonth()+1}</div>
+                                                    :<FormattedDate
+                                                        value={new Date(year, m-1)}
+                                                        month="short"
+                                                    />
+                                                }
                                             </div>
                                         )
                                         :open == year && this.rendermonth(year, max, min).map(m =><div className={(select.month == m && select.year == year ? "select " : "") + "month greydate"} key={m}>
-                                                <FormattedDate
-                                                    value={new Date(select.year, m-1)}
-                                                    month="short"
-                                                />
+                                                {
+                                                    year>9999 && this.testIE()?
+                                                    <div>{new Date(year, m-1).getMonth()+1}</div>
+                                                    :<FormattedDate
+                                                        value={new Date(year, m-1)}
+                                                        month="short"
+                                                    />
+                                                }
                                             </div>
                                         )
                                     }
@@ -131,10 +149,14 @@ export default class YearSelect extends Component {
                             }
                         </div>
                         :<div className={(select.year == year ? "select " : "hover ") +" bigyear onclick"} key={year} onClick={() => selectDay(year)}>
-                            <FormattedDate
-                                value={new Date(year,1)}
-                                year="numeric"
-                            />
+                            {
+                                select.year>9999 && this.testIE()?
+                                <div>{new Date(year, 1).getFullYear()}</div>
+                                :<FormattedDate
+                                    value={new Date(year,1)}
+                                    year="numeric"
+                                />
+                            }
                         </div>
                     )
                 }

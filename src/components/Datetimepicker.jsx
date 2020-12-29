@@ -296,7 +296,7 @@ export default class Datetimepicker extends Component {
         if (e.target.className.replace('input', '') == 'hour') {
             if (target.value.length >= 2 || target.value > 1) {
                 target.blur()
-                this.DatetimeInputRef.current.getElementsbyClassName('mininput')[0].focus()
+                this.DatetimeInputRef.current.getElementsByClassName('mininput')[0].focus()
             }
         }
         if (e.target.className.replace('input', '') == 'ampm') {
@@ -414,9 +414,15 @@ export default class Datetimepicker extends Component {
 
     detectHeight = () => {
         var input = this.DatetimeInputRef.current,
-            ele = input.closest('.datetimeinputposition').getBoundingClientRect()
+            ele = input.parentNode.getBoundingClientRect()
         if(window.innerHeight - ele.top > 310) return {top: ele.bottom}
         else return {top: ele.top - 310}
+    }
+
+    testIE = () => {
+        var userAgent = navigator.userAgent,
+            isMSIE = /MSIE|Trident/i.test(userAgent)
+        return isMSIE
     }
 
     render() {
@@ -487,18 +493,26 @@ export default class Datetimepicker extends Component {
                                     {
                                         (typeof disabled == 'object' && (disabled.indexOf('year') == -1 || disabled.indexOf('month') == -1)) ?
                                             <div className="year-month onclick hover" onClick={() => this.toggle("openYearMonth")}>
-                                                <FormattedDate
-                                                    value={new Date(select.year, select.month - 1)}
-                                                    year="numeric"
-                                                    month="short"
-                                                />
+                                                {
+                                                    select.year>9999 && this.testIE()?
+                                                    <div>{new Date(select.year, select.month - 1).getFullYear()+'/'+(new Date(select.year, select.month - 1).getMonth()+1)}</div>
+                                                    :<FormattedDate
+                                                        value={new Date(select.year, select.month - 1)}
+                                                        year="numeric"
+                                                        month="short"
+                                                    />
+                                                }
                                             </div>
                                             : <div className="year-month">
-                                                <FormattedDate
-                                                    value={new Date(select.year, select.month - 1)}
-                                                    year="numeric"
-                                                    month="short"
-                                                />
+                                                {
+                                                    select.year>9999 && this.testIE()?
+                                                    <div>{new Date(select.year, select.month - 1).getFullYear()+'/'+(new Date(select.year, select.month - 1).getMonth()+1)}</div>
+                                                    :<FormattedDate
+                                                        value={new Date(select.year, select.month - 1)}
+                                                        year="numeric"
+                                                        month="short"
+                                                    />
+                                                }
                                             </div>
                                     }
                                     {
