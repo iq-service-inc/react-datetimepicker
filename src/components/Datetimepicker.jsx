@@ -412,11 +412,11 @@ export default class Datetimepicker extends Component {
         e.persist()
     }
 
-    detectHeight = () => {
+    detectPosition = () => {
         var input = this.DatetimeInputRef.current,
             ele = input.parentNode.getBoundingClientRect()
-        if(window.innerHeight - ele.top > 310) return {top: ele.bottom}
-        else return {top: ele.top - 310}
+        if(window.innerHeight - ele.top > 310) return {top: ele.bottom, left: ele.left}
+        else return {top: ele.top - 310, left: ele.left}
     }
 
     testIE = () => {
@@ -484,7 +484,7 @@ export default class Datetimepicker extends Component {
                 {
                     openCalendar && !(typeof disabled == 'boolean' && disabled) &&
                     ReactDOM.createPortal(
-                    <div className="datetime" style={this.detectHeight()} ref={this.datetimepicker}>
+                    <div className="datetime" style={this.detectPosition()} ref={this.datetimepicker}>
                         <div className="bk" onClick={() => this.toggle("openCalendar", false)} />
                         {
                             !nodate &&
