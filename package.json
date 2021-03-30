@@ -1,6 +1,6 @@
 {
   "name": "@iqs/datetimepicker",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "datetimepicker",
   "main": "module/main.js",
   "scripts": {
@@ -15,7 +15,10 @@
     "type": "git",
     "url": "https://github.com/iq-service-inc/react-datetimepicker"
   },
-  "author": "Zap",
+  "author": "Zap <soldierzx0705@gmail.com> (https://github.com/LinZap/)",
+  "contributors": [
+    "Vanessa (https://github.com/wyttime04)"
+  ],
   "license": "MIT",
   "peerDependencies": {
     "@fortawesome/react-fontawesome": "^0.1.9",
