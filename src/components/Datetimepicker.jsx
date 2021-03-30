@@ -498,7 +498,7 @@ export default class Datetimepicker extends Component {
                                 <div className="box-title">
                                     {
                                         (typeof disabled == 'object' && (disabled.indexOf('year') == -1 || disabled.indexOf('month') == -1)) ?
-                                            <div className="year-month onclick hover" onClick={() => this.toggle("openYearMonth")}>
+                                            <div className={`year-month onclick hover ${openYearMonth? 'disabled': ''}`} onClick={() => this.toggle("openYearMonth")}>
                                                 {
                                                     select.year>9999 && this.testIE()?
                                                     <div>{new Date(select.year, select.month - 1).getFullYear()+'/'+(new Date(select.year, select.month - 1).getMonth()+1)}</div>
@@ -508,6 +508,7 @@ export default class Datetimepicker extends Component {
                                                         month="short"
                                                     />
                                                 }
+                                                <span className="arrow"></span>
                                             </div>
                                             : <div className="year-month">
                                                 {
@@ -551,7 +552,7 @@ export default class Datetimepicker extends Component {
                                             select={select}
                                             max={max}
                                             min={min}
-                                            selectDay={(year, month, date, hour, min, ampm) => this.selectDay(year, month, date, hour, min, ampm)}
+                                            selectDay={(year, month, date, hour, min, ampm) => {this.selectDay(year, month, date, hour, min, ampm); this.toggle("openYearMonth")}}
                                             disabled={disabled}
                                         ></YearSelect>
 
