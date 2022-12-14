@@ -1,5 +1,5 @@
 {
-  "name": "@iqs/datetimepicker",
+  "name": "@iqs/react-datetimepicker",
   "version": "1.0.10",
   "description": "datetimepicker",
   "main": "module/main.js",
