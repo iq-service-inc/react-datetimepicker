@@ -392,21 +392,33 @@ export default class Datetimepicker extends Component {
     }
 
     enter = (e) => {
-        if (e.keyCode === 38 || e.keyCode === 40) {
+        if (["ArrowUp", "ArrowDown"].includes(e.key)) {
             this.setState({
                 keyin: false
             })
         }
-        if (e.keyCode === 13) {
+        if (["Enter", "ArrowRight"].includes(e.key)) {
             e.preventDefault()
             e.target.blur()
             var next = e.target.nextElementSibling
             while (!!next) {
-                if (next.nodeName == "INPUT" || next.nodeName == "SELECT") {
+                if (next.nodeName == "INPUT") {
                     next.focus()
                     break
                 }
                 next = next.nextElementSibling
+            }
+        }
+        if (e.key === "ArrowLeft") {
+            e.preventDefault()
+            e.target.blur()
+            var prev = e.target.previousElementSibling
+            while (!!prev) {
+                if (prev.nodeName == "INPUT") {
+                    prev.focus()
+                    break
+                }
+                prev = prev.previousElementSibling
             }
         }
         e.persist()
