@@ -10,7 +10,7 @@ A simple and reusable Datepicker component for React
 
 **Install**
 ```
-npm i @iqs/datetimepicker --save
+npm i @iqs/react-datetimepicker --save
 ```
 
 **Install peerDependencies**

@@ -7,9 +7,15 @@ import Days from './Days'
 import Time from './Time'
 import Dateinput from './Dateinput'
 import Timeinput from './Timeinput'
+import shallowEqual from '../lib/shallowEqual'
 import '../styl/lib/datetimepicker.styl'
 import { FormattedDate, FormattedTime } from 'react-intl'
 
+/**
+ * @typedef {import('./Datetimepicker').DatetimepickerProps} DatetimepickerProps
+ * @typedef {import('./Datetimepicker').DatetimepickerState} DatetimepickerState
+ * @extends React.Component<DatetimepickerProps, DatetimepickerState>
+ */
 export default class Datetimepicker extends Component {
     constructor(props) {
         super(props)
@@ -48,7 +54,7 @@ export default class Datetimepicker extends Component {
             this.setselectinput()
         }
 
-        if (prevState.select !== select) {
+        if (!shallowEqual(prevState.select, select)) {
             this.setState({
                 input: {
                     year: select.year,
@@ -75,10 +81,10 @@ export default class Datetimepicker extends Component {
         const year = (select.year > 9999 && (select.year > 99999 ? '+' : '+0')) + select.year
         const hour = select.ampm * 12 + Number(select.hour)
         var date = new Date(year, select.month - 1, select.date, hour, select.min)
-        if(!nodate & !!notime){
+        if(!nodate & notime){
             return `${date.getFullYear()}-${this.format(date.getMonth() + 1, 10, '0')}-${this.format(date.getDate(), 10, '0')}`
         }
-        else if(!notime & !!nodate){
+        else if(!notime & nodate){
             return `${this.format(date.getHours(), 10, '0')}:${this.format(date.getMinutes(), 10, '0')}`
         }
         else if(!nodate & !notime){
@@ -129,17 +135,17 @@ export default class Datetimepicker extends Component {
         var MAX = { year: 275759, month: 12, date: 31, ampm: 1, hour: 11, min: 59 }
 
         if (typeof min == "string") {
-            var v = new Date(this.yearFormat(min) + min)
+            var v = new Date(this.yearFormat(min) + min + (min.includes("T") ? "" : "T00:00"))
             MIN = this.setInitDate(v, MIN, "min")
         }
 
         if (typeof max == "string") {
-            var v = new Date(this.yearFormat(max) + max)
+            var v = new Date(this.yearFormat(max) + max + (max.includes("T") ? "" : "T00:00"))
             MAX = this.setInitDate(v, MAX, "max")
         }
 
         if (typeof value == "string") {
-            var v = new Date(this.yearFormat(value) + value)
+            var v = new Date(this.yearFormat(value) + value + (value.includes("T") ? "" : "T00:00"))
             this.setInitDate(v, MIN, "select")
         }
         else if (!value) {
@@ -392,21 +398,33 @@ export default class Datetimepicker extends Component {
     }
 
     enter = (e) => {
-        if (e.keyCode === 38 || e.keyCode === 40) {
+        if (["ArrowUp", "ArrowDown"].includes(e.key)) {
             this.setState({
                 keyin: false
             })
         }
-        if (e.keyCode === 13) {
+        if (["Enter", "ArrowRight"].includes(e.key)) {
             e.preventDefault()
             e.target.blur()
             var next = e.target.nextElementSibling
             while (!!next) {
-                if (next.nodeName == "INPUT" || next.nodeName == "SELECT") {
+                if (next.nodeName == "INPUT") {
                     next.focus()
                     break
                 }
                 next = next.nextElementSibling
+            }
+        }
+        if (e.key === "ArrowLeft") {
+            e.preventDefault()
+            e.target.blur()
+            var prev = e.target.previousElementSibling
+            while (!!prev) {
+                if (prev.nodeName == "INPUT") {
+                    prev.focus()
+                    break
+                }
+                prev = prev.previousElementSibling
             }
         }
         e.persist()

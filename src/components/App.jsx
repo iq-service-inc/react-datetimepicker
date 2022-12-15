@@ -92,7 +92,6 @@ class App extends Component {
                             // classname="birthinput"
                             // nodate
                             // notime
-                            autofocus
                             // disabled
                         ></Datetimepicker>
                     </form>
