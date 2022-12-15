@@ -11,6 +11,11 @@ import shallowEqual from '../lib/shallowEqual'
 import '../styl/lib/datetimepicker.styl'
 import { FormattedDate, FormattedTime } from 'react-intl'
 
+/**
+ * @typedef {import('./Datetimepicker').DatetimepickerProps} DatetimepickerProps
+ * @typedef {import('./Datetimepicker').DatetimepickerState} DatetimepickerState
+ * @extends React.Component<DatetimepickerProps, DatetimepickerState>
+ */
 export default class Datetimepicker extends Component {
     constructor(props) {
         super(props)
