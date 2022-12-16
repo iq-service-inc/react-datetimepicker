@@ -4,6 +4,7 @@ A simple and reusable Datepicker component for React
 
 ![Datetimepicker](https://github.com/iq-service-inc/react-datetimepicker/blob/master/demo.png?raw=true)
 
+Demo Page: [https://iq-service-inc.github.io/react-datetimepicker/](https://iq-service-inc.github.io/react-datetimepicker/)
 
 ## Quick Start 
 
@@ -205,6 +206,11 @@ npm run umd
 npm run umdtest
 ```
 
+### GitHub Pages
+`App.jsx` 為 GitHub Pages Demo Page，如果有進行修改，在 commit 前先使用以下指令把更動 deploy 到 GitHub Pages 上
+```
+npm run deploy
+```
 
 ## License
 Datetimepicker is [MIT licensed](https://github.com/iq-service-inc/react-datetimepicker/blob/master/LICENSE.md)
