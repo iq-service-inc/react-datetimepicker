@@ -102,7 +102,7 @@ function App(props) {
                                     autofocus
                                 />
                                 <Typography variant='body1' style={{ marginTop: 16 }}>
-                                    Value: {limited}
+                                    Value: {autofocus}
                                 </Typography>
                             </CardContent>
                         </Card>
@@ -148,7 +148,7 @@ function App(props) {
                                 </Typography>
                                 <Datetimepicker
                                     value={partial}
-                                    onChange={value => setPartial(value)}
+                                    onChange={value => setPartial(notime? `${value}T00:00` : `1970-01-01T${value}`)}
                                     notime={notime}
                                     nodate={!notime}
                                 />
