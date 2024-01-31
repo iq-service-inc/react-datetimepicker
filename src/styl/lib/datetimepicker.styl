@@ -1,87 +1,72 @@
-#hideinput
-    display none
-
-.disable-selection
-    -webkit-touch-callout none /* iOS Safari */
-    -webkit-user-select none /* Safari */
-    -khtml-user-select none /* Konqueror HTML */
-    -moz-user-select none /* Old versions of Firefox */
-    -ms-user-select none /* Internet Explorer/Edge */
-    user-select none /* Non-prefixed version, currently
-                        supported by Chrome, Edge, Opera and Firefox */
-
-.datetime .bk
-    position fixed
-    height 100%
-    width 100%
-    top 0
-    left 0
-
 .datetime-container
+    @import 'datetimepicker-normalize.styl'
+    
     position relative
     > *
         font-size 0.875rem
 
+    .defaultinput
+        background-color white
+        border 1px solid #CED4DA
+        border-radius 4px
 
-.datetimeinput
-    width inherit
-    position relative
-    display flex
-    align-items center
-    justify-content space-between
-    padding 0.25rem 0.5rem
-    transition border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out
-    > div
-        > input
-            color #495057
-            outline none
-            box-sizing border-box
-            background none
-            border none
-            width 1.8em
-            margin 0 2px
-            border 2px solid transparent
-            text-align center
-            +label.displaynone
-                display none
-        > select
-            color #495057
-            outline none
-            appearance none
-            background none
-            border 2px solid transparent
-            text-align center
-            cursor pointer
-            > option
-                padding 5px
-            &:focus
-                color white
-                background-color #3390ff
+    .datetimeinput
+        width inherit
+        position relative
+        display flex
+        align-items center
+        justify-content space-between
+        padding 0.25rem 0.5rem
+        transition border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out
+        > div
+            > input
+                color #495057
+                outline none
+                box-sizing border-box
+                background none
+                border none
+                width 1.8em
+                margin 0 2px
+                border 2px solid transparent
+                text-align center
+                +label.displaynone
+                    display none
+            > select
+                color #495057
+                outline none
+                appearance none
+                background none
+                border 2px solid transparent
+                text-align center
+                cursor pointer
                 > option
-                    color #495057
-                    background-color white
-        > input::-webkit-outer-spin-button,
-        > input::-webkit-inner-spin-button 
-            -webkit-appearance none
-            margin 0
-        > input[type=number]
-            -moz-appearance textfield
-        >.yearinput
-            width 3.5em !important
-    > .calendar
-        margin 0 4px
+                    padding 5px
+                &:focus
+                    color white
+                    background-color #3390ff
+                    > option
+                        color #495057
+                        background-color white
+            > input::-webkit-outer-spin-button,
+            > input::-webkit-inner-spin-button 
+                -webkit-appearance none
+                margin 0
+            > input[type=number]
+                -moz-appearance textfield
+            >.yearinput
+                width 3.5em !important
+        > .calendar
+            margin 0 4px
+        
+        &:focus-within
+            border-color #80bdff
+            outline 0
+            box-shadow 0 0 0 0.1rem rgba(0, 123, 255, 0.25)
+
+
+.datetime-modal
+    @import 'datetimepicker-normalize.styl'
     
-    &:focus-within
-        border-color #80bdff
-        outline 0
-        box-shadow 0 0 0 0.1rem rgba(0, 123, 255, 0.25)
-
-.defaultinput
-    background-color white
-    border 1px solid #CED4DA
-    border-radius 4px
-
-.datetime
     z-index 1
     display flex
     flex-wrap nowrap
@@ -95,190 +80,182 @@
     -ms-user-select none /* Internet Explorer/Edge */
     user-select none /* Non-prefixed version, currently
                         supported by Chrome, Edge, Opera and Firefox */
-
-.datebox
-    position relative
-    padding 5px
-    width 250px
-    height 300px
-    background-color #ffffff
-    overflow-x auto
-    overflow-y hidden
-    border-right 1px #a5a5a5 solid
-    >.days
-        height 80%
-        display flex
-        justify-content space-around
-        flex-direction column
-
-    >.box-title
-        display flex
-        flex-wrap nowrap
-        justify-content space-between
-        align-items center
-        position relative
-        max-height 15%
-
-    .year-month
-        padding 5px 0
-        margin 3px 0
-        font-weight bold
-        display flex
-        align-items flex-end
-    
-    .year-month.disabled
-        color #767676
-
-    .month-btns
-        display flex
-        flex-wrap nowrap
-        .disabled-arrow
-            color #767676
-        > div
-            margin 0 4px
-            width 25px
-            height 25px
-            display flex
-            justify-content center
-            align-items center
-
-    .yearselect::-webkit-scrollbar
-        width 0
-
-    .yearselect::-webkit-scrollbar-thumb
-        background #d8d8d8
-
-    .yearselect::-webkit-scrollbar-thumb:hover
-        background #888
-
-    .yearselect
-        display flex
-        flex-flow column
-        overflow-x hidden
-        overflow-y auto
-        height 90%
-        scrollbar-color #d8d8d8
-        scrollbar-width none
-        -ms-overflow-style none
-
-        >.year
-            background-color #efefef
-            border-bottom 1px #cecece solid
-            padding 5px 4pxc
-            min-height 24px
-
-        >.bigyear
-            background-color #efefef
-            border-bottom 1px #cecece solid
-            padding 5px 4px
-            min-height 15px
-
-        >.bigyear
-            padding 10px 4px
-
-        >.selectyear
-            min-height 150px
-            display flex
-            flex-direction column
-            align-items stretch
-
-            >.monthselect
-                min-height 130px
-                display flex
-                flex-wrap wrap
-                background-color white
-                padding 2px
-                align-items stretch
-                .month
-                    display flex
-                    width 25%
-                    max-height 35%
-                    margin 0
-                    justify-content center
-                    align-items center
-                    border none
-
-    .week
-        display flex
-        flex-wrap nowrap
+    .bk
+        position fixed
+        height 100%
         width 100%
-        height inherit
-        >.daytitle,
-        >.date
-            width inherit
-            height inherit
-            padding 3px
+        top 0
+        left 0
+
+    .datebox
+        position relative
+        padding 5px
+        width 250px
+        height 300px
+        background-color #ffffff
+        overflow-x auto
+        overflow-y hidden
+        border-right 1px #a5a5a5 solid
+        >.days
+            height 80%
             display flex
-            justify-content center
+            justify-content space-around
+            flex-direction column
+
+        >.box-title
+            display flex
+            flex-wrap nowrap
+            justify-content space-between
             align-items center
-            font-weight 600
+            position relative
+            max-height 15%
 
-        >.greydate
-            color #767676
-            font-weight 500
-
-    .today
-        color #0075ff
-        font-weight bold
-        position absolute
-        bottom 10px
-        right 10px
-        padding 4px
-    .grey
-        color #767676
-
-.timebox
-    position relative
-    padding 5px
-    width 200px
-    height 300px
-    background-color #ffffff
-    overflow-x auto
-    overflow-y hidden
-    display flex
-    flex-wrap nowrap
-    justify-content space-around
-    >.time::-webkit-scrollbar
-        width 0
-
-    >.time::-webkit-scrollbar-thumb
-        background #d8d8d8
-
-    >.time::-webkit-scrollbar-thumb:hover
-        background #888
+        .year-month
+            padding 5px 0
+            margin 3px 0
+            font-weight bold
+            display flex
+            align-items flex-end
         
-    >.time
-        width 30%
-        scrollbar-color #d8d8d8
-        scrollbar-width none
-        -ms-overflow-style none
-        >.timeitem
-            height 35px
-            display flex
-            justify-content center
-            align-items center
-            border none
-
-        >.disabled-timeitem
+        .year-month.disabled
             color #767676
 
-.hover:hover
-    background-color #b2d5ff
+        .month-btns
+            display flex
+            flex-wrap nowrap
+            .disabled-arrow
+                color #767676
+            > div
+                margin 0 4px
+                width 25px
+                height 25px
+                display flex
+                justify-content center
+                align-items center
 
-.scroll
-    overflow-x hidden
-    overflow-y auto
+        .yearselect::-webkit-scrollbar
+            width 0
 
-.onclick
-    cursor pointer
+        .yearselect::-webkit-scrollbar-thumb
+            background #d8d8d8
 
-.select
-    background-color #0075ff
-    color white
+        .yearselect::-webkit-scrollbar-thumb:hover
+            background #888
 
-.arrow
-    margin-left 2px
-    width 0
-    height 0
-    border 5px solid
-    border-color inherit transparent transparent transparent
+        .yearselect
+            display flex
+            flex-flow column
+            overflow-x hidden
+            overflow-y auto
+            height 90%
+            scrollbar-color #d8d8d8
+            scrollbar-width none
+            -ms-overflow-style none
+
+            >.year
+                background-color #efefef
+                border-bottom 1px #cecece solid
+                padding 5px 4pxc
+                min-height 24px
+
+            >.bigyear
+                background-color #efefef
+                border-bottom 1px #cecece solid
+                padding 5px 4px
+                min-height 15px
+
+            >.bigyear
+                padding 10px 4px
+
+            >.selectyear
+                min-height 150px
+                display flex
+                flex-direction column
+                align-items stretch
+
+                >.monthselect
+                    min-height 130px
+                    display flex
+                    flex-wrap wrap
+                    background-color white
+                    padding 2px
+                    align-items stretch
+                    .month
+                        display flex
+                        width 25%
+                        max-height 35%
+                        margin 0
+                        justify-content center
+                        align-items center
+                        border none
+
+        .week
+            display flex
+            flex-wrap nowrap
+            width 100%
+            height inherit
+            >.daytitle,
+            >.date
+                width inherit
+                height inherit
+                padding 3px
+                display flex
+                justify-content center
+                align-items center
+                font-weight 600
+
+            >.greydate
+                color #767676
+                font-weight 500
+
+        .today
+            color #0075ff
+            font-weight bold
+            position absolute
+            bottom 10px
+            right 10px
+            padding 4px
+        .grey
+            color #767676
+
+    .timebox
+        position relative
+        padding 5px
+        width 200px
+        height 300px
+        background-color #ffffff
+        overflow-x auto
+        overflow-y hidden
+        display flex
+        flex-wrap nowrap
+        justify-content space-around
+        >.time::-webkit-scrollbar
+            width 0
+
+        >.time::-webkit-scrollbar-thumb
+            background #d8d8d8
+
+        >.time::-webkit-scrollbar-thumb:hover
+            background #888
+            
+        >.time
+            width 30%
+            scrollbar-color #d8d8d8
+            scrollbar-width none
+            -ms-overflow-style none
+            >.timeitem
+                height 35px
+                display flex
+                justify-content center
+                align-items center
+                border none
+
+            >.disabled-timeitem
+                color #767676
+
+    .arrow
+        margin-left 2px
+        width 0
+        height 0
+        border 5px solid
+        border-color inherit transparent transparent transparent

@@ -508,7 +508,7 @@ export default class Datetimepicker extends Component {
                 {
                     openCalendar && !(typeof disabled == 'boolean' && disabled) &&
                     ReactDOM.createPortal(
-                    <div className="datetime" style={this.detectPosition()} ref={this.datetimepicker}>
+                    <div className="datetime-modal" style={this.detectPosition()} ref={this.datetimepicker}>
                         <div className="bk" onClick={() => this.toggle("openCalendar", false)} />
                         {
                             !nodate &&
