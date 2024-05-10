@@ -64,7 +64,7 @@ export default class YearSelect extends Component {
         const { year } = this.state
         const { max, min } = this.props
         var arr = year
-        if (element.scrollHeight - element.scrollTop === element.clientHeight){
+        if ((element.scrollHeight - element.scrollTop -element.clientHeight) < 1){
             var last = year[year.length-1]
             arr = year.concat(this.createarr(last+1, last+11>max.year? max.year: last+11))
         }
