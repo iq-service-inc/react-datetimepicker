@@ -21,18 +21,21 @@ const theme = createTheme({
 
 function App(props) {
     const { intl: { language } } = props
+    
+    const now = new Date()
+    const defaultValue = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}T${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`
 
     // example 1
-    const [basic, setBasic] = useState((new Date()).toISOString())
+    const [basic, setBasic] = useState(defaultValue)
     // example 2
-    const [autofocus, setAutofocus] = useState((new Date()).toISOString())
+    const [autofocus, setAutofocus] = useState(defaultValue)
     // example 3
-    const [limited, setLimited] = useState((new Date()).toISOString())
+    const [limited, setLimited] = useState(defaultValue)
     // example 4
-    const [partial, setPartial] = useState((new Date()).toISOString())
+    const [partial, setPartial] = useState(defaultValue)
     const [notime, setNotime] = useState(false)
     // example 5
-    const [disabled, setDisabled] = useState((new Date()).toISOString())
+    const [disabled, setDisabled] = useState(defaultValue)
     const [disabledItems, setDisabledItems] = useState({
         year: false,
         month: false,
@@ -42,11 +45,14 @@ function App(props) {
         min: false
     })
     const handleChange = (event) => setDisabledItems({ ...disabledItems, [event.target.name]: !event.target.checked })
+    // example 6
+    const [use24hoursValue, setUse24hoursValue] = useState(defaultValue)
+    const [use24hours, setUse24hours] = useState(false)
 
     const sevendaysBefore = (new Date((new Date()).getTime() - 86400 * 1000 * 7)).toISOString()
-    console.log('sevendaysBefore', sevendaysBefore)
+    // console.log('sevendaysBefore', sevendaysBefore)
     const sevendaysAfter = (new Date((new Date()).getTime() + 86400 * 1000 * 7)).toISOString()
-    console.log('sevendaysAfter', sevendaysAfter)
+    // console.log('sevendaysAfter', sevendaysAfter)
 
     return (
         <IntlProvider defaultLocale='zh' {...language}>
@@ -80,6 +86,7 @@ function App(props) {
                                 <Datetimepicker
                                     value={basic}
                                     onChange={value => setBasic(value)}
+                                    min='1900-01-01T00:00'
                                 />
                                 <Typography variant='body1' style={{ marginTop: 16 }}>
                                     Value: {basic}
@@ -203,7 +210,38 @@ function App(props) {
                                     disabled={Object.keys(disabledItems).filter(k => disabledItems[k])}
                                 />
                                 <Typography variant='body1' style={{ marginTop: 16 }}>
-                                    Value: {partial}
+                                    Value: {disabled}
+                                </Typography>
+                            </CardContent>
+                        </Card>
+                    </Grid>
+                    <Grid item xs={6}>
+                        <Card variant='outlined'>
+                            <CardHeader
+                                title='24小時制'
+                                action={
+                                    <Grid component='label' container alignItems='center' spacing={1}>
+                                        <Grid item>12小時制</Grid>
+                                        <Switch checked={use24hours} onChange={e => setUse24hours(e.target.checked)} />
+                                        <Grid item>24小時制</Grid>
+                                    </Grid>
+                                } />
+                            <CardContent>
+                                <Typography variant='body1' gutterBottom>
+                                    透過 <code>use24hours</code> 可以切換 12 小時制與 24 小時制，
+                                    當為 <code>true</code> 時，會使用 24 小時制顯示小時（0-23），
+                                    並隱藏上午下午的選項；
+                                    當為 <code>false</code> 時，則使用 12 小時制（1-12）並顯示上午下午
+                                    <br />
+                                    使用右上角的開關測試效果
+                                </Typography>
+                                <Datetimepicker
+                                    value={use24hoursValue}
+                                    onChange={value => setUse24hoursValue(value)}
+                                    use24hours={use24hours}
+                                />
+                                <Typography variant='body1' style={{ marginTop: 16 }}>
+                                    Value: {use24hoursValue}
                                 </Typography>
                             </CardContent>
                         </Card>

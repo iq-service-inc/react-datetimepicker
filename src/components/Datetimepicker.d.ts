@@ -62,6 +62,12 @@ export interface DatetimepickerProps {
      */
     autofocus?: boolean
     /**
+     * `true` 時使用 24 小時制顯示與輸入，
+     * `false` 時使用 12 小時制並顯示上午下午，
+     * 預設為 `false`
+     */
+    use24hours?: boolean
+    /**
      * `true` 時會禁用所有欄位，
      * 傳入 array 則可以禁用指定欄位，
      * 可禁用的欄位為 `['year, 'month', 'date', 'ampm', 'hour', 'min']`，

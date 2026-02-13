@@ -14,15 +14,17 @@ export default class Time extends Component {
     }
 
     renderHour(select, min, max) {
-        const { disabled } = this.props
+        const { disabled, use24hours } = this.props
         var d = typeof disabled == 'object' && disabled.indexOf('hour') != -1
         const selectDate = new Date(select.year, select.month - 1, select.date)
         const minHour = new Date(min.year, min.month - 1, min.date, min.hour + min.ampm * 12)
         const maxHour = new Date(max.year, max.month - 1, max.date, max.hour + max.ampm * 12)
         var hours = []
-        for (let i = 0; i < 4; i++) {
-            for (var hr = 0; hr <= 11; hr++) {
-                selectDate.setHours(select.ampm * 12 + hr)
+        const repeatCount = use24hours ? 2 : 4
+        const maxHourValue = use24hours ? 23 : 11
+        for (let i = 0; i < repeatCount; i++) {
+            for (var hr = 0; hr <= maxHourValue; hr++) {
+                selectDate.setHours(use24hours ? hr : (select.ampm * 12 + hr))
 
                 if (selectDate - minHour >= 0 && maxHour - selectDate >= 0) {
                     hours.push({ hr, enable: d ? false : true })
@@ -58,8 +60,11 @@ export default class Time extends Component {
     }
 
     renderAMPM(select, min, max) {
-        const { disabled } = this.props
+        const { disabled, use24hours } = this.props
         var d = typeof disabled == 'object' && disabled.indexOf('ampm') != -1
+        if (use24hours) {
+            return { am: false, pm: false }
+        }
         if (d) {
             ampm = { am: false, pm: false }
         }
@@ -92,16 +97,17 @@ export default class Time extends Component {
     }
 
     render() {
-        const { select, selectDay, max, min, disabled, format } = this.props
+        const { select, selectDay, max, min, disabled, format, use24hours } = this.props
         const ampm = this.renderAMPM(select, min, max)
+        const selectedHour = use24hours ? (select.ampm * 12 + select.hour) : select.hour
         return (
             <div className="timebox">
                 <div className="hour scroll time" onScroll={this.onScroll}>
                     {
                         this.renderHour(select, min, max).map((i, index) =>
                             i.enable ?
-                                <div className={(select.hour == i.hr ? "select " : "hover ") + "timeitem onclick"} key={index} onClick={() => selectDay(null, null, null, i.hr)}>{format(i.hr == 0 ? 12 : i.hr, 10, '0')}</div>
-                                : <div className={(select.hour == i.hr ? "select " : "") + "timeitem disabled-timeitem"} key={index}>{format(i.hr == 0 ? 12 : i.hr, 10, '0')}</div>
+                                <div className={(selectedHour == i.hr ? "select " : "hover ") + "timeitem onclick"} key={index} onClick={() => selectDay(null, null, null, i.hr)}>{format(use24hours ? i.hr : (i.hr == 0 ? 12 : i.hr), 10, '0')}</div>
+                                : <div className={(selectedHour == i.hr ? "select " : "") + "timeitem disabled-timeitem"} key={index}>{format(use24hours ? i.hr : (i.hr == 0 ? 12 : i.hr), 10, '0')}</div>
                         )
 
                     }
@@ -116,20 +122,22 @@ export default class Time extends Component {
                         )
                     }
                 </div>
+                {
+                    !use24hours &&
+                    <div className="ampm scroll time">
+                        {
+                            ampm.am ?
+                                <div className={(select.ampm == 0 ? "select " : "hover ") + "timeitem onclick"} onClick={() => selectDay(null, null, null, null, null, 0)}><FormattedMessage id='datetime.am' defaultMessage='上午'></FormattedMessage></div>
+                                : <div className={(select.ampm == 0 ? "select " : "") + "timeitem disabled-timeitem"}><FormattedMessage id='datetime.am' defaultMessage='上午'></FormattedMessage></div>
+                        }
+                        {
+                            ampm.pm ?
+                                <div className={(select.ampm == 1 ? "select " : "hover ") + "timeitem onclick"} onClick={() => selectDay(null, null, null, null, null, 1)}><FormattedMessage id='datetime.pm' defaultMessage='下午'></FormattedMessage></div>
+                                : <div className={(select.ampm == 1 ? "select " : "") + "timeitem disabled-timeitem"}><FormattedMessage id='datetime.pm' defaultMessage='下午'></FormattedMessage></div>
+                        }
 
-                <div className="ampm scroll time">
-                    {
-                        ampm.am ?
-                            <div className={(select.ampm == 0 ? "select " : "hover ") + "timeitem onclick"} onClick={() => selectDay(null, null, null, null, null, 0)}><FormattedMessage id='datetime.am' defaultMessage='上午'></FormattedMessage></div>
-                            : <div className={(select.ampm == 0 ? "select " : "") + "timeitem disabled-timeitem"}><FormattedMessage id='datetime.am' defaultMessage='上午'></FormattedMessage></div>
-                    }
-                    {
-                        ampm.pm ?
-                            <div className={(select.ampm == 1 ? "select " : "hover ") + "timeitem onclick"} onClick={() => selectDay(null, null, null, null, null, 1)}><FormattedMessage id='datetime.pm' defaultMessage='下午'></FormattedMessage></div>
-                            : <div className={(select.ampm == 1 ? "select " : "") + "timeitem disabled-timeitem"}><FormattedMessage id='datetime.pm' defaultMessage='下午'></FormattedMessage></div>
-                    }
-
-                </div>
+                    </div>
+                }
             </div>
         )
     }

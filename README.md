@@ -93,7 +93,7 @@ import '@iqs/datetimepicker/index.styl'
 ```
 
 * `<Datetimepicker>` 需要在 `<IntlProvider>` 之下才能運作
-* `Datetimepicker`的time為am 00:00 ~ pm 11:59，0顯示為12
+* `Datetimepicker` 預設使用 12 小時制（AM 00:00 ~ PM 11:59，0 顯示為 12），可用 `use24hours` 切換為 24 小時制（00:00 ~ 23:59）
 
 ```jsx
 import React, { Component } from 'react'
@@ -139,6 +139,7 @@ class AppComp extends Component {
                         // nodate
                         // notime
                         // autofocus
+                        // use24hours
                         disabled={['month','date']}
                     ></Datetimepicker>
                 </form>
@@ -173,6 +174,7 @@ class AppComp extends Component {
 * `nodate` : 選填，是否開啟Date(年、月、日)的部分，回傳值的格式`hh:mm`
 * `notime` : 選填，是否開啟Time(上/下午、時、分)的部分，回傳值的格式`yyyy-mm-dd`或`+yyyyyy-mm-dd`
 * `autofocus` : 選填，focus可填的第一格input
+* `use24hours` : 選填，使用 24 小時制顯示與輸入，`true` 為 24 小時制，`false` 為 12 小時制並顯示上午下午
 * `disabled` : 選填，bool時禁用全部欄位，array時可禁用特定欄位
   ```
     disabled={['year,'month','date','ampm','hour','min']}

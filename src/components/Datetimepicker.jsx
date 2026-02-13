@@ -31,10 +31,10 @@ export default class Datetimepicker extends Component {
             },
             input: {
                 year: new Date().getFullYear(),
-                month: new Date().getMonth() + 1,
-                date: new Date().getDate(),
-                hour: new Date().getHours() % 12,
-                min: new Date().getMinutes(),
+                month: this.format(new Date().getMonth() + 1, 10, '0'),
+                date: this.format(new Date().getDate(), 10, '0'),
+                hour: this.format(new Date().getHours() % 12, 10, '0'),
+                min: this.format(new Date().getMinutes(), 10, '0'),
                 ampm: new Date().getHours() / 12 >= 1 ? 1 : 0,
             },
             max: { year: 275759, month: 12, date: 31, ampm: 1, hour: 11, min: 59 },
@@ -48,19 +48,19 @@ export default class Datetimepicker extends Component {
 
     componentDidUpdate(prevProps, prevState) {
         const { select } = this.state
-        const { value, onChange, max, min } = this.props
+        const { value, onChange, max, min, use24hours } = this.props
 
         if (prevProps.value !== value || prevProps.min !== min || prevProps.max !== max) {
             this.setselectinput()
         }
 
-        if (!shallowEqual(prevState.select, select)) {
+        if (!shallowEqual(prevState.select, select) || prevProps.use24hours !== use24hours) {
             this.setState({
                 input: {
                     year: select.year,
                     month: this.format(select.month, 10, '0'),
                     date: this.format(select.date, 10, '0'),
-                    hour: this.format(select.hour, 10, '0'),
+                    hour: this.format(this.getHourDisplayValue(select, use24hours), 10, '0'),
                     min: this.format(select.min, 10, '0'),
                     ampm: select.ampm
                 }
@@ -91,6 +91,13 @@ export default class Datetimepicker extends Component {
             return `${date.getFullYear()}-${this.format(date.getMonth() + 1, 10, '0')}-${this.format(date.getDate(), 10, '0')}T${this.format(date.getHours(), 10, '0')}:${this.format(date.getMinutes(), 10, '0')}`
         }
         else return ''
+    }
+
+    getHourDisplayValue = (select, use24hours) => {
+        if (use24hours) {
+            return select.ampm * 12 + Number(select.hour)
+        }
+        return Number(select.hour)
     }
 
     isValidDate = (v) => {
@@ -177,11 +184,18 @@ export default class Datetimepicker extends Component {
 
     selectDay = (year, month, date, hour, minute, ampm) => {   //合法化
         const { select, max, min } = this.state
+        const { use24hours } = this.props
         var y = !!year? year: select.year
         var m = !!month ? month : select.month
         var d = !!date ? date : select.date
-        var h = (hour != undefined ? hour : select.hour) + (ampm != undefined ? ampm : select.ampm)*12
         var n = minute != undefined ? minute : select.min
+        var h = 0
+        if (use24hours) {
+            h = hour != undefined ? Number(hour) : (select.ampm * 12 + Number(select.hour))
+        }
+        else {
+            h = (hour != undefined ? hour : select.hour) + (ampm != undefined ? ampm : select.ampm)*12
+        }
         var temp = new Date(y,m-1,d,h,n)
         var start = new Date(min.year, min.month - 1, min.date, min.hour + (min.ampm) * 12, min.min)
         var end = new Date(max.year, max.month - 1, max.date, max.hour + (max.ampm) * 12, max.min)
@@ -210,36 +224,51 @@ export default class Datetimepicker extends Component {
     }
 
     checkhour = (hour) => {
+        const { use24hours } = this.props
         const { select, input, min, max } = this.state
         var start = new Date(min.year, min.month - 1, min.date, min.hour + (min.ampm) * 12)
         var end = new Date(max.year, max.month - 1, max.date, max.hour + (max.ampm) * 12)
-        var t = new Date(select.year, select.month - 1, select.date, hour + (select.ampm) * 12)
-        if (t - start >= 0 && end - t >= 0 && hour < 13) {
+        var hourValue = use24hours ? hour : hour + (select.ampm) * 12
+        var t = new Date(select.year, select.month - 1, select.date, hourValue)
+        if (t - start >= 0 && end - t >= 0 && (use24hours ? hour < 24 : hour < 13)) {
             return hour
         }
         else {
             var mindate = select.date == min.date && select.month == min.month && select.year == min.year
             var maxdate = select.date == max.date && select.month == max.month && select.year == max.year
-            if (hour + select.ampm * 12 < min.hour + min.ampm * 12 && mindate) hour = min.hour
-            else if (hour + select.ampm * 12 > max.hour + max.ampm * 12 && maxdate) hour = max.hour
-            else if (hour > 12) hour = 12
-            else hour = 0
+            var minHour24 = min.hour + min.ampm * 12
+            var maxHour24 = max.hour + max.ampm * 12
+            if (use24hours) {
+                if (hour < minHour24 && mindate) hour = minHour24
+                else if (hour > maxHour24 && maxdate) hour = maxHour24
+                else if (hour > 23) hour = 23
+                else hour = 0
+            }
+            else {
+                if (hour + select.ampm * 12 < minHour24 && mindate) hour = min.hour
+                else if (hour + select.ampm * 12 > maxHour24 && maxdate) hour = max.hour
+                else if (hour > 12) hour = 12
+                else hour = 0
+            }
             return hour
         }
     }
 
     input = (e) => {    //輸入或按上下鍵的值
+        const { use24hours } = this.props
+        let targetValue = e.target.value
         if (e.target.className == 'hourinput') {
             if (this.state.keyin) {
                 this.setState({
                     input: {
                         ...this.state.input,
-                        [e.target.className.replace('input', '')]: e.target.value == 12 ? '00' : Number(e.target.value)
+                        [e.target.className.replace('input', '')]: use24hours ? Number(targetValue) : (targetValue == 12 ? '00' : Number(targetValue))
                     },
                 }, () => this.focusnext(e))
             }
             else {
-                var hour = e.target.value == 12 ? 0 : Number(e.target.value, 10, '0')
+                // 自動補0
+                var hour = use24hours ? Number(targetValue) : (targetValue == 12 ? 0 : Number(targetValue, 10, '0'))
                 this.setState({
                     input: {
                         ...this.state.input,
@@ -251,7 +280,7 @@ export default class Datetimepicker extends Component {
         }
         else {
             if (this.state.keyin) {
-                if (e.target.className == 'yearinput' && e.target.value == 0){
+                if (e.target.className == 'yearinput' && targetValue == 0){
                     this.setState({
                         input: {
                             ...this.state.input,
@@ -263,16 +292,17 @@ export default class Datetimepicker extends Component {
                     this.setState({
                         input: {
                             ...this.state.input,
-                            [e.target.className.replace('input', '')]: Number(e.target.value)
+                            [e.target.className.replace('input', '')]: Number(targetValue)
                         },
                     }, () => this.focusnext(e))
                 }
             }
             else {
+                // 自動補0
                 this.setState({
                     input: {
                         ...this.state.input,
-                        [e.target.className.replace('input', '')]: this.format(Number(e.target.value), 10, '0')
+                        [e.target.className.replace('input', '')]: this.format(Number(targetValue), 10, '0')
                     },
                     keyin: true
                 })
@@ -282,6 +312,7 @@ export default class Datetimepicker extends Component {
     }
 
     focusnext = (e) => {    //判定完成
+        const { use24hours } = this.props
         var target = e.target
         var max = Number(target.max)
         var min = Number(target.min)
@@ -300,7 +331,11 @@ export default class Datetimepicker extends Component {
             }
         }
         if (e.target.className.replace('input', '') == 'hour') {
-            if (target.value.length >= 2 || target.value > 1) {
+            const hourValue = Number(target.value)
+            const shouldAdvance = use24hours ?
+                (target.value.length >= 2 || hourValue > 2) :
+                (target.value.length >= 2 || hourValue > 1)
+            if (shouldAdvance) {
                 target.blur()
                 this.DatetimeInputRef.current.getElementsByClassName('mininput')[0].focus()
             }
@@ -313,6 +348,7 @@ export default class Datetimepicker extends Component {
 
     check = (e) => {    //blur存入select或調整input變成合法值
         const { select, input, min, max } = this.state
+        const { use24hours } = this.props
         const value = Number(e.target.value)
         var start = new Date(min.year, min.month - 1, min.date, min.hour + (min.ampm) * 12, min.min)
         var end = new Date(max.year, max.month - 1, max.date, max.hour + (max.ampm) * 12, max.min)
@@ -333,7 +369,12 @@ export default class Datetimepicker extends Component {
                 nextdate.setHours(value * 12 + select.hour)
                 break
             case 'hour':
-                nextdate.setHours(select.ampm * 12 + (value == 12 ? 0 : value))
+                if (use24hours) {
+                    nextdate.setHours(value)
+                }
+                else {
+                    nextdate.setHours(select.ampm * 12 + (value == 12 ? 0 : value))
+                }
                 break
             case 'min':
                 nextdate.setMinutes(value)
@@ -354,7 +395,10 @@ export default class Datetimepicker extends Component {
                     year: nextdate.getFullYear(),
                     month: this.format(nextdate.getMonth()+1, 10, '0'),
                     date: this.format(nextdate.getDate(), 10, '0'),
-                    hour: this.format(nextdate.getHours()%12, 10, '0'),
+                    hour: this.format(this.getHourDisplayValue({
+                        hour: nextdate.getHours()%12,
+                        ampm: nextdate.getHours()/12>=1? 1:0
+                    }, use24hours), 10, '0'),
                     min: this.format(nextdate.getMinutes(), 10, '0'),
                     ampm: nextdate.getHours()/12>=1? 1:0
                 }
@@ -366,7 +410,7 @@ export default class Datetimepicker extends Component {
                     year: max.year,
                     month: this.format(max.month, 10, '0'),
                     date: this.format(max.date, 10, '0'),
-                    hour: this.format(max.hour, 10, '0'),
+                    hour: this.format(this.getHourDisplayValue(max, use24hours), 10, '0'),
                     min: this.format(max.min, 10, '0'),
                     ampm: max.ampm
                 },
@@ -379,7 +423,7 @@ export default class Datetimepicker extends Component {
                     year: min.year,
                     month: this.format(min.month, 10, '0'),
                     date: this.format(min.date, 10, '0'),
-                    hour: this.format(min.hour, 10, '0'),
+                    hour: this.format(this.getHourDisplayValue(min, use24hours), 10, '0'),
                     min: this.format(min.min, 10, '0'),
                     ampm: min.ampm
                 },
@@ -451,8 +495,8 @@ export default class Datetimepicker extends Component {
 
     render() {
         const { openCalendar, openYearMonth, select, max, min, input } = this.state
-        const { nodate, notime, autofocus, value, id, name, disabled, inputRef, classname, onChange } = this.props
-        const exception = ['autofocus', 'nodate', 'notime', 'value', 'min', 'max', 'disabled', 'inputRef', 'classname', 'onChange']
+        const { nodate, notime, autofocus, value, id, name, disabled, inputRef, classname, onChange, use24hours } = this.props
+        const exception = ['autofocus', 'nodate', 'notime', 'value', 'min', 'max', 'disabled', 'inputRef', 'classname', 'onChange', 'use24hours']
         var props = {}
         Object.keys(this.props).filter(key => exception.indexOf(key)==-1).map(k => props[k] = this.props[k])
         return (
@@ -491,6 +535,7 @@ export default class Datetimepicker extends Component {
                                 input={input}
                                 max={max}
                                 min={min}
+                                use24hours={use24hours}
                                 format={(n, m, c) => this.format(n, m, c)}
                                 setinput={(e) => this.input(e)}
                                 selectall={(e) => this.selectall(e)}
@@ -594,6 +639,7 @@ export default class Datetimepicker extends Component {
                                 min={min}
                                 disabled={disabled}
                                 format={(n, m, c) => this.format(n, m, c)}
+                                use24hours={use24hours}
                             ></Time>
                         }
                     </div>, document.body)
@@ -609,7 +655,8 @@ export default class Datetimepicker extends Component {
         min: '1970-01-01T00:00',
         disabled: [],
         id: 'datetime',
-        name: 'datetime'
+        name: 'datetime',
+        use24hours: false
     }
 
     static propTypes = {
@@ -623,6 +670,7 @@ export default class Datetimepicker extends Component {
         inputRef: propTypes.object,
         onChange: propTypes.func,
         id: propTypes.string,
-        name: propTypes.string
+        name: propTypes.string,
+        use24hours: propTypes.bool
     }
 }
