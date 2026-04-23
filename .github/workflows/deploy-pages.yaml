@@ -31,7 +31,7 @@ jobs:
     - name: Install and Build Web
       run: |
         npm ci
-        npm run web
+        npm run build
     
     - name: Build with Jekyll
       uses: actions/jekyll-build-pages@v1
