@@ -74,6 +74,13 @@ export interface DatetimepickerProps {
      * 預設為 `false`
      */
     disabled?: boolean | (keyof DatetimeSelect) []
+    /**
+     * 自訂輸入框的欄位顯示順序與分隔符號，
+     * 支援的 token：`yyyy`(年)、`MM`(月)、`dd`(日)、`hh`(時12h)、`HH`(時24h)、`mm`(分)、`ss`(秒)、`tt`(上下午)，
+     * 其餘字元作為分隔符號顯示，
+     * 例如 `dd/MM/yyyy` 或 `yyyy/MM/dd hh:mm tt`
+     */
+    pattern?: string
 }
 
 type DatetimeSelect = {

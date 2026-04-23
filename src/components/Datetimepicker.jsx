@@ -311,6 +311,18 @@ export default class Datetimepicker extends Component {
         e.persist()
     }
 
+    focusNextSibling = (target) => {
+        target.blur()
+        var next = target.nextElementSibling
+        while (!!next) {
+            if (next.nodeName == "INPUT" || next.nodeName == "SELECT") {
+                next.focus()
+                break
+            }
+            next = next.nextElementSibling
+        }
+    }
+
     focusnext = (e) => {    //判定完成
         const { use24hours } = this.props
         var target = e.target
@@ -319,15 +331,7 @@ export default class Datetimepicker extends Component {
         var v = Number(target.value)
         if (target.className.replace('input', '') != 'hour') {
             if (v * 10 > max || (target.value.length >= 2 && target.className.replace('input', '') != 'year')) {
-                target.blur()
-                var next = target.nextElementSibling
-                while (!!next) {
-                    if (next.nodeName == "INPUT" || next.nodeName == "SELECT") {
-                        next.focus()
-                        break
-                    }
-                    next = next.nextElementSibling
-                }
+                this.focusNextSibling(target)
             }
         }
         if (e.target.className.replace('input', '') == 'hour') {
@@ -336,13 +340,11 @@ export default class Datetimepicker extends Component {
                 (target.value.length >= 2 || hourValue > 2) :
                 (target.value.length >= 2 || hourValue > 1)
             if (shouldAdvance) {
-                target.blur()
-                this.DatetimeInputRef.current.getElementsByClassName('mininput')[0].focus()
+                this.focusNextSibling(target)
             }
         }
         if (e.target.className.replace('input', '') == 'ampm') {
-            target.blur()
-            this.DatetimeInputRef.current.getElementsByClassName('hourinput')[0].focus()
+            this.focusNextSibling(target)
         }
     }
 
@@ -474,6 +476,99 @@ export default class Datetimepicker extends Component {
         e.persist()
     }
 
+    getEffectivePattern = () => {
+        const { pattern, nodate, notime, use24hours } = this.props
+        if (pattern) return pattern
+
+        let p = ''
+        if (!nodate) p += 'yyyy/MM/dd'
+        if (!notime) {
+            if (!use24hours) p += 'tthh:mm'
+            else p += 'HH:mm'
+        }
+        return p
+    }
+
+    parsePattern = (pattern) => {
+        const tokens = []
+        let i = 0
+        while (i < pattern.length) {
+            if (pattern.substr(i, 4) === 'yyyy') {
+                tokens.push({ type: 'field', field: 'year' })
+                i += 4
+            } else if (pattern.substr(i, 2) === 'MM') {
+                tokens.push({ type: 'field', field: 'month' })
+                i += 2
+            } else if (pattern.substr(i, 2) === 'dd') {
+                tokens.push({ type: 'field', field: 'date' })
+                i += 2
+            } else if (pattern.substr(i, 2) === 'HH') {
+                tokens.push({ type: 'field', field: 'hour' })
+                i += 2
+            } else if (pattern.substr(i, 2) === 'hh') {
+                tokens.push({ type: 'field', field: 'hour' })
+                i += 2
+            } else if (pattern.substr(i, 2) === 'mm') {
+                tokens.push({ type: 'field', field: 'min' })
+                i += 2
+            } else if (pattern.substr(i, 2) === 'ss') {
+                tokens.push({ type: 'field', field: 'sec' })
+                i += 2
+            } else if (pattern.substr(i, 2) === 'tt') {
+                tokens.push({ type: 'field', field: 'ampm' })
+                i += 2
+            } else {
+                if (tokens.length > 0 && tokens[tokens.length - 1].type === 'separator') {
+                    tokens[tokens.length - 1].value += pattern[i]
+                } else {
+                    tokens.push({ type: 'separator', value: pattern[i] })
+                }
+                i++
+            }
+        }
+        return tokens
+    }
+
+    splitPatternTokens = (tokens) => {
+        const dateFields = new Set(['year', 'month', 'date'])
+        const dateTokens = []
+        const timeTokens = []
+        const renderOrder = []
+
+        let lastFieldType = null
+
+        for (let i = 0; i < tokens.length; i++) {
+            const token = tokens[i]
+            if (token.type === 'field') {
+                const fieldType = dateFields.has(token.field) ? 'date' : 'time'
+                const target = fieldType === 'date' ? dateTokens : timeTokens
+                target.push(token)
+
+                if (lastFieldType !== fieldType) {
+                    renderOrder.push({ type: fieldType })
+                    lastFieldType = fieldType
+                }
+            } else if (token.type === 'separator') {
+                let nextFieldType = null
+                for (let j = i + 1; j < tokens.length; j++) {
+                    if (tokens[j].type === 'field') {
+                        nextFieldType = dateFields.has(tokens[j].field) ? 'date' : 'time'
+                        break
+                    }
+                }
+
+                if (nextFieldType === lastFieldType) {
+                    const target = lastFieldType === 'date' ? dateTokens : timeTokens
+                    target.push(token)
+                } else {
+                    renderOrder.push({ type: 'separator', value: token.value })
+                }
+            }
+        }
+
+        return { dateTokens, timeTokens, renderOrder }
+    }
+
     detectPosition = () => {
         var input = this.DatetimeInputRef.current,
             ele = input.parentNode.getBoundingClientRect(),
@@ -495,10 +590,15 @@ export default class Datetimepicker extends Component {
 
     render() {
         const { openCalendar, openYearMonth, select, max, min, input } = this.state
-        const { nodate, notime, autofocus, value, id, name, disabled, inputRef, classname, onChange, use24hours } = this.props
-        const exception = ['autofocus', 'nodate', 'notime', 'value', 'min', 'max', 'disabled', 'inputRef', 'classname', 'onChange', 'use24hours']
+        const { nodate, notime, autofocus, value, id, name, disabled, inputRef, classname, onChange, use24hours, pattern } = this.props
+        const exception = ['autofocus', 'nodate', 'notime', 'value', 'min', 'max', 'disabled', 'inputRef', 'classname', 'onChange', 'use24hours', 'pattern']
         var props = {}
         Object.keys(this.props).filter(key => exception.indexOf(key)==-1).map(k => props[k] = this.props[k])
+
+        const effectivePattern = this.getEffectivePattern()
+        const tokens = this.parsePattern(effectivePattern)
+        const { dateTokens, timeTokens, renderOrder } = this.splitPatternTokens(tokens)
+
         return (
             <div className="datetime-container">
                 <div className={`${!!classname ? classname : "defaultinput"} datetimeinput datetimeinputposition`}>
@@ -509,41 +609,49 @@ export default class Datetimepicker extends Component {
                     <div ref={this.DatetimeInputRef}>
                         {
                             !!this.DatetimeInputRef.current &&
-                            !nodate &&
-                            <Dateinput
-                                DatetimeInputRef={this.DatetimeInputRef}
-                                select={select}
-                                input={input}
-                                max={max}
-                                min={min}
-                                format={(n, m, c) => this.format(n, m, c)}
-                                setinput={(e) => this.input(e)}
-                                selectall={(e) => this.selectall(e)}
-                                check={(e) => this.check(e)}
-                                enter={(e) => this.enter(e)}
-                                autofocus={autofocus}
-                                disabled={disabled}
-                            ></Dateinput>
-                        }
-
-                        {
-                            !!this.DatetimeInputRef.current &&
-                            !notime &&
-                            <Timeinput
-                                DatetimeInputRef={this.DatetimeInputRef}
-                                select={select}
-                                input={input}
-                                max={max}
-                                min={min}
-                                use24hours={use24hours}
-                                format={(n, m, c) => this.format(n, m, c)}
-                                setinput={(e) => this.input(e)}
-                                selectall={(e) => this.selectall(e)}
-                                check={(e) => this.check(e)}
-                                enter={(e) => this.enter(e)}
-                                autofocus={nodate && autofocus}
-                                disabled={disabled}
-                            ></Timeinput>
+                            renderOrder.map((item, i) => {
+                                if (item.type === 'separator') {
+                                    return <span key={i} className="disable-selection">{item.value}</span>
+                                }
+                                if (item.type === 'date') {
+                                    return <Dateinput
+                                        key={`date-${i}`}
+                                        DatetimeInputRef={this.DatetimeInputRef}
+                                        select={select}
+                                        input={input}
+                                        max={max}
+                                        min={min}
+                                        patternTokens={dateTokens}
+                                        format={(n, m, c) => this.format(n, m, c)}
+                                        setinput={(e) => this.input(e)}
+                                        selectall={(e) => this.selectall(e)}
+                                        check={(e) => this.check(e)}
+                                        enter={(e) => this.enter(e)}
+                                        autofocus={autofocus}
+                                        disabled={disabled}
+                                    />
+                                }
+                                if (item.type === 'time') {
+                                    return <Timeinput
+                                        key={`time-${i}`}
+                                        DatetimeInputRef={this.DatetimeInputRef}
+                                        select={select}
+                                        input={input}
+                                        max={max}
+                                        min={min}
+                                        use24hours={use24hours}
+                                        patternTokens={timeTokens}
+                                        format={(n, m, c) => this.format(n, m, c)}
+                                        setinput={(e) => this.input(e)}
+                                        selectall={(e) => this.selectall(e)}
+                                        check={(e) => this.check(e)}
+                                        enter={(e) => this.enter(e)}
+                                        autofocus={!dateTokens.length && autofocus}
+                                        disabled={disabled}
+                                    />
+                                }
+                                return null
+                            })
                         }
                     </div>
                     <div className="calendar onclick" onClick={() => this.toggle("openCalendar")}>
