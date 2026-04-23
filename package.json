@@ -1,6 +1,6 @@
 {
   "name": "@iqs/react-datetimepicker",
-  "version": "2.0.4",
+  "version": "2.0.5",
   "description": "datetimepicker",
   "main": "module/main.js",
   "types": "index.d.ts",
