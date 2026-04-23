@@ -21,7 +21,7 @@ jobs:
         registry-url: 'https://registry.npmjs.org'
 
     - run: npm ci
-    - run: npm run build
+    - run: npm run umd
 
     # 在 Node 24 環境下進行發布
     - uses: actions/setup-node@v3
