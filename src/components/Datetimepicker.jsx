@@ -665,14 +665,19 @@ export default class Datetimepicker extends Component {
     detectPosition = () => {
         var input = this.DatetimeInputRef.current,
             ele = input.parentNode.getBoundingClientRect(),
-            style = getComputedStyle(input)
+            style = getComputedStyle(input),
+            bodyRect = document.body.getBoundingClientRect()
         var font = {
             fontFamily: style.fontFamily,
             fontSize: style.fontSize,
             fontStyle: style.fontStyle
         }
-        if(window.innerHeight - ele.top > 310) return {top: ele.bottom, left: ele.left, zIndex: 6666666, ...font}
-        else return {top: ele.top - 310, left: ele.left, zIndex: 6666666, ...font}
+        let top, left
+        if (window.innerHeight - ele.bottom > 310) top = ele.bottom + window.scrollY
+        else if (ele.top > 310) top = ele.top + window.scrollY - 310
+        else top = ele.bottom + window.scrollY
+        left = ele.left + window.scrollX
+        return { top, left, zIndex: 6666666, ...font }
     }
 
     testIE = () => {
