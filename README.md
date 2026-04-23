@@ -171,10 +171,42 @@ class AppComp extends Component {
 * `classname` : 選填，用於調整input欄位樣式，調整focus樣式使用`:focus-within`
 * `inputRef` : 選填，當作datetime field的ref，( datetime field的value為string，e.g. `2020-01-22T13:20` )
 * `onChange` : 選填，datetime field的值變動時會執行該function，回傳datetime field的value ( e.g. `2020-10-22T13:20` )
-* `nodate` : 選填，是否開啟Date(年、月、日)的部分，回傳值的格式`hh:mm`
-* `notime` : 選填，是否開啟Time(上/下午、時、分)的部分，回傳值的格式`yyyy-mm-dd`或`+yyyyyy-mm-dd`
+* `nodate` : 選填，是否開啟Date(年、月、日)的部分，回傳值的格式`hh:mm`。⚠️ 僅在未定義 `displayPattern` 時有效
+* `notime` : 選填，是否開啟Time(上/下午、時、分)的部分，回傳值的格式`yyyy-mm-dd`或`+yyyyyy-mm-dd`。⚠️ 僅在未定義 `displayPattern` 時有效
 * `autofocus` : 選填，focus可填的第一格input
-* `use24hours` : 選填，使用 24 小時制顯示與輸入，`true` 為 24 小時制，`false` 為 12 小時制並顯示上午下午
+* `use24hours` : 選填，使用 24 小時制顯示與輸入，`true` 為 24 小時制，`false` 為 12 小時制並顯示上午下午。⚠️ 僅在未定義 `displayPattern` 時有效，定義 `displayPattern` 時由 `HH`/`hh` 自動判定
+* `displayPattern` : 選填，自訂輸入框的欄位顯示順序與分隔符號。支援的 token：
+
+  | Token | 說明 |
+  |-------|------|
+  | `yyyy` | 年 |
+  | `MM` | 月 |
+  | `dd` | 日 |
+  | `hh` | 時（12 小時制） |
+  | `HH` | 時（24 小時制） |
+  | `mm` | 分 |
+  | `tt` | 上午/下午 |
+
+  其餘字元作為分隔符號顯示。未傳入時使用預設 pattern（`yyyy/MM/ddtthh:mm`）。
+  當 `displayPattern` 中使用 `HH` 時，會自動視為 24 小時制，不需額外傳入 `use24hours`。
+  ```jsx
+    // 日/月/年
+    <Datetimepicker displayPattern="dd/MM/yyyy" />
+
+    // 年-月-日 時:分 上下午
+    <Datetimepicker displayPattern="yyyy-MM-dd hh:mm tt" />
+
+    // 24 小時制（自動判定，不需帶 use24hours）
+    <Datetimepicker displayPattern="yyyy/MM/dd HH:mm" />
+  ```
+* `valuePattern` : 選填，自訂 `value` 的解析格式以及 `onChange` 回傳值的輸出格式。支援的 token 與 `displayPattern` 相同。傳入時，`value` 會依照此 pattern 解析，`onChange` 也會依此格式輸出。未傳入時，`value` 使用預設的 `YYYY-MM-DDTHH:MM` 格式解析，`onChange` 依據 `nodate`、`notime` 自動判斷預設輸出格式。⚠️ `tt` 固定輸出為 `AM`/`PM`，不受語系影響
+  ```jsx
+    // 輸入框顯示 日/月/年，onChange 回傳 dd/MM/yyyy 格式
+    <Datetimepicker displayPattern="dd/MM/yyyy" valuePattern="dd/MM/yyyy" />
+
+    // 輸入框顯示完整格式，onChange 回傳自訂格式
+    <Datetimepicker displayPattern="yyyy/MM/dd HH:mm" valuePattern="yyyy-MM-dd HH:mm" />
+  ```
 * `disabled` : 選填，bool時禁用全部欄位，array時可禁用特定欄位
   ```
     disabled={['year,'month','date','ampm','hour','min']}

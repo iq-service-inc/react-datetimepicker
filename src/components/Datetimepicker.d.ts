@@ -78,9 +78,18 @@ export interface DatetimepickerProps {
      * 自訂輸入框的欄位顯示順序與分隔符號，
      * 支援的 token：`yyyy`(年)、`MM`(月)、`dd`(日)、`hh`(時12h)、`HH`(時24h)、`mm`(分)、`ss`(秒)、`tt`(上下午)，
      * 其餘字元作為分隔符號顯示，
+     * 當使用 `HH` 時會自動啟用 24 小時制，不需額外傳入 `use24hours`，
      * 例如 `dd/MM/yyyy` 或 `yyyy/MM/dd hh:mm tt`
      */
-    pattern?: string
+    displayPattern?: string
+    /**
+     * 自訂 `value` 的解析格式以及 `onChange` 回傳值的輸出格式，
+     * 支援的 token 與 `pattern` 相同（`yyyy`、`MM`、`dd`、`hh`、`HH`、`mm`、`ss`、`tt`），
+     * 傳入時 `value` 會依照此 pattern 解析，`onChange` 也會依此格式輸出，
+     * 未傳入時使用預設的 `YYYY-MM-DDTHH:MM` 格式解析，依據 `nodate`、`notime` 判斷輸出格式，
+     * ⚠️ `tt` 固定輸出為 `AM`/`PM`，不受語系影響
+     */
+    valuePattern?: string
 }
 
 type DatetimeSelect = {

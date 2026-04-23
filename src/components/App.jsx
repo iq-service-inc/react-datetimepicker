@@ -1,7 +1,7 @@
 import { hot } from 'react-hot-loader/root'
 import React, { useState } from 'react'
 import { IntlProvider } from 'react-intl'
-import { Typography, AppBar, Toolbar, IconButton, Card, CardHeader, CardContent, Grid, Switch, Paper, FormControlLabel, Checkbox } from '@material-ui/core'
+import { Typography, AppBar, Toolbar, IconButton, Card, CardHeader, CardContent, Grid, Switch, Paper, FormControlLabel, Checkbox, TextField } from '@material-ui/core'
 import { createTheme, ThemeProvider } from '@material-ui/core/styles'
 import GitHubIcon from '@material-ui/icons/GitHub'
 import Datetimepicker from './Datetimepicker'
@@ -48,6 +48,10 @@ function App(props) {
     // example 6
     const [use24hoursValue, setUse24hoursValue] = useState(defaultValue)
     const [use24hours, setUse24hours] = useState(false)
+    // example 7 - pattern
+    const [patternValue, setPatternValue] = useState(defaultValue)
+    const [patternStr, setPatternStr] = useState('dd/MM/yyyy hh:mm tt')
+    const [valuePatternStr, setValuePatternStr] = useState('')
 
     const sevendaysBefore = (new Date((new Date()).getTime() - 86400 * 1000 * 7)).toISOString()
     // console.log('sevendaysBefore', sevendaysBefore)
@@ -242,6 +246,48 @@ function App(props) {
                                 />
                                 <Typography variant='body1' style={{ marginTop: 16 }}>
                                     Value: {use24hoursValue}
+                                </Typography>
+                            </CardContent>
+                        </Card>
+                    </Grid>
+                    <Grid item xs={6}>
+                        <Card variant='outlined'>
+                            <CardHeader title='自訂 Pattern' />
+                            <CardContent>
+                                <Typography variant='body1' gutterBottom>
+                                    透過 <code>displayPattern</code> 可以自訂輸入框的欄位顯示順序與分隔符號。
+                                    透過 <code>valuePattern</code> 可以自訂 <code>onChange</code> 的輸出格式。
+                                    支援的 token：<code>yyyy</code>、<code>MM</code>、<code>dd</code>、
+                                    <code>hh</code>、<code>HH</code>、<code>mm</code>、<code>tt</code>
+                                    <br />
+                                    在下方輸入框中輸入 pattern 來動態修改顯示格式
+                                </Typography>
+                                <TextField
+                                    fullWidth
+                                    variant='outlined'
+                                    size='small'
+                                    label='displayPattern（顯示用）'
+                                    value={patternStr}
+                                    onChange={e => setPatternStr(e.target.value)}
+                                    style={{ marginBottom: 8 }}
+                                />
+                                <TextField
+                                    fullWidth
+                                    variant='outlined'
+                                    size='small'
+                                    label='valuePattern（輸入/輸出用，留空使用預設）'
+                                    value={valuePatternStr}
+                                    onChange={e => setValuePatternStr(e.target.value)}
+                                    style={{ marginBottom: 16 }}
+                                />
+                                <Datetimepicker
+                                    value={patternValue}
+                                    onChange={value => setPatternValue(value)}
+                                    displayPattern={patternStr}
+                                    {...(valuePatternStr ? { valuePattern: valuePatternStr } : {})}
+                                />
+                                <Typography variant='body1' style={{ marginTop: 16 }}>
+                                    Value: {patternValue}
                                 </Typography>
                             </CardContent>
                         </Card>
