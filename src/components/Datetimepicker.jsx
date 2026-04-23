@@ -264,7 +264,8 @@ export default class Datetimepicker extends Component {
                 break;
             case "openCalendar":
                 this.setState({
-                    openCalendar: !!on ? on : !this.state.openCalendar
+                    openCalendar: !!on ? on : !this.state.openCalendar,
+                    openYearMonth: false
                 })
         }
     }
@@ -692,6 +693,22 @@ export default class Datetimepicker extends Component {
         const tokens = this.parsePattern(effectivePattern)
         const { dateTokens, timeTokens, renderOrder } = this.splitPatternTokens(tokens)
 
+        const patternFields = new Set(tokens.filter(t => t.type === 'field').map(t => t.field))
+        const effectiveNodate = nodate || !patternFields.has('year') && !patternFields.has('month') && !patternFields.has('date')
+        const effectiveNotime = notime || !patternFields.has('hour') && !patternFields.has('min') && !patternFields.has('sec') && !patternFields.has('ampm')
+
+        const patternDisabledFields = []
+        if (!patternFields.has('year')) patternDisabledFields.push('year')
+        if (!patternFields.has('month')) patternDisabledFields.push('month')
+        if (!patternFields.has('date')) patternDisabledFields.push('date')
+        if (!patternFields.has('hour')) patternDisabledFields.push('hour')
+        if (!patternFields.has('min')) patternDisabledFields.push('min')
+        if (!patternFields.has('ampm')) patternDisabledFields.push('ampm')
+
+        const effectiveDisabled = typeof disabled === 'boolean'
+            ? disabled
+            : [...new Set([...(Array.isArray(disabled) ? disabled : []), ...patternDisabledFields])]
+
         return (
             <div className="datetime-container">
                 <div className={`${!!classname ? classname : "defaultinput"} datetimeinput datetimeinputposition`}>
@@ -757,11 +774,11 @@ export default class Datetimepicker extends Component {
                     <div className="datetime-modal" style={this.detectPosition()} ref={this.datetimepicker}>
                         <div className="bk" onClick={() => this.toggle("openCalendar", false)} />
                         {
-                            !nodate &&
+                            !effectiveNodate &&
                             <div className="datebox">
                                 <div className="box-title">
                                     {
-                                        (typeof disabled == 'object' && (disabled.indexOf('year') == -1 || disabled.indexOf('month') == -1)) ?
+                                        (typeof effectiveDisabled == 'object' && (effectiveDisabled.indexOf('year') == -1 || effectiveDisabled.indexOf('month') == -1)) ?
                                             <div className={`year-month onclick hover ${openYearMonth? 'disabled': ''}`} onClick={() => this.toggle("openYearMonth")}>
                                                 {
                                                     select.year>9999 && this.testIE()?
@@ -790,7 +807,7 @@ export default class Datetimepicker extends Component {
                                         !openYearMonth &&
                                         <div className="month-btns">
                                             {
-                                                new Date(select.year, select.month - 2) - new Date(min.year, min.month - 1) >= 0 && disabled.indexOf('month') == -1 ?
+                                                new Date(select.year, select.month - 2) - new Date(min.year, min.month - 1) >= 0 && effectiveDisabled.indexOf('month') == -1 ?
                                                     <div className="previousmonth onclick hover" onClick={() => this.selectDay(new Date(select.year, select.month - 2).getFullYear(), new Date(select.year, select.month - 2).getMonth() + 1)}>
                                                         <Icon icon="arrow-up" />
                                                     </div>
@@ -799,7 +816,7 @@ export default class Datetimepicker extends Component {
                                                     </div>
                                             }
                                             {
-                                                new Date(max.year, max.month - 1) - new Date(select.year, select.month) >= 0 && disabled.indexOf('month') == -1 ?
+                                                new Date(max.year, max.month - 1) - new Date(select.year, select.month) >= 0 && effectiveDisabled.indexOf('month') == -1 ?
                                                     <div className="nextmonth onclick hover" onClick={() => this.selectDay(new Date(select.year, select.month).getFullYear(), new Date(select.year, select.month).getMonth() + 1)}>
                                                         <Icon icon="arrow-down" />
                                                     </div>
@@ -817,7 +834,7 @@ export default class Datetimepicker extends Component {
                                             max={max}
                                             min={min}
                                             selectDay={(year, month, date, hour, min, ampm) => {this.selectDay(year, month, date, hour, min, ampm); this.toggle("openYearMonth")}}
-                                            disabled={disabled}
+                                            disabled={effectiveDisabled}
                                         ></YearSelect>
 
                                         : <Days
@@ -825,20 +842,20 @@ export default class Datetimepicker extends Component {
                                             selectDay={(year, month, date, hour, min, ampm) => this.selectDay(year, month, date, hour, min, ampm)}
                                             max={max}
                                             min={min}
-                                            disabled={disabled}
+                                            disabled={effectiveDisabled}
                                         ></Days>
                                 }
                             </div>
                         }
 
                         {
-                            !notime &&
+                            !effectiveNotime &&
                             <Time
                                 select={select}
                                 selectDay={(year, month, date, hour, min, ampm) => this.selectDay(year, month, date, hour, min, ampm)}
                                 max={max}
                                 min={min}
-                                disabled={disabled}
+                                disabled={effectiveDisabled}
                                 format={(n, m, c) => this.format(n, m, c)}
                                 use24hours={effectiveUse24hours}
                             ></Time>

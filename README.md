@@ -189,6 +189,12 @@ class AppComp extends Component {
 
   其餘字元作為分隔符號顯示。未傳入時使用預設 pattern（`yyyy/MM/ddtthh:mm`）。
   當 `displayPattern` 中使用 `HH` 時，會自動視為 24 小時制，不需額外傳入 `use24hours`。
+
+  `displayPattern` 也會影響彈出式日曆的顯示：
+  - 當 pattern 中**不包含** `yyyy`、`MM`、`dd` 任一欄位時，整個日期選擇器（`datebox`）會隱藏
+  - 當 pattern 中**不包含** `HH`/`hh`、`mm`、`ss`、`tt` 任一欄位時，整個時間選擇器 (`timebox`) 會隱藏
+  - 當 pattern 中缺少特定欄位（如無 `yyyy`），該欄位會在日曆中自動被 disabled（例如年份選擇器、月份切換按鈕）
+
   ```jsx
     // 日/月/年
     <Datetimepicker displayPattern="dd/MM/yyyy" />
