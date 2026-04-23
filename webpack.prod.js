@@ -10,7 +10,7 @@ module.exports = merge(common, {
     output: {
         path: __dirname + '/dist/',
         filename: '[name].[chunkhash].js',
-        publicPath: '/react-datetimepicker',
+        publicPath: '/react-datetimepicker/',
     },
     plugins: [
         new CleanWebpackPlugin(),
