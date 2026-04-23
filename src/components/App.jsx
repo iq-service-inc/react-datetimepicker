@@ -20,7 +20,15 @@ const theme = createTheme({
 })
 
 function App(props) {
-    const { intl: { language } } = props
+    const { intl: { language }, set_language } = props
+    const [localeInput, setLocaleInput] = useState(language.locale)
+    const [appliedLocale, setAppliedLocale] = useState(language.locale)
+    const applyLocale = () => {
+        if (localeInput.trim()) {
+            setAppliedLocale(localeInput.trim())
+            set_language({ language: localeInput.trim() })
+        }
+    }
     
     const now = new Date()
     const defaultValue = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}T${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`
@@ -59,15 +67,25 @@ function App(props) {
     // console.log('sevendaysAfter', sevendaysAfter)
 
     return (
-        <IntlProvider defaultLocale='zh' {...language}>
+        <IntlProvider defaultLocale='zh' {...language} locale={appliedLocale}>
             <ThemeProvider theme={theme}>
                 <AppBar>
                     <Toolbar>
                         <Typography variant='h4' style={{ margin: 8 }}>
                             @iqs/react-datetimepicker
                         </Typography>
+                        <TextField
+                            size='small'
+                            variant='outlined'
+                            placeholder='locale (e.g. zh, en, ja)'
+                            value={localeInput}
+                            onChange={e => setLocaleInput(e.target.value)}
+                            onBlur={applyLocale}
+                            onKeyDown={e => e.key === 'Enter' && applyLocale()}
+                            InputProps={{ style: { color: 'white', backgroundColor: 'rgba(255,255,255,0.15)', width: 200 } }}
+                            style={{ marginLeft: 'auto', marginRight: 8 }}
+                        />
                         <IconButton
-                            style={{ marginLeft: 'auto' }}
                             size='medium'
                             color='inherit'
                             href='https://github.com/iq-service-inc/react-datetimepicker'

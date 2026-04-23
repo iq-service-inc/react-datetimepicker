@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import propTypes from 'prop-types'
-import { FormattedMessage } from 'react-intl'
+import { injectIntl } from 'react-intl'
 
-export default class Time extends Component {
+class Time extends Component {
     componentDidMount() {
         var scroll = document.getElementsByClassName('timebox')[0].getElementsByClassName('scroll')
         for (var i = 0; i < scroll.length; i++) {
@@ -100,6 +100,8 @@ export default class Time extends Component {
         const { select, selectDay, max, min, disabled, format, use24hours } = this.props
         const ampm = this.renderAMPM(select, min, max)
         const selectedHour = use24hours ? (select.ampm * 12 + select.hour) : select.hour
+        const displayAM = this.props.intl.formatDateToParts(new Date(2000,0,1,0,0), { hour: 'numeric', hour12: true }).find(p => p.type === 'dayPeriod')?.value || 'AM'
+        const displayPM = this.props.intl.formatDateToParts(new Date(2000,0,1,12,0), { hour: 'numeric', hour12: true }).find(p => p.type === 'dayPeriod')?.value || 'PM'
         return (
             <div className="timebox">
                 <div className="hour scroll time" onScroll={this.onScroll}>
@@ -127,13 +129,13 @@ export default class Time extends Component {
                     <div className="ampm scroll time">
                         {
                             ampm.am ?
-                                <div className={(select.ampm == 0 ? "select " : "hover ") + "timeitem onclick"} onClick={() => selectDay(null, null, null, null, null, 0)}><FormattedMessage id='datetime.am' defaultMessage='上午'></FormattedMessage></div>
-                                : <div className={(select.ampm == 0 ? "select " : "") + "timeitem disabled-timeitem"}><FormattedMessage id='datetime.am' defaultMessage='上午'></FormattedMessage></div>
+                                <div className={(select.ampm == 0 ? "select " : "hover ") + "timeitem onclick"} onClick={() => selectDay(null, null, null, null, null, 0)}>{displayAM}</div>
+                                : <div className={(select.ampm == 0 ? "select " : "") + "timeitem disabled-timeitem"}>{displayAM}</div>
                         }
                         {
                             ampm.pm ?
-                                <div className={(select.ampm == 1 ? "select " : "hover ") + "timeitem onclick"} onClick={() => selectDay(null, null, null, null, null, 1)}><FormattedMessage id='datetime.pm' defaultMessage='下午'></FormattedMessage></div>
-                                : <div className={(select.ampm == 1 ? "select " : "") + "timeitem disabled-timeitem"}><FormattedMessage id='datetime.pm' defaultMessage='下午'></FormattedMessage></div>
+                                <div className={(select.ampm == 1 ? "select " : "hover ") + "timeitem onclick"} onClick={() => selectDay(null, null, null, null, null, 1)}>{displayPM}</div>
+                                : <div className={(select.ampm == 1 ? "select " : "") + "timeitem disabled-timeitem"}>{displayPM}</div>
                         }
 
                     </div>
@@ -142,3 +144,5 @@ export default class Time extends Component {
         )
     }
 }
+
+export default injectIntl(Time)

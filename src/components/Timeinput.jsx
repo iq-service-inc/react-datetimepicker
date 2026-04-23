@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
-import { FormattedMessage } from 'react-intl'
+import { injectIntl } from 'react-intl'
 
-export default class Timeinput extends Component {
+class Timeinput extends Component {
 
     componentDidMount() {
         if (this.props.autofocus && this.props.DatetimeInputRef.current) {
@@ -42,7 +42,9 @@ export default class Timeinput extends Component {
                         max.min : 59}
                     disabled={(typeof disabled=='object' && disabled.indexOf('min')!=-1) || (typeof disabled=='boolean' && disabled)}
                 />
-            case 'ampm':
+            case 'ampm': {
+                const amText = this.props.intl.formatDateToParts(new Date(2000,0,1,0,0), { hour: 'numeric', hour12: true }).find(p => p.type === 'dayPeriod')?.value || 'AM'
+                const pmText = this.props.intl.formatDateToParts(new Date(2000,0,1,12,0), { hour: 'numeric', hour12: true }).find(p => p.type === 'dayPeriod')?.value || 'PM'
                 return (
                     <select key={key} className="ampm"
                         onChange={(e) => setinput(e)} value={input.ampm}
@@ -51,16 +53,17 @@ export default class Timeinput extends Component {
                     >
                         {
                             select.date == min.date && select.month == min.month && select.year == min.year ?
-                                <FormattedMessage id='datetime.am' defaultMessage='上午'>{t => <option value="0" disabled={min.ampm != 0}>{t}</option>}</FormattedMessage>
-                                : <FormattedMessage id='datetime.am' defaultMessage='上午'>{t => <option value="0">{t}</option>}</FormattedMessage>
+                                <option value="0" disabled={min.ampm != 0}>{amText}</option>
+                                : <option value="0">{amText}</option>
                         }
                         {
                             select.date == max.date && select.month == max.month && select.year == max.year ?
-                                <FormattedMessage id='datetime.pm' defaultMessage='下午'>{t => <option value="1" disabled={max.ampm != 1}>{t}</option>}</FormattedMessage>
-                                : <FormattedMessage id='datetime.pm' defaultMessage='下午'>{t => <option value="1">{t}</option>}</FormattedMessage>
+                                <option value="1" disabled={max.ampm != 1}>{pmText}</option>
+                                : <option value="1">{pmText}</option>
                         }
                     </select>
                 )
+            }
             default:
                 return null
         }
@@ -94,3 +97,5 @@ export default class Timeinput extends Component {
         )
     }
 }
+
+export default injectIntl(Timeinput)

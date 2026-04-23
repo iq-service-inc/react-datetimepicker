@@ -56,8 +56,34 @@ export default () => library.add(
 部分字詞使用`<FormattedMessage>`
 
 * `datetime.today` : `今天`
+
+> ⚠️ **v2.0.5 起**，AM/PM 顯示改為透過 `Intl.DateTimeFormat` 自動取得各語系的本地化文字，無需再設定 `datetime.am` / `datetime.pm` 翻譯。
+
+<details>
+<summary>v2.0.4 及更早版本需額外設定 AM/PM 翻譯</summary>
+
 * `datetime.am` : `上午`
 * `datetime.pm` : `下午`
+
+```json
+// zh
+{
+    "datetime.today": "今天",
+    "datetime.am": "上午",
+    "datetime.pm": "下午"
+}
+```
+
+```json
+// en
+{
+    "datetime.today": "Today",
+    "datetime.am": "AM",
+    "datetime.pm": "PM"
+}
+```
+
+</details>
 
 #### 可從套件匯入
 目前僅有中文、英文
@@ -70,18 +96,14 @@ export default () => library.add(
 
 ```json
 {
-    "datetime.today": "今天",
-    "datetime.am": "上午",
-    "datetime.pm": "下午"
+    "datetime.today": "今天"
 }
 ```
 * en
 
 ```json
 {
-    "datetime.today": "Today",
-    "datetime.am": "AM",
-    "datetime.pm": "PM"
+    "datetime.today": "Today"
 }
 ```
 
