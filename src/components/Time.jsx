@@ -100,8 +100,10 @@ class Time extends Component {
         const { select, selectDay, max, min, disabled, format, use24hours } = this.props
         const ampm = this.renderAMPM(select, min, max)
         const selectedHour = use24hours ? (select.ampm * 12 + select.hour) : select.hour
-        const displayAM = this.props.intl.formatDateToParts(new Date(2000,0,1,0,0), { hour: 'numeric', hour12: true }).find(p => p.type === 'dayPeriod')?.value || 'AM'
-        const displayPM = this.props.intl.formatDateToParts(new Date(2000,0,1,12,0), { hour: 'numeric', hour12: true }).find(p => p.type === 'dayPeriod')?.value || 'PM'
+        
+        const dtf = new Intl.DateTimeFormat(this.props.intl.locale, { hour: 'numeric', hour12: true })
+        const displayAM = dtf.formatToParts(new Date(2000,0,1,0,0)).find(p => p.type === 'dayPeriod')?.value || 'AM'
+        const displayPM = dtf.formatToParts(new Date(2000,0,1,12,0)).find(p => p.type === 'dayPeriod')?.value || 'PM'
         return (
             <div className="timebox">
                 <div className="hour scroll time" onScroll={this.onScroll}>

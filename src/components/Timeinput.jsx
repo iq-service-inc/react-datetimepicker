@@ -43,8 +43,9 @@ class Timeinput extends Component {
                     disabled={(typeof disabled=='object' && disabled.indexOf('min')!=-1) || (typeof disabled=='boolean' && disabled)}
                 />
             case 'ampm': {
-                const amText = this.props.intl.formatDateToParts(new Date(2000,0,1,0,0), { hour: 'numeric', hour12: true }).find(p => p.type === 'dayPeriod')?.value || 'AM'
-                const pmText = this.props.intl.formatDateToParts(new Date(2000,0,1,12,0), { hour: 'numeric', hour12: true }).find(p => p.type === 'dayPeriod')?.value || 'PM'
+                const dtf = new Intl.DateTimeFormat(this.props.intl.locale, { hour: 'numeric', hour12: true })
+                const amText = dtf.formatToParts(new Date(2000,0,1,0,0)).find(p => p.type === 'dayPeriod')?.value || 'AM'
+                const pmText = dtf.formatToParts(new Date(2000,0,1,12,0)).find(p => p.type === 'dayPeriod')?.value || 'PM'
                 return (
                     <select key={key} className="ampm"
                         onChange={(e) => setinput(e)} value={input.ampm}
