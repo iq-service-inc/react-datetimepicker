@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import propTypes from 'prop-types'
-import { FormattedMessage, FormattedDate } from 'react-intl'
+import { FormattedMessage, FormattedDate, injectIntl } from 'react-intl'
 
-export default class Days extends Component {
+class Days extends Component {
     constructor(props){
         super(props)
         this.state = {
@@ -60,6 +60,12 @@ export default class Days extends Component {
         const today = new Date()
         const maxday = new Date(max.year,max.month-1,max.date)
         const minday = new Date(min.year,min.month-1,min.date)
+
+        const rtf = new Intl.RelativeTimeFormat(this.props.intl.locale, {
+            numeric: 'auto',
+            style: 'long',
+        });
+        const localeToday = rtf.format(0, 'day')
         return (
             <div className="days">
                 <div className="week">
@@ -97,10 +103,12 @@ export default class Days extends Component {
                     today-minday>0 && maxday-today>0?
                         (typeof disabled=='object' && !(disabled.indexOf('year')!=-1 || disabled.indexOf('month')!=-1 || disabled.indexOf('date')!=-1)) &&
                         <div className="today onclick hover" onClick={() => selectDay(new Date().getFullYear(), new Date().getMonth() + 1, new Date().getDate())}>
-                            <FormattedMessage id='datetime.today' defaultMessage='今天'></FormattedMessage>
+                            {/* <FormattedMessage id='datetime.today' defaultMessage='今天'></FormattedMessage> */}
+                            <span>{localeToday}</span>
                         </div>
                         :<div className="today grey">
-                            <FormattedMessage id='datetime.today' defaultMessage='今天'></FormattedMessage>
+                            {/* <FormattedMessage id='datetime.today' defaultMessage='今天'></FormattedMessage> */}
+                            <span>{localeToday}</span>
                         </div>
                 }
             </div>
@@ -112,3 +120,5 @@ export default class Days extends Component {
         selectDay: propTypes.func.isRequired,
     }
 }
+
+export default injectIntl(Days)

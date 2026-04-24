@@ -55,7 +55,28 @@ export default () => library.add(
 
 部分字詞使用`<FormattedMessage>`
 
+> ⚠️ **v2.0.6 起**，`datetime.today` 的翻譯改為透過 `Intl.RelativeTimeFormat` 自動取得各語系的本地化文字，無需再設定 `datetime.today` 翻譯。
+
+<details>
+<summary>v2.0.5 及更早版本需額外設定 datetime.today 翻譯</summary>
+
 * `datetime.today` : `今天`
+
+```json
+// zh
+{
+    "datetime.today": "今天"
+}
+```
+
+```json
+// en
+{
+    "datetime.today": "Today"
+}
+```
+
+</details>
 
 > ⚠️ **v2.0.5 起**，AM/PM 顯示改為透過 `Intl.DateTimeFormat` 自動取得各語系的本地化文字，無需再設定 `datetime.am` / `datetime.pm` 翻譯。
 
@@ -85,27 +106,6 @@ export default () => library.add(
 
 </details>
 
-#### 可從套件匯入
-目前僅有中文、英文
-```js
-    import 'datetimepicker/src/locale/en'
-    import 'datetimepicker/src/locale/zh'
-```
-#### 或手動新增
-* zh
-
-```json
-{
-    "datetime.today": "今天"
-}
-```
-* en
-
-```json
-{
-    "datetime.today": "Today"
-}
-```
 
 ### Usage 
 
